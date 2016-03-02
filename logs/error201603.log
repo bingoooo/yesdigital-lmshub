@@ -1,0 +1,165 @@
+2016-03-02 10:25:25 ** FragTale\Db\Adapter::newConnectionString() in line 116 ** Fatal database configuration error! "/home/fragbis/www/html/BoN/fragtale_core/settings/databases/justice.ini" file not found
+2016-03-02 10:25:25 ** FragTale\Db\Adapter::connect() in line 173 ** invalid data source name
+2016-03-02 10:25:25 ** FragTale\Db\Adapter::connect() in line 173 ** invalid data source name
+2016-03-02 10:29:25 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:29:25 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:29:25 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:29:25 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:47:57 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:47:57 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:47:57 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 10:47:57 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:06:15 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:06:15 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:06:15 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:06:15 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:36 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:36 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:36 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:36 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:45 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:45 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:45 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 11:15:45 ** FragTale\Db\Adapter::connect() in line 173 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:33:10 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:33:10 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:33:10 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:33:10 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:35:51 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:35:51 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:35:51 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:36:18 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:36:18 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:36:18 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:36:18 ** FragTale\Db\Adapter::connect() in line 177 ** SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO)
+2016-03-02 12:50:55 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:50:55 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:50:55 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:54:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:54:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:54:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:55:50 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:55:50 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:55:50 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:23 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:23 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:23 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:29 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:56:44 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:34 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:38 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:38 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:38 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:40 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:43 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:43 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:57:43 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:31 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:31 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:31 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:35 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:35 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:37 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:37 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 12:58:37 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:06:28 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:06:28 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:06:28 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:07:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:07:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:07:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:11:58 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:11:58 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:11:58 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:01 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:01 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:01 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:02 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:02 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:02 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:04 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:05 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:05 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:05 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:07 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:07 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:07 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:09 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:12:09 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:05 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:05 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:06 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:06 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:06 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:08 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:17:08 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:20:32 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:20:32 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:21:42 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:21:42 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:49 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:49 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:49 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:52 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:52 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:57 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:57 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:57 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:59 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:23:59 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:00 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:42 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:42 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:24:42 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:25:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:25:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 15:25:15 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 17:00:45 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 17:00:45 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 17:00:45 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 17:04:46 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name
+2016-03-02 17:04:46 ** FragTale\Db\Adapter::connect() in line 177 ** invalid data source name

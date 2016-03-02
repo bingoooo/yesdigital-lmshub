@@ -1,0 +1,9 @@
+<?php
+$props['type']			= 'text';
+$props['placeholder']	= _('Zip code');
+$props['class']			= 'zip_code'.(!empty($view->class) ? ' '.$view->class : '');
+foreach (array('id', 'required', 'readonly', 'disabled', 'value', 'name', 'title', 'style', 'placeholder', 'addedprops') as $key)
+	if (isset($view->$key)) $props[$key] = $view->$key;
+$props['addedprops']['pattern']		= '\d*';
+$props['maxlength']	= 5;
+echo $view->getBlock('blocks/inputs/input', $props);

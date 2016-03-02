@@ -1,0 +1,97 @@
+<?php
+if (defined('ENV') && ENV=='devel')
+	$view->addJS(WEB_ROOT.'/js/inputs.js');
+else
+	$view->addJS(WEB_ROOT.'/js/inputs.min.js');
+$id			= !empty($view->id)			? $view->id		: rand(0, 1000).'_'.md5(rand(0,100));
+$required	= !empty($view->required)	? 'required'	: '';
+$value		= !empty($view->value)		? $view->value	: '';
+$class		= !empty($view->class)		? $view->class	: '';
+$name		= !empty($view->name)		? $view->name	: $id;
+$style		= !empty($view->style)		? 'style="'.$view->style.'"': '';
+$title		= !empty($view->title)		? 'title="'.$view->title.'"': '';
+$disabled	= !empty($view->disabled) || !empty($view->readonly) ? 'disabled'	: '';
+$minY		= !empty($view->minYear) ? (int)$view->minYear : 1900;
+$maxY		= !empty($view->maxYear) ? (int)$view->maxYear : (int)date('Y');
+
+$d = $m = $y = $h = $i = '';
+if (!empty($value)){
+	$time = strtotime($value);
+	$d = date('d', $time);
+	$m = date('m', $time);
+	$y = date('Y', $time);
+	$h = date('H', $time);
+	$i = date('i', $time);
+}?>
+<select id="<?php echo $id?>_day" name="<?php echo $name?>[d]" class="date day <?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->addedprops) && is_array($view->addedprops)){
+		foreach ($view->addedprops as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<option value="">JJ</option>
+	<?php for($nd=1; $nd<=31; $nd++){?>
+	<option value="<?php echo $nd?>" <?php if ($nd==(int)$d) echo 'selected'?>><?php echo sprintf('%02d', $nd)?></option>
+	<?php }?>
+</select>/<select id="<?php echo $id?>_month" name="<?php echo $name?>[m]" class="date month <?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->props) && is_array($view->props)){
+		foreach ($view->props as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<option value="">MM</option>
+	<?php for($nm=1; $nm<=12; $nm++){?>
+	<option value="<?php echo $nm?>" <?php if ($nm==(int)$m) echo 'selected'?>><?php echo sprintf('%02d', $nm)?></option>
+	<?php }?>
+</select>/<select id="<?php echo $id?>_year" name="<?php echo $name?>[y]" class="date year <?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->props) && is_array($view->props)){
+		foreach ($view->props as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<option value="">AAAA</option>
+	<?php for($ny=$maxY; $ny>=$minY; $ny--){?>
+	<option value="<?php echo $ny?>" <?php if ($ny==(int)$y) echo 'selected'?>><?php echo $ny?></option>
+	<?php }?>
+</select>
+&nbsp;
+<select id="<?php echo $id?>_hour" name="<?php echo $name?>[h]" class="date hour <?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->props) && is_array($view->props)){
+		foreach ($view->props as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<option value="">hh</option>
+	<?php for($nh=9;$nh<19;$nh++){
+		$strH = $nh;
+		if (strlen($strH)<2) $strH = '0'.$nh;?>
+	<option value="<?php echo $strH?>" <?php if ($strH==$h) echo 'selected'?>><?php echo $strH?></option>
+	<?php }?>
+</select>:<select id="<?php echo $id?>_minute" name="<?php echo $name?>[i]" class="date minute <?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->props) && is_array($view->props)){
+		foreach ($view->props as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<option value="">mm</option>
+	<?php for($ni=0;$ni<60;$ni+=30){
+		$strI = $ni;
+		if (strlen($strI)<2) $strI = '0'.$ni;?>
+	<option value="<?php echo $strI?>" <?php if ($strI==$i) echo 'selected'?>><?php echo $strI?></option>
+	<?php }?>
+</select>

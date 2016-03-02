@@ -1,0 +1,11 @@
+<div style="font-style: italic">
+	<?php echo _('Message sent from Website:');?> <a href="<?php echo WEB_ROOT?>">Divorce Pour Tous</a>
+</div>
+<p style="font-weight:bold"><?php echo _('Hello,');?></p>
+<p><?php echo _('You have to click the link below to finish your registration.');?></p>
+<div>
+	<a href="<?php echo ADMIN_WEB_ROOT?>/user/validate?auth_key=<?php echo $view->message?>">
+		<?php echo _('Please, click here to validate your account')?>
+	</a>
+</div>
+<?php echo $view->getBlock('mail/mail-footer');

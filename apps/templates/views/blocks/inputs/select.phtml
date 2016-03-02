@@ -1,0 +1,31 @@
+<?php
+if (defined('ENV') && ENV=='devel')
+	$view->addJS(WEB_ROOT.'/js/inputs.js');
+else
+	$view->addJS(WEB_ROOT.'/js/inputs.min.js');
+$id			= !empty($view->id)			? $view->id		: rand(0, 1000).'_'.md5(rand(0,100));
+$required	= !empty($view->required)	? 'required'	: '';
+$value		= !empty($view->value)		? $view->value	: '';
+$class		= !empty($view->class)		? $view->class	: '';
+$name		= !empty($view->name)		? $view->name	: $id;
+$style		= !empty($view->style)		? 'style="'.$view->style.'"': '';
+$title		= !empty($view->title)		? 'title="'.$view->title.'"': '';
+$disabled	= !empty($view->disabled) || !empty($view->readonly) ? 'disabled'	: '';
+$options	= !empty($view->options) && is_array($view->options) ? $view->options : array();?>
+<select id="<?php echo $id?>" name="<?php echo $name?>" class="<?php echo $class?>"<?php
+	if ($style)		echo ' '.$style;
+	if ($required)	echo ' '.$required;
+	if ($disabled)	echo ' '.$disabled;
+	if ($title)		echo ' '.$title;
+	if (!empty($view->addedprops) && is_array($view->addedprops)){
+		foreach ($view->addedprops as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}?>>
+	<?php if (isset($view->default_option)){?>
+	<option value=""><?php echo $view->default_option?></option>
+	<?php }?>
+	<?php foreach($options as $k=>$v){
+		if (is_array($v) || is_object($v)) continue;?>
+	<option value="<?php echo $k?>" <?php if ($k==$value) echo 'selected'?>><?php echo $v?></option>
+	<?php }?>
+</select>

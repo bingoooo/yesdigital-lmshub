@@ -1,0 +1,13 @@
+<?php $article = $view->getArticle();?>
+
+<h1 class="article-title"><?php echo $article->title?></h1>
+
+<?php if ($view->userIsAdmin() || ($view->userIsLogged() && $_SESSION['REG_USER']['uid'] == $article->getOwnerID())){?>
+<div class="alignright description">
+	<a href="<?php echo ADMIN_WEB_ROOT.'/article/edit?aid='.$article->aid?>" class="add_new"><?php echo _('Edit this page')?></a>
+</div>
+<?php }?>
+
+<article class="article-content">
+	<?php echo $article->body;?>
+</article>

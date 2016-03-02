@@ -1,0 +1,30 @@
+
+
+content = for each tab in tabs
+			tab = id,label,elements = for each type in types
+										type = type,attributs
+										
+										
+										
+										
+										
+										
+										
+boucle remplissage notes
+
+	structure note = [ type, id, label, onclick]
+	
+listes: 
+	A		m	5	aug	dim	sus2 sus4 6 m6 7 m7	Maj7	7sus4	m7/b5	9	add9	11	13
+	A#
+	B
+	C
+	C#
+	D
+	D#
+	E
+	F
+	F#
+	G
+	G#
+	

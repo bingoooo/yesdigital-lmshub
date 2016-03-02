@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title><?php echo $view->getTitle()?></title>
+		<?php echo $view->getCssTags()?>
+	</head>
+	
+	<body class="<?php echo $myCurrentView = str_replace('/', ' ', $view->getViewName());?> <?php
+		$getMyCurrentView = isset($_GET['my_current_view']) ? str_replace('/', ' ', $_GET['my_current_view']) : '';
+		if ($myCurrentView!=$getMyCurrentView) echo $getMyCurrentView;?>">
+		<div class="page">
+		
+			<section class="header">
+				<?php echo $view->getBlock('blocks/header')?>
+			</section>
+		
+			<section class="content">
+				<?php echo $view->getUserEndMsgs()?>
+				<?php echo $view;?>
+			</section>
+			
+			<section class="footer">
+				<?php echo $view->getBlock('blocks/footer')?>
+			</section>
+		
+		</div>
+		<?php echo $view->getJsTags()?>
+	</body>
+</html>

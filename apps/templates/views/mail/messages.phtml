@@ -1,0 +1,9 @@
+<div style="font-style: italic">
+	<?php echo _('You have a new message sent from website').' '.WEB_ROOT;?>
+</div>
+<?php echo substr(strip_tags($view->message), 0, 100);?>...
+<div>
+	<a href="<?php echo ADMIN_WEB_ROOT?>/messages"><?php echo _('Look at the message')?></a>
+</div>
+<?php echo $view->getBlock('mail/mail-footer');
+

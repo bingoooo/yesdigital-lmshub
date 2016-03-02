@@ -1,0 +1,5 @@
+<?php
+$props['type'] = 'text';
+foreach (array('id', 'required', 'readonly', 'disabled', 'value', 'name', 'title', 'class', 'style', 'placeholder', 'maxlength', 'addedprops') as $key)
+	if (isset($view->$key)) $props[$key] = $view->$key;
+echo $view->getBlock('blocks/inputs/input', $props);
