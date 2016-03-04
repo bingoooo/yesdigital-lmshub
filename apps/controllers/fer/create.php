@@ -69,7 +69,7 @@ class Create extends Fer{
 		//Get user info
 		$User = $this->retrieveUserData();
 		if (empty($User['success'])){
-			$this->_view->json = $this->returnJsonError('Unknown User');
+			$this->_view->json = $User;
 			return false;
 		}
 		//Get learning plan
