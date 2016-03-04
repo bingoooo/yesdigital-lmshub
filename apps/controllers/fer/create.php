@@ -76,7 +76,7 @@ class Create extends Fer{
 		$LP	= $this->retrieveLpDataForUser();
 		if (empty($LP['hashcode'])){
 			$this->_view->json = $LP;
-			$this->_view->json['message'] = 'Unabled to retrieve LP Data for given id_user and id_learningplan';
+			$this->_view->json['message_2'] = 'Unabled to retrieve LP Data for given id_user and id_learningplan';
 			return false;
 		}
 		//On creation, we get the current template version
