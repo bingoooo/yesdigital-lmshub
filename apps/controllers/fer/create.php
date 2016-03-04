@@ -27,6 +27,8 @@ class Create extends Fer{
 	protected $postDone = false;
 	
 	function initialize(){
+		$this->logAjaxRequest();
+		
 		if (!empty($_REQUEST['layout']))
 			$this->setLayout(strtolower($_REQUEST['layout']));
 		else

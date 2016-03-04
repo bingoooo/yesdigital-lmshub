@@ -32,6 +32,13 @@ class Fer extends Controller{
 		);
 	}
 	
+	function logAjaxRequest(){
+		$msg = $_SERVER['REMOTE_ADDR'].' | '.$_SERVER['REQUEST_URI'].' | '.$_SERVER['HTTP_USER_AGENT'];
+		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg;
+		$logFile = DOC_ROOT.'/logs/log-'.date('Ym').'.log';
+		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
+	}
+	
 	/**
 	 * @see https://doceboapi.docebosaas.com/api/docs
 	 * @param string $method	The original method name given by the Docebo API such as "user/profile"
