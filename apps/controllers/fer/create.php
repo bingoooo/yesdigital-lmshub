@@ -110,7 +110,7 @@ class Create extends Fer{
 			print_r($this->expectedParameters);
 		}
 		$this->jsonResponse['template_id']		= $tplId;
-		$this->jsonResponse['template_version'] = str_replace($tplId.'/', '', $this->getMetaView()->_tpl_version);
+		$this->jsonResponse['template_version'] = $this->getMetaView()->_tpl_version;
 		$this->jsonResponse['hashcode']			= $LP['hashcode'];
 		$this->jsonResponse['success']			= 1;
 		$this->_view->json = $this->jsonResponse;

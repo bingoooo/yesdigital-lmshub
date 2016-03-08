@@ -118,6 +118,10 @@ class Application{
 		
 		# Include system library
 		self::requireFolder(LIB_ROOT.'/FragTale');
+		if (!empty(self::$_ini['library'])){
+			foreach (self::$_ini['library'] as $library)
+				self::requireFolder(APP_ROOT.'/library/'.$library);
+		}
 		if (!empty(self::$_ini['models'])){
 			foreach (self::$_ini['models'] as $model)
 				self::requireFolder(APP_ROOT.'/models/'.$model);
