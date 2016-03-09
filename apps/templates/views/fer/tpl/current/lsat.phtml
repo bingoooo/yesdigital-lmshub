@@ -1,5 +1,4 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
-$isRO	= !empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r';
 $User	= !empty($view->User['success']) ? $view->User : null;
 $LP		= !empty($view->LP['success']) ? $view->LP : null;
 if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
@@ -165,13 +164,7 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 			</h1>
 			<div style="background:white;">
 				<h3>SKILLS:</h3>
-				<?php if (!$isRO){?>
-				<textarea style="width:99%;height:45px;" name="evaluator_comments" id="evaluator_comments"></textarea>
-				<?php }else{?>
-				<div id="evaluator_comments">
-					<?php //echo nl2br($string)?>
-				</div>
-				<?php }?>
+				<textarea style="width:99%;height:45px;" name="evaluator_comments"></textarea>
 			</div>
 			
 			<h1 class="paragraph-title">

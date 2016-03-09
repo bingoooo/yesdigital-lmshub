@@ -6,47 +6,58 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 	h1.paragraph-title{
 		text-transform: uppercase;
 		margin: 15px 0;
+		font-weight: normal;
+		font-size: 16px;
 	}
 	div.profile-inline-block{
 		display:inline-block;
 		padding:2.5%;
 		width:40%;
 	}
-	div.skills-aptitude-block{
-		background:rgb(253,182,105);
-		width:90%;
+	table{
+		border-collapse: collapse;
+		width: 100%;
+	}	
+	table td{
+		white-space: nowrap;
+		width: 15%;
+		padding: 7px 0;
 	}
-	div.skills-aptitude-number{
-		background:rgb(87,87,87);
-		display:inline-block;
-		width:40px;
-		line-height:40px;
-		font-size:20px;
-		font-weight:bold;
-		text-align:center;
-		border-radius:40px;
-		float:left;
-		color:white;
+	.profile-label{
+		text-transform: uppercase;
+		font-size: 13px;
+	}
+	.profile-value{
+		font-weight: bold;
+		font-size: 12px;
+	}
+	.bg-grey{
+		background: rgb(233,233,233);
+	}
+	.table-total-label{
+		text-align: right;
+		text-transform: uppercase;
+		padding-right: 15px;
 	}
 </style>
-<div style="background:rgb(236,236,236);text-align:left;padding:30px 0;">
-	<div style="margin:auto;width:80%;">
+<div style="background:white;text-align:left;padding:20px 0;">
+	<div style="margin:auto;width:95%;">
 		<h1 class="paragraph-title">
-			Profil
+			<?php echo _('Profil')?>
 		</h1>
 		<div style="background:white;">
 			<div class="profile-inline-block">
 				<table>
 					<tr>
-						<td>LEARNER:</td>
-						<td>
+						<td class="profile-label"><?php echo _('Learner:')?></td>
+						<td class="profile-value">
 							<?php echo !empty($User['firstname']) ? $User['firstname'] : '';?>
 							<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
 						</td>
 					</tr>
 					<tr>
-						<td>COMPANY:</td>
-						<td><?php
+						<td class="profile-label" style="text-transform:uppercase;"><?php echo _('Company:')?></td>
+						<td class="profile-value"><?php
 						if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
 								if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])==='company name'){
@@ -57,122 +68,135 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 						}?></td>
 					</tr>
 					<tr>
-						<td>DATE:</td>
-						<td><?php echo date('d.m.Y')?></td>
+						<td class="profile-label"><?php echo _('Date:')?></td>
+						<td class="profile-value"><?php echo date('d.m.Y')?></td>
 					</tr>
 				</table>
 			</div>
 			<div class="profile-inline-block">
 				<table>
 					<tr>
-						<td>LEVEL:</td>
-						<td><?php
-						$level = null;
-						/*if (!empty($User['fields']) && is_array($User['fields'])){
-							foreach ($User['fields'] as $i=>$field){
-								if (!empty($field['name']) && !empty($field['value']) && in_array(strtolower($field['name']), array('acquired level', 'recommended level'))){
-									$level = $field['value'];
-									break;
-								}
-							}
-						}*/
-						if (!$level){
-							//Match it into the learning plan path name
-							if (!empty($LP['learning_plan']['path_name'])){
-								$terms = explode(' ', $LP['learning_plan']['path_name']);
-								if ($terms && strlen($terms[0])>1){
-									$suspectedLvl = $terms[0];
-									$letterLvl = strtoupper(substr($suspectedLvl, 0, 1));
-									$numberLvl = substr($suspectedLvl, 1, 1);
-									if (in_array($letterLvl, array('A', 'B', 'C')) && in_array($numberLvl, array('1','2','3'))){
-										$level = strtoupper($suspectedLvl);
-									}
-								}
-							}
-						}
-						echo $level;
+						<td class="profile-label"><?php echo _('Title:')?></td>
+						<td class="profile-value" colspan="3"><?php
+							if (!empty($LP['learning_plan']['path_name']))
+								echo _('Final Report for').' '.$LP['learning_plan']['path_name'];
 						?></td>
 					</tr>
 					<tr>
-						<td>START DATE:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
+						<td class="profile-label"><?php echo _('Start date:')?></td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
 						(
-								!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : ''
+							!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : '&nbsp;'
 						);?></td>
-						<td>END DATE:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
+						<td class="profile-label"><?php echo _('End date:')?></td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
 						(
-								!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : ''
+							!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : '&nbsp;'
 						);?></td>
 					</tr>
 					<tr>
-						<td>TOTAL TIME:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
+						<td class="profile-label"><?php echo _('Total time:')?></td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		
 		<h1 class="paragraph-title">
-			Language Skills Aptitude Test
+			<?php echo _('All courses in the learning plan')?>
 		</h1>
-		<table style="width:100%;">
+		
+		<h2 class="paragraph-subtitle"><?php echo _('E-learning results:')?></h2>
+		<table>
 			<tr>
-				<td style="width:50%;">
-					<div class="skills-aptitude-block">
-						<div class="skills-aptitude-number">
-							1
-						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
-					</div>
-				</td>
-				<td style="width:50%;">
-					<div class="skills-aptitude-block">
-						<div class="skills-aptitude-number">
-							2
-						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
-					</div>
-				</td>
+				<td style="width:70%;"></td>
+				<td class="profile-value"><?php echo _('Assessment')?></td>
+				<td class="profile-value"><?php echo _('Time')?></td>
+			</tr>
+			<?php
+			$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+			if (!empty($LP['learning_plan_courses'])){
+				foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+					if (empty($LPC['course_info']['course_name'])||
+						strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
+					$nbCourses++;
+					if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+			<tr>
+				<td><?php echo $LPC['course_info']['course_name'];?></td>
+				<td><?php
+				if (!empty($LPC['course_user_details']['score_given'])){
+					$totalPercentage += (float)$LPC['course_user_details']['score_given'];
+					echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
+				}?></td>
+				<td><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+			</tr><?php
+				}
+			}?>
+			<tr class="bg-grey">
+				<td class="table-total-label" style="text-align:right;text-transform:uppercase;"><?php echo _('Total e-learning average')?></td>
+				<td><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+				<td><?php echo $totalTimeSpent;?></td>
 			</tr>
 			<tr>
-				<td>
-					<div class="skills-aptitude-block">
-						<div class="skills-aptitude-number">
-							3
-						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
-					</div>
-				</td>
-				<td>
-					<div class="skills-aptitude-block">
-						<div class="skills-aptitude-number">
-							4
-						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
-					</div>
-				</td>
+				<td class="table-total-label"><?php echo _('Attendance')?></td>
+				<td><?php echo $nbAttendances.'/'.$nbCourses?></td>
+				<td></td>
 			</tr>
 		</table>
-		<form method="post">
-			<h1 class="paragraph-title">
-				EVALUATOR COMMENTS
-			</h1>
-			<div style="background:white;">
-				<h3>SKILLS:</h3>
-				<textarea style="width:99%;height:45px;" name="evaluator_comments"></textarea>
-			</div>
-			
-			<h1 class="paragraph-title">
-				SKILL’S LEVEL
-			</h1>
-			Etc.
 		
-		</form>
+		<h2 class="paragraph-subtitle"><?php echo _('Session results:')?></h2>
+		<table>
+			<tr>
+				<td></td>
+				<td style="width:15%;"><?php echo _('Assessment')?></td>
+				<td style="width:15%;"><?php echo _('Time')?></td>
+			</tr>
+			<?php
+			$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+			if (!empty($LP['learning_plan_courses'])){
+				foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+					if (empty($LPC['course_info']['course_name'])||
+						in_array(strtolower($LPC['course_info']['course_type']),
+							array('videoconference', 'classroom', 'webinar', 'telephone'))) continue;
+					$nbCourses++;
+					if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+			<tr>
+				<td><?php echo $LPC['course_info']['course_name'];?></td>
+				<td><?php
+				if (!empty($LPC['course_user_details']['score_given'])){
+					$totalPercentage += (float)$LPC['course_user_details']['score_given'];
+					echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
+				}?></td>
+				<td><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+			</tr><?php
+				}
+			}?>
+			<tr class="bg-grey">
+				<td class="table-total-label"><?php echo _('Total skill sessions average')?></td>
+				<td><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+				<td><?php echo $totalTimeSpent;?></td>
+			</tr>
+			<tr>
+				<td class="table-total-label"><?php echo _('Attendance')?></td>
+				<td><?php echo $nbAttendances.'/'.$nbCourses?></td>
+				<td></td>
+			</tr>
+		</table>
+		
+		
+		
+		<h1 class="paragraph-title">
+			<?php echo _('Evaluator comments');?>
+		</h1>
+		<div style="background:white;">
+			<h3>SKILLS:</h3>
+			<textarea style="width:99%;height:45px;" name="evaluator_comments"></textarea>
+		</div>
+		
+		<h1 class="paragraph-title">
+			SKILL’S LEVEL
+		</h1>
+		Etc.
+	
 	</div>
 </div>
-<pre style="text-align:left"><?php print_r(array('User'=>$User, 'LP'=>$LP))?></pre>
