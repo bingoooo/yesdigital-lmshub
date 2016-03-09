@@ -3,16 +3,37 @@ $User	= !empty($view->User['success']) ? $view->User : null;
 $LP		= !empty($view->LP['success']) ? $view->LP : null;
 if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
 <style>
-	h1.paragraph-title{
+	#report_container{
+		background: white;
+		text-align: left;
+		padding: 20px 0;
+		font-family: arial;
+		font-size: 13px;
+	}
+	#report_subcontainer{
+		margin: auto;
+		width: 95%;
+	}
+	.paragraph-title{
 		text-transform: uppercase;
 		margin: 15px 0;
 		font-weight: normal;
 		font-size: 16px;
 	}
+	.paragraph-subtitle{
+		font-size: 14px;
+		text-transform: uppercase;
+		font-weight: normal;
+	}
 	div.profile-inline-block{
-		display:inline-block;
-		padding:2.5%;
-		width:40%;
+		display: inline-block;
+		padding: 2.5%;
+		width: 40%;
+	}
+	div.profile-block{
+		padding: 2.5%;
+		width: 95%;
+		margin: auto;
 	}
 	table{
 		border-collapse: collapse;
@@ -21,27 +42,45 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 	table td{
 		white-space: nowrap;
 		width: 15%;
-		padding: 7px 0;
+		padding: 10px 0;
+	}
+	.profile-block table td{
+		padding: 15px 0;
+	}
+	.top-bar{
+		border-top: 1px solid rgb(118,118,118);
+	}
+	.left-bar{
+		border-left: 1px solid rgb(118,118,118);
+	}
+	.profile-block table td.left-bar{
+		padding-left: 25px;
 	}
 	.profile-label{
 		text-transform: uppercase;
-		font-size: 13px;
+		font-size: 14px;
 	}
 	.profile-value{
 		font-weight: bold;
-		font-size: 12px;
 	}
 	.bg-grey{
 		background: rgb(233,233,233);
 	}
-	.table-total-label{
+	.profile-block table td.table-total-label{
 		text-align: right;
 		text-transform: uppercase;
-		padding-right: 15px;
+		padding-right: 25px;
+	}
+	#evaluator_comments{
+		width: 99%;
+		min-width: 99%;
+		max-width: 99%;
+		height: 120px;
+		border: 1px solid rgb(220,220,220);
 	}
 </style>
-<div style="background:white;text-align:left;padding:20px 0;">
-	<div style="margin:auto;width:95%;">
+<div id="report_container">
+	<div id="report_subcontainer">
 		<h1 class="paragraph-title">
 			<?php echo _('Profil')?>
 		</h1>
@@ -56,7 +95,7 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 						</td>
 					</tr>
 					<tr>
-						<td class="profile-label" style="text-transform:uppercase;"><?php echo _('Company:')?></td>
+						<td class="profile-label"><?php echo _('Company:')?></td>
 						<td class="profile-value"><?php
 						if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
@@ -102,101 +141,108 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 			</div>
 		</div>
 		
+		<br><br>
+		
 		<h1 class="paragraph-title">
 			<?php echo _('All courses in the learning plan')?>
 		</h1>
-		
-		<h2 class="paragraph-subtitle"><?php echo _('E-learning results:')?></h2>
-		<table>
-			<tr>
-				<td style="width:70%;"></td>
-				<td class="profile-value"><?php echo _('Assessment')?></td>
-				<td class="profile-value"><?php echo _('Time')?></td>
-			</tr>
-			<?php
-			$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
-			if (!empty($LP['learning_plan_courses'])){
-				foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
-					if (empty($LPC['course_info']['course_name'])||
-						strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
-					$nbCourses++;
-					if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
-			<tr>
-				<td><?php echo $LPC['course_info']['course_name'];?></td>
-				<td><?php
-				if (!empty($LPC['course_user_details']['score_given'])){
-					$totalPercentage += (float)$LPC['course_user_details']['score_given'];
-					echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
-				}?></td>
-				<td><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
-			</tr><?php
-				}
-			}?>
-			<tr class="bg-grey">
-				<td class="table-total-label" style="text-align:right;text-transform:uppercase;"><?php echo _('Total e-learning average')?></td>
-				<td><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
-				<td><?php echo $totalTimeSpent;?></td>
-			</tr>
-			<tr>
-				<td class="table-total-label"><?php echo _('Attendance')?></td>
-				<td><?php echo $nbAttendances.'/'.$nbCourses?></td>
-				<td></td>
-			</tr>
-		</table>
-		
-		<h2 class="paragraph-subtitle"><?php echo _('Session results:')?></h2>
-		<table>
-			<tr>
-				<td></td>
-				<td style="width:15%;"><?php echo _('Assessment')?></td>
-				<td style="width:15%;"><?php echo _('Time')?></td>
-			</tr>
-			<?php
-			$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
-			if (!empty($LP['learning_plan_courses'])){
-				foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
-					if (empty($LPC['course_info']['course_name'])||
-						in_array(strtolower($LPC['course_info']['course_type']),
-							array('videoconference', 'classroom', 'webinar', 'telephone'))) continue;
-					$nbCourses++;
-					if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
-			<tr>
-				<td><?php echo $LPC['course_info']['course_name'];?></td>
-				<td><?php
-				if (!empty($LPC['course_user_details']['score_given'])){
-					$totalPercentage += (float)$LPC['course_user_details']['score_given'];
-					echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
-				}?></td>
-				<td><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
-			</tr><?php
-				}
-			}?>
-			<tr class="bg-grey">
-				<td class="table-total-label"><?php echo _('Total skill sessions average')?></td>
-				<td><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
-				<td><?php echo $totalTimeSpent;?></td>
-			</tr>
-			<tr>
-				<td class="table-total-label"><?php echo _('Attendance')?></td>
-				<td><?php echo $nbAttendances.'/'.$nbCourses?></td>
-				<td></td>
-			</tr>
-		</table>
-		
-		
+		<div class="profile-block">
+			<h2 class="paragraph-subtitle"><?php echo _('E-learning results:')?></h2>
+			<table>
+				<tr>
+					<td style="width:70%;"></td>
+					<td class="profile-value left-bar"><?php echo _('Assessment')?></td>
+					<td class="profile-value left-bar"><?php echo _('Time')?></td>
+				</tr>
+				<?php
+				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+				if (!empty($LP['learning_plan_courses'])){
+					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+						if (empty($LPC['course_info']['course_name'])||
+							strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
+						$nbCourses++;
+						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+				<tr class="top-bar">
+					<td><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="left-bar"><?php
+					if (!empty($LPC['course_user_details']['score_given'])){
+						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
+						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
+					}?></td>
+					<td class="left-bar"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+				</tr><?php
+					}
+				}?>
+				<tr class="bg-grey">
+					<td class="table-total-label"><?php echo _('Total e-learning average')?></td>
+					<td class="profile-value left-bar"><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
+				</tr>
+				<tr>
+					<td class="table-total-label"><?php echo _('Attendance')?></td>
+					<td class="left-bar"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar"></td>
+				</tr>
+			</table>
+			
+			<br><br><br><br>
+			
+			<h2 class="paragraph-subtitle"><?php echo _('Session results:')?></h2>
+			<table>
+				<tr>
+					<td style="width:70%;"></td>
+					<td class="profile-value left-bar"><?php echo _('Assessment')?></td>
+					<td class="profile-value left-bar"><?php echo _('Time')?></td>
+				</tr>
+				<?php
+				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+				if (!empty($LP['learning_plan_courses'])){
+					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+						if (empty($LPC['course_info']['course_name'])||
+							!in_array(strtolower($LPC['course_info']['course_type']),
+								array('videoconference', 'classroom', 'webinar', 'telephone'))) continue;
+						$nbCourses++;
+						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+				<tr class="top-bar">
+					<td><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="left-bar"><?php
+					if (!empty($LPC['course_user_details']['score_given'])){
+						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
+						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
+					}?></td>
+					<td class="left-bar"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+				</tr><?php
+					}
+				}?>
+				<tr class="bg-grey">
+					<td class="table-total-label"><?php echo _('Total skill sessions average')?></td>
+					<td class="profile-value left-bar"><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
+				</tr>
+				<tr>
+					<td class="table-total-label"><?php echo _('Attendance')?></td>
+					<td class="left-bar"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar"></td>
+				</tr>
+			</table>
+		</div>
 		
 		<h1 class="paragraph-title">
 			<?php echo _('Evaluator comments');?>
 		</h1>
-		<div style="background:white;">
-			<h3>SKILLS:</h3>
-			<textarea style="width:99%;height:45px;" name="evaluator_comments"></textarea>
+		<div class="profile-block">
+			<div style="background:white;">
+				<h3>SKILLS:</h3>
+				<textarea name="evaluator_comments" id="evaluator_comments"></textarea>
+			</div>
+			
 		</div>
 		
 		<h1 class="paragraph-title">
 			SKILL’S LEVEL
 		</h1>
-		Etc.
-	
+		<div class="profile-block">
+			Etc.
+		</div>
 	</div>
 </div>

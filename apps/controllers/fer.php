@@ -73,7 +73,8 @@ class Fer extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		return true;
+		if (defined('ENV') && ENV==='devel')
+			return true;
 		if (in_array($_SERVER['REMOTE_ADDR'], $this->allowedHosts))
 			return true;
 		if (in_array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $this->allowedHosts))
