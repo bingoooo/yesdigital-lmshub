@@ -1,4 +1,7 @@
-<?php $view->getMetaView()->_tpl_version = '1.0';?>
+<?php $view->getMetaView()->_tpl_version = '1.0';
+$User	= !empty($view->User['success']) ? $view->User : null;
+$LP		= !empty($view->LP['success']) ? $view->LP : null;
+if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
 <style>
 	h1.paragraph-title{
 		text-transform: uppercase;
@@ -36,15 +39,26 @@
 				<table>
 					<tr>
 						<td>LEARNER:</td>
-						<td></td>
+						<td>
+							<?php echo !empty($User['firstname']) ? $User['firstname'] : '';?>
+							<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
+						</td>
 					</tr>
 					<tr>
 						<td>COMPANY:</td>
-						<td></td>
+						<td><?php
+						if (!empty($User['fields']) && is_array($User['fields'])){
+							foreach ($User['fields'] as $i=>$field){
+								if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])==='company name'){
+									echo $field['value'];
+									break;
+								}
+							}
+						}?></td>
 					</tr>
 					<tr>
 						<td>DATE:</td>
-						<td></td>
+						<td><?php echo date('d.m.Y')?></td>
 					</tr>
 				</table>
 			</div>
@@ -52,17 +66,48 @@
 				<table>
 					<tr>
 						<td>LEVEL:</td>
-						<td></td>
+						<td><?php
+						$level = null;
+						/*if (!empty($User['fields']) && is_array($User['fields'])){
+							foreach ($User['fields'] as $i=>$field){
+								if (!empty($field['name']) && !empty($field['value']) && in_array(strtolower($field['name']), array('acquired level', 'recommended level'))){
+									$level = $field['value'];
+									break;
+								}
+							}
+						}*/
+						if (!$level){
+							//Match it into the learning plan path name
+							if (!empty($LP['learning_plan']['path_name'])){
+								$terms = explode(' ', $LP['learning_plan']['path_name']);
+								if ($terms && strlen($terms[0])>1){
+									$suspectedLvl = $terms[0];
+									$letterLvl = strtoupper(substr($suspectedLvl, 0, 1));
+									$numberLvl = substr($suspectedLvl, 1, 1);
+									if (in_array($letterLvl, array('A', 'B', 'C')) && in_array($numberLvl, array('1','2','3'))){
+										$level = strtoupper($suspectedLvl);
+									}
+								}
+							}
+						}
+						echo $level;
+						?></td>
 					</tr>
 					<tr>
 						<td>START DATE:</td>
-						<td></td>
+						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
+						(
+								!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : ''
+						);?></td>
 						<td>END DATE:</td>
-						<td></td>
+						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
+						(
+								!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : ''
+						);?></td>
 					</tr>
 					<tr>
 						<td>TOTAL TIME:</td>
-						<td></td>
+						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
 					</tr>
 				</table>
 			</div>
@@ -130,3 +175,4 @@
 		</form>
 	</div>
 </div>
+<pre style="text-align:left"><?php print_r(array('User'=>$User, 'LP'=>$LP))?></pre>

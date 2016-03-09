@@ -24,9 +24,8 @@ class Create extends Fer{
 			'report'			=> '' //HTML content in base64
 	);
 	
-	protected $postDone = false;
-	
 	function initialize(){
+		$this->checkRestrictedHosts();//First of all, check if the remote host is allowed to connect
 		$this->logAjaxRequest();
 		
 		if (!empty($_REQUEST['layout']))
@@ -37,20 +36,21 @@ class Create extends Fer{
 	}
 	
 	/**
-	 * As for Curl, the call to this page must be done in POST method (submission)
+	 * As for Curl, the call to this page must be done in POST method (submission).
 	 * {@inheritDoc}
 	 * @see \FragTale\Controller\Fer::doPostBack()
 	 */
 	function doPostBack(){
-		//return $this->processing();
+		//if (!$this->processing()) //do some stuff
 	}
 	
 	function main(){
-		if ($this->processing()){
-			if (!$this->postDone){
-				header('HTTP/1.0 403 Forbidden');
-				die('Forbidden');
-			}
+		if (!$_REQUEST){
+			header('HTTP/1.0 403 Forbidden');
+			die('Forbidden');
+		}
+		if (!$this->processing()){
+			//do some stuff
 		}
 	}
 	
@@ -106,15 +106,14 @@ class Create extends Fer{
 			}
 		}
 		catch(\Exception $exc){
-			print_r($exc);
-			print_r($this->expectedParameters);
+			$this->logAjaxRequest('Exception: '.$exc->getMessage());
+			return false;
 		}
 		$this->jsonResponse['template_id']		= $tplId;
 		$this->jsonResponse['template_version'] = $this->getMetaView()->_tpl_version;
 		$this->jsonResponse['hashcode']			= $LP['hashcode'];
 		$this->jsonResponse['success']			= 1;
 		$this->_view->json = $this->jsonResponse;
-		$this->postDone = true;
 		return true;
 	}
 	

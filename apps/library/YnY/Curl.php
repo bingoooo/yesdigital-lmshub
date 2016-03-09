@@ -25,27 +25,29 @@ class Curl{
 	 */
 	public static function call($method, $postParams=array(), $instance=''){
 		//Find key, url and secret
-		if (!empty($instance))
-			$instance = 'default';
-		else
-			$clientHost = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-		if (isset(self::$doceboInstances[$clientHost])){
-			if (empty(self::$doceboInstances[$clientHost]['url']))
-				return array(
-					'success'	=> 0,
-					'message'	=> 'Development error: URL property not defined for "'.$clientHost.'" instance.'
-				);
-			else
-				$curlParams = self::$doceboInstances[$clientHost];
-		}
+		if (!empty($instance['url']) && !empty($instance['api_key']) && !empty($instance['api_secret']))
+			$curlParams = $instance;
 		else{
-			if (empty(self::$doceboInstances['default']['url']))
-				return array(
-					'success'	=> 0,
-					'message'	=> 'Development error: URL property not defined for "default" instance.'
-				);
-			else
-				$curlParams = self::$doceboInstances['default'];
+			if (empty($instance))
+				$instance = 'default';
+			if (isset(self::$doceboInstances[$instance])){
+				if (empty(self::$doceboInstances[$instance]['url']))
+					return array(
+							'success'	=> 0,
+							'message'	=> 'Development error: URL property not defined for "'.$instance.'" instance.'
+					);
+				else
+					$curlParams = self::$doceboInstances[$instance];
+			}
+			else{
+				if (empty(self::$doceboInstances['default']['url']))
+					return array(
+							'success'	=> 0,
+							'message'	=> 'Development error: URL property not defined for "default" instance.'
+					);
+				else
+					$curlParams = self::$doceboInstances['default'];
+			}
 		}
 		
 		$url	= trim($curlParams['url'], '/').'/'.trim($method, '/');
