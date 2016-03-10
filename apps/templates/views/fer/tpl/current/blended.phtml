@@ -1,7 +1,16 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
 $User	= !empty($view->User)	? $view->User	: null;
 $LP		= !empty($view->LP)		? $view->LP		: null;
-if (empty($User['success']) || empty($LP['success'])) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
+$ReportContent = array();
+if (empty($User['success']) || empty($LP['success']))
+	echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
+elseif (isset($LP['learning_plan_final_evaluation']) && is_array($LP['learning_plan_final_evaluation'])){
+	foreach ($LP['learning_plan_final_evaluation'] as $reportField){
+		if (!empty($reportField['id'])){
+			$ReportContent[$reportField['id']] = $reportField;
+		}
+	}
+}
 $LvlScale = array(
 		'A1'=>'A1',
 		'A2'=>'A2',
@@ -270,7 +279,9 @@ $LvlScale = array(
 		<div class="profile-block">
 			<div class="bg-grey" style="padding:25px;">
 				<h2 class="paragraph-subtitle">SKILLS:</h2>
-				<textarea name="evaluator_comments" id="evaluator_comments"></textarea>
+				<textarea name="evaluator_comments" id="evaluator_comments"><?php
+				if (!empty($ReportContent['evaluator_comments']['value'])) echo $ReportContent['evaluator_comments']['value'];
+				?></textarea>
 			</div>
 		</div>
 		
@@ -294,7 +305,10 @@ $LvlScale = array(
 					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey">
 						<?php foreach ($LvlScale as $lK=>$lT){?>
-						<option value="<?php echo $lK?>"><?php echo $lT?></option>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
 				</div>
@@ -316,7 +330,10 @@ $LvlScale = array(
 					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale">
 						<?php foreach ($LvlScale as $lK=>$lT){?>
-						<option value="<?php echo $lK?>"><?php echo $lT?></option>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
 				</div>
