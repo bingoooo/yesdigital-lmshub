@@ -222,7 +222,7 @@ $LvlScale = array(
 				}?>
 				<tr class="bg-grey">
 					<td class="table-total-label"><?php echo _('Total e-learning average')?></td>
-					<td class="profile-value left-bar"><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
 					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
 				</tr>
 				<tr>
@@ -263,7 +263,7 @@ $LvlScale = array(
 				}?>
 				<tr class="bg-grey">
 					<td class="table-total-label"><?php echo _('Total skill sessions average')?></td>
-					<td class="profile-value left-bar"><?php echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
 					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
 				</tr>
 				<tr>
