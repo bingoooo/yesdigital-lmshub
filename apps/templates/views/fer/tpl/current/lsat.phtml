@@ -24,34 +24,141 @@ $LvlScale = array(
 		'C3'=>'C3'
 );?>
 <style>
-	h1.paragraph-title{
+	#report_container{
+		background:rgb(236,236,236);
+		padding:30px 0;
+		text-align: left;
+		font-family: Arial, sans-serif;
+		font-size: 13px;
+	}
+	#report_subcontainer{
+		margin: auto;
+		width: 95%;
+	}
+	.paragraph-title{
 		text-transform: uppercase;
 		margin: 15px 0;
+		font-weight: normal;
+		font-size: 16px;
+	}
+	.paragraph-subtitle{
+		font-size: 14px;
+		text-transform: uppercase;
+		font-weight: bold;
+		color: rgb(254,103,94);
+		margin: 0;
+		margin-bottom: 15px;
 	}
 	div.profile-inline-block{
-		display:inline-block;
-		padding:2.5%;
-		width:40%;
+		display: inline-block;
+		padding: 2.5%;
+		width: 40%;
+	}
+	div.profile-block{
+		padding: 2.5%;
+		width: 95%;
+		margin: auto;
 	}
 	div.skills-aptitude-block{
 		background:rgb(253,182,105);
-		width:90%;
+		width: 85%;
+		min-height: 50px;
+		padding: 20px;
+		white-space: normal;
 	}
 	div.skills-aptitude-number{
 		background:rgb(87,87,87);
 		display:inline-block;
-		width:40px;
-		line-height:40px;
-		font-size:20px;
+		width:55px;
+		line-height:55px;
+		font-size:26px;
 		font-weight:bold;
 		text-align:center;
 		border-radius:40px;
 		float:left;
 		color:white;
+		margin-right: 25px;
+	}
+	.skills-aptitude-title{
+		font-weight: bold;
+		font-size: 14px;
+		margin: 0;
+		text-transform: uppercase;
+	}
+	.skills-aptitude-text{
+		font-style: italic;
+		font-size: 13px;
+		margin-top: 5px;
+	}
+	table{
+		border-collapse: collapse;
+		width: 100%;
+	}	
+	table td{
+		white-space: nowrap;
+		width: 15%;
+		padding: 10px 0;
+	}
+	.profile-block table td{
+		padding: 15px 0;
+	}
+	.profile-label{
+		text-transform: uppercase;
+		font-size: 13px;
+	}
+	.profile-value{
+		font-weight: bold;
+		font-size: 13px;
+	}
+	.bg-grey, .level-scale.bg-grey{
+		background: rgb(233,233,233);
+	}
+	#evaluator_comments{
+		width: 100%;
+		min-width: 100%;
+		max-width: 100%;
+		height: 120px;
+		border: 1px solid rgb(225,225,225);
+		background: transparent;
+	}
+	.level-scale-container{
+		background: white;
+		padding: 25px;
+	}
+	.level-spacing{
+		margin: 15px;
+	}
+	.level-label{
+		display: inline-block;
+		width: 29%;
+		font-size: 13px;
+		text-transform: uppercase;
+		color: rgb(254,103,94);
+	}
+	.level-scale{
+		display: inline-block;
+		width: 70%;
+		height: 30px;
+		background: white;
+		border: none;
+		padding-left: 20px;
+	}
+	.radio-label{
+		font-size: 13px;
+		cursor: pointer;
+	}
+	.level-scale-container.dark{
+		background: rgb(50,50,50);
+		color: white;
+	}
+	.level-scale-container.dark .level-scale{
+		background: white;
+		color: black;
 	}
 </style>
-<div style="background:rgb(236,236,236);text-align:left;padding:30px 0;">
-	<div style="margin:auto;width:80%;">
+<div id="report_container">
+	Test translation: [user_report]
+	<div id="report_subcontainer">
 		<h1 class="paragraph-title">
 			Profil
 		</h1>
@@ -59,15 +166,15 @@ $LvlScale = array(
 			<div class="profile-inline-block">
 				<table>
 					<tr>
-						<td>LEARNER:</td>
-						<td>
+						<td class="profile-label">LEARNER:</td>
+						<td class="profile-value">
 							<?php echo !empty($User['firstname']) ? $User['firstname'] : '';?>
 							<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
 						</td>
 					</tr>
 					<tr>
-						<td>COMPANY:</td>
-						<td><?php
+						<td class="profile-label">COMPANY:</td>
+						<td class="profile-value"><?php
 						if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
 								if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])==='company name'){
@@ -78,16 +185,16 @@ $LvlScale = array(
 						}?></td>
 					</tr>
 					<tr>
-						<td>DATE:</td>
-						<td><?php echo date('d.m.Y')?></td>
+						<td class="profile-label">DATE:</td>
+						<td class="profile-value"><?php echo date('d.m.Y')?></td>
 					</tr>
 				</table>
 			</div>
 			<div class="profile-inline-block">
 				<table>
 					<tr>
-						<td>LEVEL:</td>
-						<td><?php
+						<td class="profile-label">LEVEL:</td>
+						<td class="profile-value"><?php
 						$level = null;
 						/*if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
@@ -115,37 +222,39 @@ $LvlScale = array(
 						?></td>
 					</tr>
 					<tr>
-						<td>START DATE:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
+						<td class="profile-label">START DATE:</td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
 						(
 								!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : ''
 						);?></td>
-						<td>END DATE:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
+						<td class="profile-label">END DATE:</td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
 						(
 								!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : ''
 						);?></td>
 					</tr>
 					<tr>
-						<td>TOTAL TIME:</td>
-						<td><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
+						<td class="profile-label">TOTAL TIME:</td>
+						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 		
+		<br><br><br>
+		
 		<h1 class="paragraph-title">
 			Language Skills Aptitude Test
 		</h1>
-		<table style="width:100%;">
+		<table>
 			<tr>
 				<td style="width:50%;">
 					<div class="skills-aptitude-block">
 						<div class="skills-aptitude-number">
 							1
 						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
+						<h2 class="skills-aptitude-title">Needs Analysis</h2>
+						<div class="skills-aptitude-text">Elearning DOCEBO “Survey”</div>
 					</div>
 				</td>
 				<td style="width:50%;">
@@ -153,8 +262,8 @@ $LvlScale = array(
 						<div class="skills-aptitude-number">
 							2
 						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
+						<h2 class="skills-aptitude-title">Written test</h2>
+						<div class="skills-aptitude-text">Elearning DOCEBO “Test”</div>
 					</div>
 				</td>
 			</tr>
@@ -164,8 +273,8 @@ $LvlScale = array(
 						<div class="skills-aptitude-number">
 							3
 						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
+						<h2 class="skills-aptitude-title">iTest</h2>
+						<div class="skills-aptitude-text">Elearning SCORM Content</div>
 					</div>
 				</td>
 				<td>
@@ -173,27 +282,101 @@ $LvlScale = array(
 						<div class="skills-aptitude-number">
 							4
 						</div>
-						<h2 style="">Needs Analysis</h2>
-						<span style="font-style:italic;">Elearning DOCEBO “Survey”</span>
+						<h2 class="skills-aptitude-title">Speaking Test</h2>
+						<div class="skills-aptitude-text">ILT Session</div>
 					</div>
 				</td>
 			</tr>
 		</table>
-		<form method="post">
-			<h1 class="paragraph-title">
-				EVALUATOR COMMENTS
-			</h1>
-			<div style="background:white;">
-				<h3>SKILLS:</h3>
-				<textarea style="width:99%;height:45px;" name="evaluator_comments"></textarea>
-			</div>
-			
-			<h1 class="paragraph-title">
-				SKILL’S LEVEL
-			</h1>
-			Etc.
 		
-		</form>
+		<br><br><br>
+		
+		<h1 class="paragraph-title">
+			EVALUATOR COMMENTS
+		</h1>
+		<div class="level-scale-container">
+			<h2 class="paragraph-subtitle">SKILLS:</h2>
+			<?php if (!$isRO){?>
+			<textarea name="evaluator_comments" id="evaluator_comments"><?php
+			if (!empty($ReportContent['evaluator_comments']['value'])) echo $ReportContent['evaluator_comments']['value'];
+			?></textarea>
+			<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
+			<div>
+				<?php echo $ReportContent['evaluator_comments']['value'];?>
+			</div>
+			<?php }?>
+		</div>
+		
+		<br><br><br>
+		
+		<h1 class="paragraph-title">
+			SKILL’S LEVEL
+		</h1>
+		<div class="level-scale-container">
+			<h2 class="paragraph-subtitle">SKILLS:</h2>
+			<div>Learner's current level for each of the skills below:</div>
+			<br>
+			<div class="level-scale-container">
+				<?php foreach (array(
+						'listening_current_level'	=>'Listening:',
+						'speaking_current_level'	=>'Speaking:',
+						'reading_current_level'		=>'Reading:',
+						'writing_current_level'	=>'Writing:',
+				) as $key=>$text){?>
+				<div class="level-spacing">
+					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<?php if (!$isRO){?>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey">
+						<option></option>
+						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
+						<?php }?>
+					</select>
+					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<?php }?>
+				</div>
+				<?php }?>
+			</div>
+		</div>
+		
+		<br><br><br>
+		
+		<h1 class="paragraph-title">
+			SKILL’S LEVEL
+		</h1>
+		<div class="level-scale-container dark">
+			<br><br>
+			<div>Learner's overall current and recommended levels:</div>
+			<br><br>
+			<div class="level-scale-container dark">
+				<?php foreach (array(
+						'learner_self_level'		=>'Self-evaluation level:',
+						'learner_current_level'		=>'Current level:',
+						'learner_recommended_level'	=>'Recommended level:',
+				) as $key=>$text){?>
+				<div class="level-spacing">
+					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<?php if (!$isRO){?>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale">
+						<option></option>
+						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
+						<?php }?>
+					</select>
+					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<?php }?>
+				</div>
+				<?php }?>
+			</div>
+		</div>
 	</div>
 </div>
 <?php if (defined('ENV') && ENV==='devel'){?>
