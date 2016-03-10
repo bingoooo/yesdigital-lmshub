@@ -23,25 +23,67 @@ $LvlScale = array(
 		'C2'=>'C2',
 		'C3'=>'C3'
 );?>
-<link rel="stylesheet" type="text/css" href="<?php echo WEB_ROOT?>/css/fer/blended.css">
-<div id="report_container">
-	<div id="report_subcontainer">
-		<h1 class="paragraph-title">
+<div id="report_container" style="
+	background: white;
+	text-align: left;
+	padding: 20px 0;
+	font-family: arial;
+	font-size: 13px;
+">
+	<div id="report_subcontainer" style="
+		margin: auto;
+		width: 95%;
+	">
+		<h1 class="paragraph-title" style="
+			text-transform: uppercase;
+			margin: 15px 0;
+			font-weight: normal;
+			font-size: 16px;
+		">
 			<?php echo _('Profil')?>
 		</h1>
 		<div style="background:white;">
-			<div class="profile-inline-block">
-				<table>
+			<div class="profile-inline-block" style="
+				display: inline-block;
+				padding: 2.5%;
+				width: 40%;
+			">
+				<table style="
+					border-collapse: collapse;
+					width: 100%;
+				">
 					<tr>
-						<td class="profile-label"><?php echo _('Learner:')?></td>
-						<td class="profile-value">
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Learner:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						">
 							<?php echo !empty($User['firstname']) ? $User['firstname'] : '';?>
 							<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
 						</td>
 					</tr>
 					<tr>
-						<td class="profile-label"><?php echo _('Company:')?></td>
-						<td class="profile-value"><?php
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Company:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php
 						if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
 								if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])==='company name'){
@@ -52,35 +94,97 @@ $LvlScale = array(
 						}?></td>
 					</tr>
 					<tr>
-						<td class="profile-label"><?php echo _('Date:')?></td>
-						<td class="profile-value"><?php echo date('d.m.Y')?></td>
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Date:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php echo date('d.m.Y')?></td>
 					</tr>
 				</table>
 			</div>
-			<div class="profile-inline-block">
-				<table>
+			<div class="profile-inline-block" style="
+				display: inline-block;
+				padding: 2.5%;
+				width: 40%;
+			">
+				<table style="
+					border-collapse: collapse;
+					width: 100%;
+				">
 					<tr>
-						<td class="profile-label"><?php echo _('Title:')?></td>
-						<td class="profile-value" colspan="3"><?php
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Title:')?></td>
+						<td class="profile-value" colspan="3" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php
 							if (!empty($LP['learning_plan']['path_name']))
 								echo _('Final Report for').' '.$LP['learning_plan']['path_name'];
 						?></td>
 					</tr>
 					<tr>
-						<td class="profile-label"><?php echo _('Start date:')?></td>
-						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Start date:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
 						(
 							!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : '&nbsp;'
 						);?></td>
-						<td class="profile-label"><?php echo _('End date:')?></td>
-						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('End date:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
 						(
 							!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : '&nbsp;'
 						);?></td>
 					</tr>
 					<tr>
-						<td class="profile-label"><?php echo _('Total time:')?></td>
-						<td class="profile-value"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
+						<td class="profile-label" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							text-transform: uppercase;
+							font-size: 14px;
+						"><?php echo _('Total time:')?></td>
+						<td class="profile-value" style="
+							white-space: nowrap;
+							width: 15%;
+							padding: 10px 0;
+							font-weight: bold;
+						"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
 					</tr>
 				</table>
 			</div>
@@ -88,16 +192,49 @@ $LvlScale = array(
 		
 		<br><br>
 		
-		<h1 class="paragraph-title">
+		<h1 class="paragraph-title" style="
+			text-transform: uppercase;
+			margin: 15px 0;
+			font-weight: normal;
+			font-size: 16px;
+		">
 			<?php echo _('All courses in the learning plan')?>
 		</h1>
-		<div class="profile-block">
-			<h2 class="paragraph-subtitle"><?php echo _('E-learning results:')?></h2>
-			<table>
+		<div class="profile-block" style="
+			padding: 2.5%;
+			width: 95%;
+			margin: auto;
+		">
+			<h2 class="paragraph-subtitle" style="
+				font-size: 14px;
+				text-transform: uppercase;
+				font-weight: normal;
+			"><?php echo _('E-learning results:')?></h2>
+			<table style="
+				border-collapse: collapse;
+				width: 100%;
+			">
 				<tr>
-					<td style="width:70%;"></td>
-					<td class="profile-value left-bar"><?php echo _('Assessment')?></td>
-					<td class="profile-value left-bar"><?php echo _('Time')?></td>
+					<td style="
+						width:70%;
+						padding: 15px 0;
+					"></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						width: 15%;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+						font-weight: bold;
+					"><?php echo _('Assessment')?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						width: 15%;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+						font-weight: bold;
+					"><?php echo _('Time')?></td>
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -107,37 +244,113 @@ $LvlScale = array(
 							strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
 						$nbCourses++;
 						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
-				<tr class="top-bar">
-					<td><?php echo $LPC['course_info']['course_name'];?></td>
-					<td class="left-bar"><?php
+				<tr class="top-bar" style="
+					border-top: 1px solid rgb(118,118,118);
+				">
+					<td style="
+						white-space: nowrap;
+						padding: 15px 0;
+					"><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php
 					if (!empty($LPC['course_user_details']['score_given'])){
 						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
 						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
 					}?></td>
-					<td class="left-bar"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
 				</tr><?php
 					}
 				}?>
-				<tr class="bg-grey">
-					<td class="table-total-label"><?php echo _('Total e-learning average')?></td>
-					<td class="profile-value left-bar"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
-					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
+				<tr class="bg-grey" style="
+					background: rgb(233,233,233);
+				">
+					<td class="table-total-label" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						text-align: right;
+						text-transform: uppercase;
+						padding-right: 25px;
+					"><?php echo _('Total e-learning average')?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+						font-weight: bold;
+					"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+						font-weight: bold;
+					"><?php echo $totalTimeSpent;?></td>
 				</tr>
 				<tr>
-					<td class="table-total-label"><?php echo _('Attendance')?></td>
-					<td class="left-bar"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<td class="left-bar"></td>
+					<td class="table-total-label" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						text-align: right;
+						text-transform: uppercase;
+						padding-right: 25px;
+					"><?php echo _('Attendance')?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"></td>
 				</tr>
 			</table>
 			
 			<br><br><br><br>
 			
-			<h2 class="paragraph-subtitle"><?php echo _('Session results:')?></h2>
-			<table>
+			<h2 class="paragraph-subtitle" style="
+				font-size: 14px;
+				text-transform: uppercase;
+				font-weight: normal;
+			"><?php echo _('Session results:')?></h2>
+			<table style="
+				border-collapse: collapse;
+				width: 100%;
+			">
 				<tr>
-					<td style="width:70%;"></td>
-					<td class="profile-value left-bar"><?php echo _('Assessment')?></td>
-					<td class="profile-value left-bar"><?php echo _('Time')?></td>
+					<td style="
+						width:70%;
+						white-space: nowrap;
+						padding: 15px 0;
+					"></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						width: 15%;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						font-weight: bold;
+						padding-left: 25px;
+					"><?php echo _('Assessment')?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						width: 15%;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						font-weight: bold;
+						padding-left: 25px;
+					"><?php echo _('Time')?></td>
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -148,39 +361,114 @@ $LvlScale = array(
 								array('videoconference', 'classroom', 'webinar', 'telephone'))) continue;
 						$nbCourses++;
 						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
-				<tr class="top-bar">
-					<td><?php echo $LPC['course_info']['course_name'];?></td>
-					<td class="left-bar"><?php
+				<tr class="top-bar" style="
+					border-top: 1px solid rgb(118,118,118);
+				">
+					<td style="
+						white-space: nowrap;
+						padding: 15px 0;
+					"><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php
 					if (!empty($LPC['course_user_details']['score_given'])){
 						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
 						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
 					}?></td>
-					<td class="left-bar"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
 				</tr><?php
 					}
 				}?>
-				<tr class="bg-grey">
-					<td class="table-total-label"><?php echo _('Total skill sessions average')?></td>
-					<td class="profile-value left-bar"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
-					<td class="profile-value left-bar"><?php echo $totalTimeSpent;?></td>
+				<tr class="bg-grey" style="
+					background: rgb(233,233,233);
+				">
+					<td class="table-total-label" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						text-align: right;
+						text-transform: uppercase;
+						padding-right: 25px;
+					"><?php echo _('Total skill sessions average')?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						font-weight: bold;
+						padding-left: 25px;
+					"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+					<td class="profile-value left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						font-weight: bold;
+						padding-left: 25px;
+					"><?php echo $totalTimeSpent;?></td>
 				</tr>
 				<tr>
-					<td class="table-total-label"><?php echo _('Attendance')?></td>
-					<td class="left-bar"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<td class="left-bar"></td>
+					<td class="table-total-label" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						text-align: right;
+						text-transform: uppercase;
+						padding-right: 25px;
+					"><?php echo _('Attendance')?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar" style="
+						white-space: nowrap;
+						padding: 15px 0;
+						border-left: 1px solid rgb(118,118,118);
+						padding-left: 25px;
+					"></td>
 				</tr>
 			</table>
 		</div>
 		
-		<h1 class="paragraph-title">
+		<h1 class="paragraph-title" style="
+			text-transform: uppercase;
+			margin: 15px 0;
+			font-weight: normal;
+			font-size: 16px;
+		">
 			<?php echo _('Evaluator comments');?>
 		</h1>
-		<div class="profile-block">
-			<div class="bg-grey" style="padding:25px;">
-				<h2 class="paragraph-subtitle">SKILLS:</h2>
+		<div class="profile-block" style="
+			padding: 2.5%;
+			width: 95%;
+			margin: auto;
+		">
+			<div class="bg-grey" style="
+				padding: 25px;
+				background: rgb(233,233,233);
+			">
+				<h2 class="paragraph-subtitle" style="
+					font-size: 14px;
+					text-transform: uppercase;
+					font-weight: normal;
+				">SKILLS:</h2>
 				<?php if (!$isRO){?>
-				<textarea name="evaluator_comments" id="evaluator_comments"><?php
-				if (!empty($ReportContent['evaluator_comments']['value'])) echo $ReportContent['evaluator_comments']['value'];
+				<textarea name="evaluator_comments" id="evaluator_comments" style="
+					width: 100%;
+					min-width: 100%;
+					max-width: 100%;
+					height: 120px;
+					border: 1px solid rgb(225,225,225);
+					background: transparent;
+				"><?php
+				if (!empty($ReportContent['evaluator_comments']['value']))
+					echo nl2br($ReportContent['evaluator_comments']['value']);
 				?></textarea>
 				<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
 				<div>
@@ -192,13 +480,29 @@ $LvlScale = array(
 		
 		<br><br><br>
 		
-		<h1 class="paragraph-title">SKILL’S LEVEL</h1>
-		<div class="profile-block">
-			<h2 class="paragraph-subtitle">SKILLS:</h2>
+		<h1 class="paragraph-title" style="
+			text-transform: uppercase;
+			margin: 15px 0;
+			font-weight: normal;
+			font-size: 16px;
+		">SKILL’S LEVEL</h1>
+		<div class="profile-block" style="
+			padding: 2.5%;
+			width: 95%;
+			margin: auto;
+		">
+			<h2 class="paragraph-subtitle" style="
+				font-size: 14px;
+				text-transform: uppercase;
+				font-weight: normal;
+			">SKILLS:</h2>
 			<br>
 			<div>Learner's current level for each of the skills below:</div>
 			<br>
-			<div class="level-scale-container">
+			<div class="level-scale-container" style="
+				width: 95%;
+				margin: auto;
+			">
 				<?php foreach (array(
 						'listening_current_level'	=>'Listening:',
 						'speaking_current_level'	=>'Speaking:',
@@ -206,10 +510,24 @@ $LvlScale = array(
 						'spoken_production_current_level'	=>'Spoken production:',
 						'spoken_interaction_current_level'	=>'Spoken interaction:',
 				) as $key=>$text){?>
-				<div class="level-spacing">
-					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+				<div class="level-spacing" style="
+					margin: 15px;
+				">
+					<label for="<?php echo $key?>" class="level-label" style="
+						display: inline-block;
+						width: 29%;
+						font-size: 13px;
+						text-transform: uppercase;
+					"><?php echo $text?></label>
 					<?php if (!$isRO){?>
-					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey">
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey" style="
+						background: rgb(233,233,233);
+						display: inline-block;
+						width: 70%;
+						height: 30px;
+						border: none;
+						padding-left: 20px;
+					">
 						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
@@ -219,7 +537,9 @@ $LvlScale = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
-					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<span class="profile-value" style="
+						font-weight: bold;
+					"><?php echo $ReportContent[$key]['value'];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
@@ -228,18 +548,45 @@ $LvlScale = array(
 		
 		<br><br>
 		
-		<h1 class="paragraph-title">LEARNER’S LEVEL</h1>
-		<div class="profile-block bg-grey">
+		<h1 class="paragraph-title" style="
+			text-transform: uppercase;
+			margin: 15px 0;
+			font-weight: normal;
+			font-size: 16px;
+		">LEARNER’S LEVEL</h1>
+		<div class="profile-block bg-grey" style="
+			padding: 2.5%;
+			width: 95%;
+			margin: auto;
+			background: rgb(233,233,233);
+		">
 			<div>Learner's overall current and recommended levels:</div>
-			<div class="level-scale-container">
+			<div class="level-scale-container" style="
+				width: 95%;
+				margin: auto;
+			">
 				<?php foreach (array(
 						'learner_current_level'		=>'Current level:',
 						'learner_recommended_level'	=>'Recommended level:',
 				) as $key=>$text){?>
-				<div class="level-spacing">
-					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+				<div class="level-spacing" style="
+					margin: 15px;
+				">
+					<label for="<?php echo $key?>" class="level-label" style="
+						display: inline-block;
+						width: 29%;
+						font-size: 13px;
+						text-transform: uppercase;
+					"><?php echo $text?></label>
 					<?php if (!$isRO){?>
-					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale">
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale" style="
+						display: inline-block;
+						width: 70%;
+						height: 30px;
+						background: white;
+						border: none;
+						padding-left: 20px;
+					">
 						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
@@ -249,20 +596,35 @@ $LvlScale = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
-					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<span class="profile-value" style="
+						font-weight: bold;
+					"><?php echo $ReportContent[$key]['value'];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
-				<div class="level-spacing">
-					<span class="level-label">PROGRESS:</span>
-					<label for="progress_satisfactory" class="radio-label">
+				<div class="level-spacing" style="
+					margin: 15px;
+				">
+					<span class="level-label" style="
+						display: inline-block;
+						width: 29%;
+						font-size: 13px;
+						text-transform: uppercase;
+					">PROGRESS:</span>
+					<label for="progress_satisfactory" class="radio-label" style="
+						font-size: 13px;
+						cursor: pointer;
+					">
 						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
 						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===1) echo ' selected';?> />
 						&nbsp;
 						Satisfactory
 					</label>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<label for="progress_unsatisfactory" class="radio-label">
+					<label for="progress_unsatisfactory" class="radio-label" style="
+						font-size: 13px;
+						cursor: pointer;
+					">
 						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory"<?php
 						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===0) echo ' selected';?> />
 						&nbsp;

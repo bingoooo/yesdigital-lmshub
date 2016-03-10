@@ -297,7 +297,8 @@ $LvlScale = array(
 			<h2 class="paragraph-subtitle">SKILLS:</h2>
 			<?php if (!$isRO){?>
 			<textarea name="evaluator_comments" id="evaluator_comments"><?php
-			if (!empty($ReportContent['evaluator_comments']['value'])) echo $ReportContent['evaluator_comments']['value'];
+			if (!empty($ReportContent['evaluator_comments']['value']))
+				echo nl2br($ReportContent['evaluator_comments']['value']);
 			?></textarea>
 			<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
 			<div>

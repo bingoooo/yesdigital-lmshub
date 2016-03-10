@@ -91,7 +91,7 @@ class Create extends Fer{
 				}
 				else{
 					$data = $this->getBlock('fer/tpl/versions/'.$tplId.'/'.$tplVersion, array('User'=>$User, 'LP'=>$LP));
-					$this->jsonResponse['report'] = base64_encode($data);
+					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}
 			else{
@@ -101,7 +101,7 @@ class Create extends Fer{
 				}
 				else{
 					$data = $this->getBlock('fer/tpl/current/'.$tplId, array('User'=>$User, 'LP'=>$LP));
-					$this->jsonResponse['report'] = base64_encode($data);
+					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}
 		}
@@ -117,4 +117,15 @@ class Create extends Fer{
 		return true;
 	}
 	
+	/**
+	 * Remove tabs spaces. Then, base64_encoding
+	 * @param string $html
+	 * @return string
+	 */
+	function specialEncode($html){
+		$html = str_replace('
+	', '', $html);
+		$html = str_replace('	', '', $html);
+		return base64_encode($html);
+	}
 }
