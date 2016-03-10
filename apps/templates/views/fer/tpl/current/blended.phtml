@@ -1,4 +1,5 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
+$isRO	= (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');
 $User	= !empty($view->User)	? $view->User	: null;
 $LP		= !empty($view->LP)		? $view->LP		: null;
 $ReportContent = array();
@@ -279,9 +280,15 @@ $LvlScale = array(
 		<div class="profile-block">
 			<div class="bg-grey" style="padding:25px;">
 				<h2 class="paragraph-subtitle">SKILLS:</h2>
+				<?php if (!$isRO){?>
 				<textarea name="evaluator_comments" id="evaluator_comments"><?php
 				if (!empty($ReportContent['evaluator_comments']['value'])) echo $ReportContent['evaluator_comments']['value'];
 				?></textarea>
+				<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
+				<div>
+					<?php echo $ReportContent['evaluator_comments']['value'];?>
+				</div>
+				<?php }?>
 			</div>
 		</div>
 		
@@ -303,7 +310,9 @@ $LvlScale = array(
 				) as $key=>$text){?>
 				<div class="level-spacing">
 					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<?php if (!$isRO){?>
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey">
+						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
 							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
@@ -311,6 +320,9 @@ $LvlScale = array(
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
+					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<?php }?>
 				</div>
 				<?php }?>
 			</div>
@@ -328,7 +340,9 @@ $LvlScale = array(
 				) as $key=>$text){?>
 				<div class="level-spacing">
 					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<?php if (!$isRO){?>
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale">
+						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
 							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
@@ -336,18 +350,23 @@ $LvlScale = array(
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
+					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<span class="profile-value"><?php echo $ReportContent[$key]['value'];?></span>
+					<?php }?>
 				</div>
 				<?php }?>
 				<div class="level-spacing">
 					<span class="level-label">PROGRESS:</span>
 					<label for="progress_satisfactory" class="radio-label">
-						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory" />
+						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
+						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===1) echo ' selected';?> />
 						&nbsp;
 						Satisfactory
 					</label>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label for="progress_unsatisfactory" class="radio-label">
-						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory" />
+						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory"<?php
+						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===0) echo ' selected';?> />
 						&nbsp;
 						Unsatisfactory
 					</label>

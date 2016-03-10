@@ -1,7 +1,28 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
+$isRO	= (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');
 $User	= !empty($view->User)	? $view->User	: null;
 $LP		= !empty($view->LP)		? $view->LP		: null;
-if (empty($User['success']) || empty($LP['success'])) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
+$ReportContent = array();
+if (empty($User['success']) || empty($LP['success']))
+	echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
+elseif (isset($LP['learning_plan_final_evaluation']) && is_array($LP['learning_plan_final_evaluation'])){
+	foreach ($LP['learning_plan_final_evaluation'] as $reportField){
+		if (!empty($reportField['id'])){
+			$ReportContent[$reportField['id']] = $reportField;
+		}
+	}
+}
+$LvlScale = array(
+		'A1'=>'A1',
+		'A2'=>'A2',
+		'A3'=>'A3',
+		'B1'=>'B1',
+		'B2'=>'B2',
+		'B3'=>'B3',
+		'C1'=>'C1',
+		'C2'=>'C2',
+		'C3'=>'C3'
+);?>
 <style>
 	h1.paragraph-title{
 		text-transform: uppercase;
