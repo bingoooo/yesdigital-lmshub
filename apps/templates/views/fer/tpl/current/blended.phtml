@@ -1,7 +1,18 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
 $User	= !empty($view->User['success']) ? $view->User : null;
 $LP		= !empty($view->LP['success']) ? $view->LP : null;
-if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
+if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
+$LvlScale = array(
+		'A1'=>'A1',
+		'A2'=>'A2',
+		'A3'=>'A3',
+		'B1'=>'B1',
+		'B2'=>'B2',
+		'B3'=>'B3',
+		'C1'=>'C1',
+		'C2'=>'C2',
+		'C3'=>'C3'
+);?>
 <style>
 	#report_container{
 		background: white;
@@ -63,7 +74,7 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 	.profile-value{
 		font-weight: bold;
 	}
-	.bg-grey{
+	.bg-grey, .level-scale.bg-grey{
 		background: rgb(233,233,233);
 	}
 	.profile-block table td.table-total-label{
@@ -76,7 +87,33 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 		min-width: 99%;
 		max-width: 99%;
 		height: 120px;
-		border: 1px solid rgb(220,220,220);
+		border: 1px solid rgb(225,225,225);
+		background: transparent;
+	}
+	.level-scale-container{
+		width: 95%;
+		margin: auto;
+	}
+	.level-spacing{
+		margin: 15px;
+	}
+	.level-label{
+		display: inline-block;
+		width: 29%;
+		font-size: 13px;
+		text-transform: uppercase;
+	}
+	.level-scale{
+		display: inline-block;
+		width: 70%;
+		height: 30px;
+		background: white;
+		border: none;
+		padding-left: 20px;
+	}
+	.radio-label{
+		font-size: 13px;
+		cursor: pointer;
 	}
 </style>
 <div id="report_container">
@@ -231,18 +268,74 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 			<?php echo _('Evaluator comments');?>
 		</h1>
 		<div class="profile-block">
-			<div style="background:white;">
-				<h3>SKILLS:</h3>
+			<div class="bg-grey" style="padding:25px;">
+				<h2 class="paragraph-subtitle">SKILLS:</h2>
 				<textarea name="evaluator_comments" id="evaluator_comments"></textarea>
 			</div>
-			
 		</div>
 		
-		<h1 class="paragraph-title">
-			SKILL’S LEVEL
-		</h1>
+		<br><br><br>
+		
+		<h1 class="paragraph-title">SKILL’S LEVEL</h1>
 		<div class="profile-block">
-			Etc.
+			<h2 class="paragraph-subtitle">SKILLS:</h2>
+			<br>
+			<div>Learner's current level for each of the skills below:</div>
+			<br>
+			<div class="level-scale-container">
+				<?php foreach (array(
+						'listening_current_level'	=>'Listening:',
+						'speaking_current_level'	=>'Speaking:',
+						'reading_current_level'		=>'Reading:',
+						'spoken_production_current_level'	=>'Spoken production:',
+						'spoken_interaction_current_level'	=>'Spoken interaction:',
+				) as $key=>$text){?>
+				<div class="level-spacing">
+					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey">
+						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"><?php echo $lT?></option>
+						<?php }?>
+					</select>
+				</div>
+				<?php }?>
+			</div>
+		</div>
+		
+		<br><br>
+		
+		<h1 class="paragraph-title">LEARNER’S LEVEL</h1>
+		<div class="profile-block bg-grey">
+			<div>Learner's overall current and recommended levels:</div>
+			<div class="level-scale-container">
+				<?php foreach (array(
+						'learner_current_level'		=>'Current level:',
+						'learner_recommended_level'	=>'Recommended level:',
+				) as $key=>$text){?>
+				<div class="level-spacing">
+					<label for="<?php echo $key?>" class="level-label"><?php echo $text?></label>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale">
+						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"><?php echo $lT?></option>
+						<?php }?>
+					</select>
+				</div>
+				<?php }?>
+				<div class="level-spacing">
+					<span class="level-label">PROGRESS:</span>
+					<label for="progress_satisfactory" class="radio-label">
+						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory" />
+						&nbsp;
+						Satisfactory
+					</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="progress_unsatisfactory" class="radio-label">
+						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory" />
+						&nbsp;
+						Unsatisfactory
+					</label>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
