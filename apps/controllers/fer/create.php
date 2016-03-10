@@ -68,17 +68,17 @@ class Create extends Fer{
 		}
 		//Get user info
 		$User = $this->retrieveUserData();
-		if (empty($User['success'])){
+		/*if (empty($User['success'])){
 			$this->_view->json = $User;
 			return false;
-		}
+		}*/
 		//Get learning plan
 		$LP	= $this->retrieveLpDataForUser();
-		if (empty($LP['hashcode'])){
+		/*if (empty($LP['hashcode'])){
 			$this->_view->json = $LP;
 			$this->_view->json['message_2'] = 'Unabled to retrieve LP Data for given id_user and id_learningplan';
 			return false;
-		}
+		}*/
 		//On creation, we get the current template version
 		$tplId		= strtolower(trim($this->expectedParameters['template_id']));
 		$tplVersion = $this->expectedParameters['template_version'];
