@@ -1,7 +1,7 @@
 <?php $view->getMetaView()->_tpl_version = '1.0';
-$User	= !empty($view->User['success']) ? $view->User : null;
-$LP		= !empty($view->LP['success']) ? $view->LP : null;
-if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
+$User	= !empty($view->User)	? $view->User	: null;
+$LP		= !empty($view->LP)		? $view->LP		: null;
+if (empty($User['success']) || empty($LP['success'])) echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));?>
 <style>
 	h1.paragraph-title{
 		text-transform: uppercase;
@@ -175,4 +175,6 @@ if (!$User || !$LP) echo $view->getBlock('blocks/fer/throwError', array('User'=>
 		</form>
 	</div>
 </div>
+<?php if (defined('ENV') && ENV==='devel'){?>
 <pre style="text-align:left"><?php print_r(array('User'=>$User, 'LP'=>$LP))?></pre>
+<?php }?>
