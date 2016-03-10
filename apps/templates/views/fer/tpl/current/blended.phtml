@@ -468,11 +468,11 @@ $LvlScale = array(
 					background: transparent;
 				"><?php
 				if (!empty($ReportContent['evaluator_comments']['value']))
-					echo nl2br($ReportContent['evaluator_comments']['value']);
+					echo $ReportContent['evaluator_comments']['value'];
 				?></textarea>
 				<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
 				<div>
-					<?php echo $ReportContent['evaluator_comments']['value'];?>
+					<?php echo nl2br($ReportContent['evaluator_comments']['value']);?>
 				</div>
 				<?php }?>
 			</div>
