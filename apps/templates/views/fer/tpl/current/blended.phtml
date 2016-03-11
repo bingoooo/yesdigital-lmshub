@@ -249,6 +249,7 @@ $style = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					&nbsp;
 					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php echo $ReportContent[$key]['value'];?></span>
 					<?php }?>
 				</div>
@@ -279,12 +280,14 @@ $style = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					&nbsp;
 					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php echo $ReportContent[$key]['value'];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
 				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<span class="level-label" style="<?php echo $style['.level-label']?>">PROGRESS:</span>
+					&nbsp;
 					<label for="progress_satisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
 						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
 						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===1) echo ' selected';?> />
