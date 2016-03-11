@@ -26,18 +26,17 @@ $LvlScale = array(
 $style = array(
 	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
 	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
-	'.page'					=>'size:A4;',
 	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
-	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; font-weight: normal; font-family: Arial;',
+	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; margin: 10px 0; font-weight: normal; font-family: Arial;',
 	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
 	'table'					=>'border-collapse: collapse; width: 100%; font-family: Arial;',
-	'td'					=>'white-space: nowrap; padding: 10px 0; font-family: Arial;',
+	'td'					=>'white-space: nowrap; padding: 10px 0; font-size: 13px; font-family: Arial;',
 	'.profile-block td'		=>'padding: 15px 0; white-space: normal;',
 	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
 	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
 	'.profile-label'		=>'text-transform: uppercase; font-size: 14px;',
-	'.profile-value'		=>'font-weight: bold; font-family: Arial;',
+	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
 	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
 	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px; font-family: Arial;',
 	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px; font-family: Arial;',
@@ -50,7 +49,6 @@ $style = array(
 ?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
-	<div style="<?php echo $style['.page']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			<?php echo _('Profil')?>
 		</h1>
@@ -101,7 +99,7 @@ $style = array(
 			</table>
 		</div>
 		
-		<br><br>
+		<br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			<?php echo _('All courses in the learning plan')?>
@@ -149,18 +147,16 @@ $style = array(
 					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
 				</tr>
 			</table>
-		</div>
-	</div>		<!-- <br><br><br><br> -->
-		
-	<div style="<?php echo $style['.page']?>">
-		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
+			
+			<br><br><br><br><br><br>
+			
 			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>"><?php echo _('Session results:')?></h2>
 			<table style="<?php echo $style['table']?>">
 				<tr>
 					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
-					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['profile-value'].
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Assessment')?></td>
-					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['profile-value'].
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Time')?></td>
 				</tr>
 				<?php
@@ -201,8 +197,7 @@ $style = array(
 				</tr>
 			</table>
 		</div>
-	</div>
-	<div style="<?php echo $style['.page']?>">
+		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			<?php echo _('Evaluator comments');?>
 		</h1>
@@ -220,7 +215,7 @@ $style = array(
 			<?php }?>
 		</div>
 		
-		<br><br><br>
+		<br><br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">SKILL’S LEVEL</h1>
 		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
@@ -256,10 +251,9 @@ $style = array(
 				<?php }?>
 			</div>
 		</div>
-	</div>
-	
-	<br><br>
-	<div style="<?php echo $style['.page']?>">
+		
+		<br><br>
+		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">LEARNER’S LEVEL</h1>
 		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
 			<div>Learner's overall current and recommended levels:</div>
@@ -303,6 +297,5 @@ $style = array(
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 </div>
