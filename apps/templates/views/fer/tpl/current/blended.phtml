@@ -24,27 +24,27 @@ $LvlScale = array(
 		'C3'=>'C3'
 );
 $style = array(
-	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: arial; font-size: 13px;',
-	'#report_subcontainer'	=>'margin: auto; width: 95%;',
-	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px;',
-	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; font-weight: normal;',
-	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto;',
-	'table'					=>'border-collapse: collapse; width: 100%;',
-	'td'					=>'white-space: nowrap; padding: 10px 0;',
+	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
+	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
+	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
+	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; font-weight: normal; font-family: Arial;',
+	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
+	'table'					=>'border-collapse: collapse; width: 100%; font-family: Arial;',
+	'td'					=>'white-space: nowrap; padding: 10px 0; font-family: Arial;',
 	'.profile-block td'		=>'padding: 15px 0; white-space: normal;',
 	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
-	'.profile-block .left-bar'=>'padding-left: 20px;',
+	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
 	'.profile-label'		=>'text-transform: uppercase; font-size: 14px;',
-	'.profile-value'		=>'font-weight: bold;',
-	'.bg-grey'				=>'background: rgb(233,233,233);',
-	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px;',
-	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px;',
-	'.level-scale-container'=>'width: 95%; margin: auto;',
+	'.profile-value'		=>'font-weight: bold; font-family: Arial;',
+	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
+	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px; font-family: Arial;',
+	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px; font-family: Arial;',
+	'.level-scale-container'=>'width: 95%; margin: auto; font-family: Arial;',
 	'.level-spacing'		=>'margin: 15px;',
-	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase;',
-	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px;',
-	'.radio-label'			=>'font-size: 13px; cursor: pointer;',
+	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; font-family: Arial;',
+	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
+	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
 );
 ?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
@@ -60,11 +60,13 @@ $style = array(
 						<?php echo !empty($User['firstname']) ? $User['firstname'].'&nbsp;' : '';?>
 						<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
 					</td>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Title:')?></td>
-					<td class="profile-value" colspan="3" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+					<td colspan="4">
+						<span class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Title:</span>
+						&nbsp;&nbsp;&nbsp;
+						<span class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
 						if (!empty($LP['learning_plan']['path_name']))
-							echo _('Final Report for').' '.$LP['learning_plan']['path_name'];
-					?></td>
+							echo _('Final Report for').' '.$LP['learning_plan']['path_name'];?></span>
+					</td>
 				</tr>
 				<tr>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Company:')?></td>
