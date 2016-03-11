@@ -30,12 +30,12 @@ $style = array(
 	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; margin: 10px 0; font-weight: normal; font-family: Arial;',
 	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
 	'table'					=>'border-collapse: collapse; width: 100%; font-family: Arial;',
-	'td'					=>'white-space: nowrap; padding: 10px 0; font-size: 13px; font-family: Arial;',
-	'.profile-block td'		=>'padding: 15px 0; white-space: normal;',
+	'td'					=>'padding: 10px 5px; font-size: 13px; font-family: Arial;',
+	'.profile-block td'		=>'padding: 15px 0;',
 	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
 	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
-	'.profile-label'		=>'text-transform: uppercase; font-size: 14px;',
+	'.profile-label'		=>'text-transform: uppercase; font-size: 13px;',
 	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
 	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
 	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px; font-family: Arial;',
@@ -212,7 +212,7 @@ $style = array(
 				echo $ReportContent['evaluator_comments']['value'];
 			?></textarea>
 			<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
-			<div>
+			<div style="font-size:12px;">
 				<?php echo nl2br($ReportContent['evaluator_comments']['value']);?>
 			</div>
 			<?php }?>
