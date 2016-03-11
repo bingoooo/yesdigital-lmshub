@@ -2,6 +2,11 @@
 $isRO	= (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');
 $User	= !empty($view->User)	? $view->User	: null;
 $LP		= !empty($view->LP)		? $view->LP		: null;
+if (!$view->isMeta()){
+?><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style><?php echo str_replace(array("\r", "\n", "	"), '', file_get_contents(PUB_ROOT.'/css/fer/blended.css'))?></style></head><body><?php
+}
+else
+	$view->addCSS(WEB_ROOT.'/css/fer/blended.css');
 $ReportContent = array();
 if (empty($User['success']) || empty($LP['success']))
 	echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
@@ -22,23 +27,24 @@ $LvlScale = array(
 		'C1'=>'C1',
 		'C2'=>'C2',
 		'C3'=>'C3'
-);?>
+);
+?>
 <div id="report_container" style="
-	background: white;
+	/*background: white;
 	text-align: left;
 	padding: 20px 0;
 	font-family: arial;
-	font-size: 13px;
+	font-size: 13px;*/
 ">
 	<div id="report_subcontainer" style="
-		margin: auto;
-		width: 95%;
+		/*margin: auto;
+		width: 95%;*/
 	">
 		<h1 class="paragraph-title" style="
-			text-transform: uppercase;
+			/*text-transform: uppercase;
 			margin: 15px 0;
 			font-weight: normal;
-			font-size: 16px;
+			font-size: 16px;*/
 		">
 			<?php echo _('Profil')?>
 		</h1>
@@ -635,3 +641,6 @@ $LvlScale = array(
 		</div>
 	</div>
 </div>
+<?php if (!$view->isMeta()){?>
+</body></html>
+<?php }?>

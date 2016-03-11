@@ -7,6 +7,6 @@ use FragTale\Controller;
  */
 class Blended extends Controller{
 	function initialize(){
-		$this->setLayout('clean');
+		
 	}
 }

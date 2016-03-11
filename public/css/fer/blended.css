@@ -1,9 +1,8 @@
-@CHARSET "UTF-8";
-#report_container{
+html,body,#report_container{
 	background: white;
 	text-align: left;
 	padding: 20px 0;
-	font-family: arial;
+	font-family: Arial;
 	font-size: 13px;
 }
 #report_subcontainer{

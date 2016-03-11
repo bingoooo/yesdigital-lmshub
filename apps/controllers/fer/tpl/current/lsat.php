@@ -7,6 +7,6 @@ use FragTale\Controller;
  */
 class Lsat extends Controller{
 	function initialize(){
-		$this->setLayout('clean');
+		
 	}
 }
