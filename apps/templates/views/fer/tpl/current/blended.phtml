@@ -26,6 +26,7 @@ $LvlScale = array(
 $style = array(
 	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
 	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
+	'.page'					=>'size:A4;',
 	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
 	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; font-weight: normal; font-family: Arial;',
 	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
@@ -49,6 +50,7 @@ $style = array(
 ?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
+	<div style="<?php echo $style['.page']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			<?php echo _('Profil')?>
 		</h1>
@@ -147,9 +149,11 @@ $style = array(
 					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
 				</tr>
 			</table>
-			
-			<br><br><br><br>
-			
+		</div>
+	</div>		<!-- <br><br><br><br> -->
+		
+	<div style="<?php echo $style['.page']?>">
+		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
 			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>"><?php echo _('Session results:')?></h2>
 			<table style="<?php echo $style['table']?>">
 				<tr>
@@ -197,7 +201,8 @@ $style = array(
 				</tr>
 			</table>
 		</div>
-		
+	</div>
+	<div style="<?php echo $style['.page']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			<?php echo _('Evaluator comments');?>
 		</h1>
@@ -251,9 +256,10 @@ $style = array(
 				<?php }?>
 			</div>
 		</div>
-		
-		<br><br>
-		
+	</div>
+	
+	<br><br>
+	<div style="<?php echo $style['.page']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">LEARNER’S LEVEL</h1>
 		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
 			<div>Learner's overall current and recommended levels:</div>
@@ -297,5 +303,6 @@ $style = array(
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </div>
