@@ -242,7 +242,7 @@ $style = array(
 						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
-							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
 								echo ' selected';
 						?>><?php echo $lT?></option>
 						<?php }?>
@@ -274,7 +274,7 @@ $style = array(
 						<option></option>
 						<?php foreach ($LvlScale as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
-							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']===$lK)
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
 								echo ' selected';
 						?>><?php echo $lT?></option>
 						<?php }?>
