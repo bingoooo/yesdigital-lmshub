@@ -66,19 +66,7 @@ class Create extends Fer{
 			header('HTTP/1.0 204 Invalid report_mode');
 			die('Invalid report_mode');
 		}
-		//Get user info
-		$User = $this->retrieveUserData();
-		/*if (empty($User['success'])){
-			$this->_view->json = $User;
-			return false;
-		}*/
-		//Get learning plan
-		$LP	= $this->retrieveLpDataForUser();
-		/*if (empty($LP['hashcode'])){
-			$this->_view->json = $LP;
-			$this->_view->json['message_2'] = 'Unabled to retrieve LP Data for given id_user and id_learningplan';
-			return false;
-		}*/
+		
 		//On creation, we get the current template version
 		$tplId		= strtolower(trim($this->expectedParameters['template_id']));
 		$tplVersion = $this->expectedParameters['template_version'];
@@ -90,7 +78,7 @@ class Create extends Fer{
 					die('Invalid combination template id / template version');
 				}
 				else{
-					$data = $this->getBlock('fer/tpl/versions/'.$tplId.'/'.$tplVersion, array('User'=>$User, 'LP'=>$LP));
+					$data = $this->getBlock('fer/tpl/versions/'.$tplId.'/'.$tplVersion, array('RpData'=>$this->retrieveLpDataForUser()));//Get learning plan
 					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}
@@ -100,7 +88,7 @@ class Create extends Fer{
 					die('Invalid combination template id / template version');
 				}
 				else{
-					$data = $this->getBlock('fer/tpl/current/'.$tplId, array('User'=>$User, 'LP'=>$LP));
+					$data = $this->getBlock('fer/tpl/current/'.$tplId, array('RpData'=>$this->retrieveLpDataForUser()));//Get learning plan
 					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}

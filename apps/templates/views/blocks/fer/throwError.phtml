@@ -1,19 +1,10 @@
-<?php
-$User	= isset($view->User) ? $view->User : null;
-$LP		= isset($view->LP) ? $view->LP : null;?>
+<?php $Data = isset($view->Data) ? $view->Data : null;?>
 <div style="color:red;background:white;padding:20px;font-size:14px;text-align:center;font-weight:bold;">
-	<?php if (empty($User['success']) && !empty($User['message'])){?>
-	Error while retrieving User's profile data with following message:
-	<div style="font-style:italic"><?php
-		if (!empty($User['error'])) echo 'Error Code '.$User['error'].': ';
-		echo $User['message'];
-	?></div>
-	<?php }?>
-	<?php if (empty($LP['success']) && !empty($LP['message'])){?>
+	<?php if (empty($Data['success']) && !empty($Data['message'])){?>
 	Error while retrieving Learning Plan data with following message:
 	<div style="font-style:italic"><?php
-		if (!empty($LP['error'])) echo 'Error Code '.$LP['error'].': ';
-		echo $LP['message'];
+		if (!empty($Data['error'])) echo 'Error Code '.$Data['error'].': ';
+		echo $Data['message'];
 	?></div>
 	<?php }?>
 </div>

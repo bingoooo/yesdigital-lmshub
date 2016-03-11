@@ -1,31 +1,32 @@
-<?php $view->getMetaView()->_tpl_version = '1.0';
-$isRO	= (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');
-$User	= !empty($view->User)	? $view->User	: null;
-$LP		= !empty($view->LP)		? $view->LP		: null;
-$ReportContent = array();
-if (empty($User['success']) || empty($LP['success']))
-	echo $view->getBlock('blocks/fer/throwError', array('User'=>$User, 'LP'=>$LP));
+<?php
+$view->getMetaView()->_tpl_version = '1.0';//Defining this template version
+
+$isRO = (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');//Is it on read only mode?
+
+$LvlScale = $ReportContent = array();//Declare some useful array
+
+$LP = !empty($view->RpData)	? $view->RpData	: null;//Set full data
+
+if (empty($LP['success']))
+	echo $view->getBlock('blocks/fer/throwError', array('Data'=>$LP));//Display error block
 elseif (isset($LP['learning_plan_final_evaluation']) && is_array($LP['learning_plan_final_evaluation'])){
 	foreach ($LP['learning_plan_final_evaluation'] as $reportField){
-		if (!empty($reportField['id'])){
-			$ReportContent[$reportField['id']] = $reportField;
-		}
+		if (!empty($reportField['id']))
+			$ReportContent[$reportField['id']] = $reportField;//Fill in the array that contains the custom fields for the report
 	}
 }
-$LvlScale = array(
-		'A1'=>'A1',
-		'A2'=>'A2',
-		'A3'=>'A3',
-		'B1'=>'B1',
-		'B2'=>'B2',
-		'B3'=>'B3',
-		'C1'=>'C1',
-		'C2'=>'C2',
-		'C3'=>'C3'
-);
+$User = !empty($LP['user_profile']) ? $LP['user_profile'] : null;
+if (!empty($LP['level_scale'])){
+	foreach ($LP['level_scale'] as $i=>$lvl)
+		$LvlScale[$lvl['id']] = $lvl['name'];
+}
+/**
+ * Unfortunately, we need to set all the CSS inline. Using a PHP hack
+ */
 $style = array(
 	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
 	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
+	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px; font-family: Arial;',
 	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
 	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; margin: 10px 0; font-weight: normal; font-family: Arial;',
 	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
@@ -39,23 +40,21 @@ $style = array(
 	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
 	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
 	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px; font-family: Arial;',
-	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px; font-family: Arial;',
 	'.level-scale-container'=>'width: 95%; margin: auto; font-family: Arial;',
 	'.level-spacing'		=>'margin: 15px;',
 	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; font-family: Arial;',
 	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
 	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
-);
-?>
+);?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			<?php echo _('Profil')?>
+			Profil
 		</h1>
 		<div style="<?php echo $style['.profile-block']?>">
 			<table style="<?php echo $style['table']?>">
 				<tr>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Learner:')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Learner:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>">
 						<?php echo !empty($User['firstname']) ? $User['firstname'].'&nbsp;' : '';?>
 						<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
@@ -69,7 +68,7 @@ $style = array(
 					</td>
 				</tr>
 				<tr>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Company:')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Company:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
 					if (!empty($User['fields']) && is_array($User['fields'])){
 						foreach ($User['fields'] as $i=>$field){
@@ -79,7 +78,7 @@ $style = array(
 							}
 						}
 					}?></td>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Start date:')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Start date:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
 					(
 						!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : '&nbsp;'
@@ -91,9 +90,9 @@ $style = array(
 					);?></td>
 				</tr>
 				<tr>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Date:')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Date:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo date('d.m.Y')?></td>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('Total time:')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Total time:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
 				</tr>
 			</table>
@@ -102,17 +101,17 @@ $style = array(
 		<br><br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			<?php echo _('All courses in the learning plan')?>
+			All courses in the learning plan
 		</h1>
 		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
-			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>"><?php echo _('E-learning results:')?></h2>
+			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">E-learning results:</h2>
 			<table style="<?php echo $style['table']?>">
 				<tr>
 					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Assessment')?></td>
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Time')?></td>
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -151,14 +150,14 @@ $style = array(
 			<br><br><br><br>
 			<pagebreak />
 			
-			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>"><?php echo _('Session results:')?></h2>
+			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">Session results:</h2>
 			<table style="<?php echo $style['table']?>">
 				<tr>
 					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Assessment')?></td>
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;"><?php echo _('Time')?></td>
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -202,7 +201,7 @@ $style = array(
 		<br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			<?php echo _('Evaluator comments');?>
+			Evaluator comments
 		</h1>
 		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
 			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">SKILLS:</h2>
@@ -229,11 +228,11 @@ $style = array(
 			<br>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
-						'listening_current_level'	=>'Listening:',
-						'speaking_current_level'	=>'Speaking:',
-						'reading_current_level'		=>'Reading:',
-						'spoken_production_current_level'	=>'Spoken production:',
-						'spoken_interaction_current_level'	=>'Spoken interaction:',
+					'listening_current_level'	=>'Listening:',
+					'speaking_current_level'	=>'Speaking:',
+					'reading_current_level'		=>'Reading:',
+					'spoken_production_current_level'	=>'Spoken production:',
+					'spoken_interaction_current_level'	=>'Spoken interaction:',
 				) as $key=>$text){?>
 				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<label for="<?php echo $key?>" class="level-label" style="<?php echo $style['.level-label']?>"><?php echo $text?></label>
@@ -248,9 +247,10 @@ $style = array(
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
-					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
 					&nbsp;
-					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php echo $ReportContent[$key]['value'];?></span>
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
+						echo $LvlScale[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
@@ -264,8 +264,8 @@ $style = array(
 			<div>Learner's overall current and recommended levels:</div>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
-						'learner_current_level'		=>'Current level:',
-						'learner_recommended_level'	=>'Recommended level:',
+					'learner_current_level'		=>'Current level:',
+					'learner_recommended_level'	=>'Recommended level:',
 				) as $key=>$text){?>
 				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<label for="<?php echo $key?>" class="level-label" style="<?php echo $style['.level-label']?>"><?php echo $text?></label>
@@ -279,9 +279,10 @@ $style = array(
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
-					<?php }elseif (!empty($ReportContent[$key]['value'])){?>
+					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
 					&nbsp;
-					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php echo $ReportContent[$key]['value'];?></span>
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
+						echo $LvlScale[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
 				<?php }?>

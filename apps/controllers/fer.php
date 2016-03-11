@@ -43,10 +43,11 @@ class Fer extends Controller{
 	}
 	
 	function main(){
-		$this->_view->json = array(
+		/*$this->_view->json = array(
 			'User'		=>$this->retrieveUserData(),
 			'LP_Data'	=>$this->retrieveLpDataForUser()
-		);
+		);*/
+		$this->_view->json = $this->retrieveLpDataForUser();
 	}
 	
 	function logAjaxRequest($addedmsg=''){
