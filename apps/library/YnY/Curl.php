@@ -14,6 +14,22 @@ class Curl{
 			'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
 			'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
 		),
+		'provalliance'=>array(
+				'url'		=> 'https://www.provalliancelearning.com/api/',
+				'api_key'	=> 'F8!uTj!YlIN!*XXYvr_%tNrH',
+				'api_secret'=> 'OLeR0azrO8si%CJYvzlw_itZElz57R_NVczm'
+		),
+		'yny'		=> array(
+				'url'		=> 'https://www.yesnyoulearning.com/api/',
+				'api_key'	=> '3KCJNd4iJVi*h#-G6K_r%EB-',
+				'api_secret'=> 'bE%foALNF0Xwqa*9SwQteSwsyHkZTU_*07#i'
+		),
+		//Sandbox Provo ?
+		'fsirocco'	=> array(
+				'url'		=> 'http://fsirocco-etime-git.docebo.info/api/',
+				'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
+				'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
+		)
 	);
 	
 	/**
