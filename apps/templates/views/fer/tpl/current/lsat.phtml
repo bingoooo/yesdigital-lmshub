@@ -39,7 +39,7 @@ $style = array(
 	'.level-spacing'		=>'margin: 15px;',
 	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; color: rgb(254,103,94); font-family: Arial;',
 	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
-	'.skills-aptitude-block'=>'background:rgb(253,182,105);width: 85%;min-height: 50px;padding: 20px;white-space: normal;',
+	'.skills-aptitude-block'=>'background:rgb(253,182,105);min-height: 50px;padding: 20px;white-space: normal;',
 	'.skills-aptitude-number'=>'background:rgb(87,87,87);display:inline-block;width:55px;line-height:55px;font-size:26px;font-weight:bold;'.
 		'text-align:center;border-radius:40px;float:left;color:white;margin-right: 25px;',
 	'.skills-aptitude-title'=>'font-weight: bold;font-size: 14px;margin: 0;text-transform: uppercase;',
@@ -112,7 +112,7 @@ $style = array(
 		</h1>
 		<table style="<?php echo $style['table']?>">
 			<tr>
-				<td style="width:50%;">
+				<td style="width:50%;padding:5px;">
 					<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 						<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
 							1
@@ -121,7 +121,7 @@ $style = array(
 						<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">Elearning DOCEBO “Survey”</div>
 					</div>
 				</td>
-				<td style="width:50%;">
+				<td style="width:50%;;padding:5px;">
 					<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 						<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
 							2
@@ -132,7 +132,7 @@ $style = array(
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td style="width:50%;padding:5px;">
 					<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 						<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
 							3
@@ -141,7 +141,7 @@ $style = array(
 						<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">Elearning SCORM Content</div>
 					</div>
 				</td>
-				<td>
+				<td style="width:50%;padding:5px;">
 					<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 						<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
 							4
@@ -201,6 +201,7 @@ $style = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
+					&nbsp;
 					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
 						echo $LvlScale[$ReportContent[$key]['value']];?></span>
 					<?php }?>
@@ -212,7 +213,7 @@ $style = array(
 		<br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			SKILL’S LEVEL
+			Learner’s level
 		</h1>
 		<div class="level-scale-container dark" style="<?php echo $style['.level-scale-container'].$style['.dark']?>">
 			<br><br>
@@ -237,6 +238,7 @@ $style = array(
 						<?php }?>
 					</select>
 					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
+					&nbsp;
 					<span class="profile-value"><?php echo $LvlScale[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
