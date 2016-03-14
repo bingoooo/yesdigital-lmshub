@@ -49,12 +49,12 @@ $style = array(
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			Profil
+			[_PROFILE]
 		</h1>
 		<div style="<?php echo $style['.profile-block']?>">
 			<table style="<?php echo $style['table']?>">
 				<tr>
-					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Learner:</td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">[_LEARNER]:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>">
 						<?php echo !empty($User['firstname']) ? $User['firstname'].'&nbsp;' : '';?>
 						<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
