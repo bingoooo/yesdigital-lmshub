@@ -15,21 +15,28 @@ class Curl{
 			'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
 		),
 		'provalliance'=>array(
-				'url'		=> 'https://www.provalliancelearning.com/api/',
-				'api_key'	=> 'F8!uTj!YlIN!*XXYvr_%tNrH',
-				'api_secret'=> 'OLeR0azrO8si%CJYvzlw_itZElz57R_NVczm'
+			'url'		=> 'https://www.provalliancelearning.com/api/',
+			'api_key'	=> 'F8!uTj!YlIN!*XXYvr_%tNrH',
+			'api_secret'=> 'OLeR0azrO8si%CJYvzlw_itZElz57R_NVczm'
 		),
 		'yny'		=> array(
-				'url'		=> 'https://www.yesnyoulearning.com/api/',
-				'api_key'	=> '3KCJNd4iJVi*h#-G6K_r%EB-',
-				'api_secret'=> 'bE%foALNF0Xwqa*9SwQteSwsyHkZTU_*07#i'
+			'url'		=> 'https://www.yesnyoulearning.com/api/',
+			'api_key'	=> '3KCJNd4iJVi*h#-G6K_r%EB-',
+			'api_secret'=> 'bE%foALNF0Xwqa*9SwQteSwsyHkZTU_*07#i'
 		),
 		//Sandbox Provo ?
 		'fsirocco'	=> array(
-				'url'		=> 'http://fsirocco-etime-git.docebo.info/api/',
-				'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
-				'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
+			'url'		=> 'http://fsirocco-etime-git.docebo.info/api/',
+			'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
+			'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
 		)
+	);
+	
+	protected static $allowedMethod = array(
+			'yny_learningplan/getEvaluationData',
+			'iltsessions/listAction',	//Those 2
+			'yny_session_api/list',		//	are similar but do not pass the exact same parameters
+			'yny_session_api/listUsers'	//List all users in a given session an course
 	);
 	
 	/**
@@ -40,6 +47,13 @@ class Curl{
 	 * @return array
 	 */
 	public static function call($method, $postParams=array(), $instance=''){
+		//Check the allowed method
+		if (!in_array(trim($method, '/'), self::$allowedMethod)){
+			return array(
+				'success'	=> 0,
+				'message'	=> $method.': unknown or restricted method'
+			);
+		}
 		//Find key, url and secret
 		if (!empty($instance['url']) && !empty($instance['api_key']) && !empty($instance['api_secret']))
 			$curlParams = $instance;
