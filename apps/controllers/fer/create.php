@@ -68,6 +68,7 @@ class Create extends Fer{
 		}
 		
 		//On creation, we get the current template version
+		$RpData = array();
 		$tplId		= strtolower(trim($this->expectedParameters['template_id']));
 		$tplVersion = $this->expectedParameters['template_version'];
 		try{
@@ -78,7 +79,8 @@ class Create extends Fer{
 					die('Invalid combination template id / template version');
 				}
 				else{
-					$data = $this->getBlock('fer/tpl/versions/'.$tplId.'/'.$tplVersion, array('RpData'=>$this->retrieveLpDataForUser()));//Get learning plan
+					$RpData = $this->retrieveLpDataForUser();
+					$data = $this->getBlock('fer/tpl/versions/'.$tplId.'/'.$tplVersion, array('RpData'=>$RpData));//Get learning plan
 					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}
@@ -88,7 +90,8 @@ class Create extends Fer{
 					die('Invalid combination template id / template version');
 				}
 				else{
-					$data = $this->getBlock('fer/tpl/current/'.$tplId, array('RpData'=>$this->retrieveLpDataForUser()));//Get learning plan
+					$RpData = $this->retrieveLpDataForUser();
+					$data = $this->getBlock('fer/tpl/current/'.$tplId, array('RpData'=>$RpData));//Get learning plan
 					$this->jsonResponse['report'] = $this->specialEncode($data);
 				}
 			}
@@ -99,7 +102,7 @@ class Create extends Fer{
 		}
 		$this->jsonResponse['template_id']		= $tplId;
 		$this->jsonResponse['template_version'] = $this->getMetaView()->_tpl_version;
-		$this->jsonResponse['hashcode']			= !empty($data['hashcode']) ? $data['hashcode'] : null;
+		$this->jsonResponse['hashcode']			= !empty($RpData['hashcode']) ? $RpData['hashcode'] : null;
 		$this->jsonResponse['success']			= 1;
 		$this->_view->json = $this->jsonResponse;
 		return true;
