@@ -15,7 +15,7 @@ class Fer extends Controller{
 			'127.0.0.1', 'localhost', '::1', 'ip6-localhost',
 			'54.86.250.179', 'afoschi-etime-git.docebo.info',	//AFOSCHI LMS Sandbox
 			'54.85.129.207',	//Seemed to be the e-time API server that calling the FER for the Sandbox
-			'80.215.234.41',	//Yes'n'You IP address
+			'80.215.234.41', '89.225.245.6',	//Yes'n'You IP address
 	);
 	
 	/**
