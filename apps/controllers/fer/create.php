@@ -99,7 +99,7 @@ class Create extends Fer{
 		}
 		$this->jsonResponse['template_id']		= $tplId;
 		$this->jsonResponse['template_version'] = $this->getMetaView()->_tpl_version;
-		$this->jsonResponse['hashcode']			= !empty($LP['hashcode']) ? $LP['hashcode'] : null;
+		$this->jsonResponse['hashcode']			= !empty($data['hashcode']) ? $data['hashcode'] : null;
 		$this->jsonResponse['success']			= 1;
 		$this->_view->json = $this->jsonResponse;
 		return true;

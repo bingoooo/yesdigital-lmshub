@@ -1,8 +1,7 @@
 <?php
-if (!empty($_REQUEST['layout']) && strtolower($_REQUEST['layout']!=='json'))
+if (defined('ENV') && ENV=='devel'){
 	echo '<pre>'.print_r($view->json, true).'</pre>';
+}
 else{
-	header("Content-type: application/json; charset=UTF-8");
 	echo json_encode($view->json);
-	exit;
 }
