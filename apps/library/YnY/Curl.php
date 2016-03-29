@@ -36,7 +36,8 @@ class Curl{
 			'yny_learningplan/getEvaluationData',
 			'iltsessions/listAction',	//Those 2
 			'yny_session_api/list',		//	are similar but do not pass the exact same parameters
-			'yny_session_api/listUsers'	//List all users in a given session an course
+			'yny_session_api/listUsers',	//List all users in a given session an course
+					'user/authenticate'
 	);
 	
 	/**

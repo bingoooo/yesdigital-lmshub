@@ -6,30 +6,15 @@ use FragTale\YnY\Curl as YnYCurl;
 /**
  * @author fabrice
  */
-class Fer extends Controller{
+class Learnapp extends Controller{
 	
 	/**
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-			'127.0.0.1', 'localhost', '::1', 'ip6-localhost', 'fragbis',
-			'54.86.250.179', 'afoschi-etime-git.docebo.info',	//AFOSCHI LMS Sandbox
-			'54.85.129.207',	//Seemed to be the e-time API server that calling the FER for the Sandbox
-			'80.215.234.41', '89.225.245.6',	//Yes'n'You IP address
-	);
-	
-	/**
-	 * In fact, you do not need to explicit hosts pointing to "default",
-	 * because all host not in this array are "default".
-	 * Let it for the examples
-	 * @var array
-	 */
-	protected $mapHost2Instance = array(
-			'127.0.0.1'		=>'default',
-			'localhost'		=>'default',
-			'54.86.250.179'	=>'default',
-			'afoschi-etime-git.docebo.info'	=> 'default',
-			'54.85.129.207'	=>'default',
+			'http://127.0.0.1', 'http://localhost', 'http://fragbis',
+			'http://127.0.0.1/', 'http://localhost/', 'http://fragbis/',
+			'http://m.learnapp.fr', 'http://m.learnapp.fr/',
 	);
 	
 	function initialize(){
@@ -40,19 +25,13 @@ class Fer extends Controller{
 		else{
 			$this->setLayout('clean');
 		}
+		//Force set this view script for all inherited classes
+		$this->_view->setCurrentScript(TPL_ROOT.'/views/learnapp.phtml');
 		$this->_view->json = array();
 	}
 	
-	function doPostBack(){
-		
-	}
-	
 	function main(){
-		/*$this->_view->json = array(
-			'User'		=>$this->retrieveUserData(),
-			'LP_Data'	=>$this->retrieveLpDataForUser()
-		);*/
-		$this->_view->json = $this->retrieveLpDataForUser();
+		$this->exitOnError(403, 'Unauthorized request');
 	}
 	
 	function logAjaxRequest($addedmsg=''){
@@ -79,13 +58,13 @@ class Fer extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		if (defined('ENV') && ENV==='devel')
-			return true;
-		if (in_array($_SERVER['REMOTE_ADDR'], $this->allowedHosts))
-			return true;
-		if (in_array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $this->allowedHosts))
-			return true;
-		$this->exitOnError(403, 'Forbidden for '.$_SERVER['REMOTE_ADDR'].' '.gethostbyaddr($_SERVER['REMOTE_ADDR']));
+		if (!empty($_SERVER['HTTP_ORIGIN']) || !empty($_SERVER['HTTP_REFERER'])){
+			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+				!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+			if (in_array($origin, $this->allowedHosts))
+				return true;
+		}
+		$this->exitOnError(403, 'Forbidden for '.$_SERVER['REMOTE_ADDR']);
 	}
 	
 	/**
@@ -121,17 +100,6 @@ class Fer extends Controller{
 			'success'	=> 0,
 			'message'	=> $message
 		);
-	}
-	
-	function retrieveUserData(){
-		if (empty($_REQUEST['id_user'])){
-			header('HTTP/1.0 201 Mandatory input parameter is missing');
-			exit;
-		}
-		$postParams = array(
-			'id_user'	=> $_REQUEST['id_user'],
-		);
-		return $this->retrieve('user/profile', $postParams);
 	}
 	
 	function retrieveLpDataForUser(){

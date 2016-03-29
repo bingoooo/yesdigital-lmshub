@@ -277,8 +277,10 @@ class View{
 	 * @param string $fullpath
 	 */
 	function setCurrentScript($fullpath){
-		if (file_exists($fullpath))
+		if (file_exists($fullpath)){
 			$this->_current_script = $fullpath;
+			$this->_is404 = false;
+		}
 		else
 			$this->_is404 = true;
 	}
