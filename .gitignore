@@ -4,3 +4,4 @@
 .project
 .buildpath
 *.log
+/sessions/

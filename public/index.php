@@ -32,7 +32,7 @@ define('WEB_ROOT',		trim(HTTP_PROTOCOLE.'://'.$_SERVER['HTTP_HOST'].'/'.REL_DIR,
 # Admin base url
 define('ADMIN_WEB_ROOT',WEB_ROOT.'/admin');
 
-//session_save_path(DOC_ROOT.'/sessions');
+session_save_path(DOC_ROOT.'/sessions');
 session_start();
 
 require_once LIB_ROOT.'/fragtale.application.php';
