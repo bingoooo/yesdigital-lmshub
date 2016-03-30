@@ -5,24 +5,26 @@ use FragTale\Controller\Learnapp\User;
 /**
  * @author fabrice
  */
-class Profile extends User{
+class Lostpassword extends User{
 	
 	function initialize(){
-		parent::initialize();
+		//Nothing to code
 	}
 	
 	function doPostBack(){
+		//Nothing to code
+	}
+	
+	function main(){
 		try{
-			$result = $this->retrieve('user/profile', array('id_user'=>$_SESSION['Learnapp']['id_user']));
-			$this->_view->json = $result;
+			if (!empty($_POST['email']))
+				$this->_view->json = $this->retrieve('user/lostpassword', array('email'=>trim($_POST['email'])));
+			else
+				$this->_view->json = $this->returnJsonError('Missing required parameter "email"');
 		}
 		catch(Exception $ex){
 			$this->_view->json = $this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
-	}
-	
-	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
 	}
 	
 }

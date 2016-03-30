@@ -5,7 +5,7 @@ use FragTale\Controller\Learnapp\User;
 /**
  * @author fabrice
  */
-class Profile extends User{
+class User_Courses extends User{
 	
 	function initialize(){
 		parent::initialize();
@@ -13,7 +13,14 @@ class Profile extends User{
 	
 	function doPostBack(){
 		try{
-			$result = $this->retrieve('user/profile', array('id_user'=>$_SESSION['Learnapp']['id_user']));
+	        $postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
+	        if (!empty($_POST['elearning'])) {
+	            $postParams['elearning'] = 1;
+	        }
+	        if (!empty($_POST['classroom'])) {
+	            $postParams['classroom'] = 1;
+	        }
+	 		$result = $this->retrieve('user/userCourses', $postParams);
 			$this->_view->json = $result;
 		}
 		catch(Exception $ex){
