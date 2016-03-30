@@ -23,11 +23,10 @@ class Courses extends User{
 	        if (!empty($_POST['smartphone'])) {
 	            $postParams['smartphone'] = 1;
 	        }
-	 		$result = $this->retrieve('yny_user_api/userCourses', $postParams);
-			$this->_view->json = $result;
+			$this->_view->json = $this->retrieve('yny_user_api/userCourses', $postParams);
 		}
 		catch(Exception $ex){
-			$this->_view->json = $this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
+			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
 	}
 	

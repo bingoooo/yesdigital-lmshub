@@ -24,7 +24,7 @@ class Objects extends Organization{
 	        	$this->_view->json = $this->returnJsonError('Missing required "id_course" parameter');
 		}
 		catch(Exception $ex){
-			$this->_view->json = $this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
+			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
 	}
 	

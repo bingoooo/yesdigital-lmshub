@@ -20,11 +20,10 @@ class User_Courses extends User{
 	        if (!empty($_POST['classroom'])) {
 	            $postParams['classroom'] = 1;
 	        }
-	 		$result = $this->retrieve('user/userCourses', $postParams);
-			$this->_view->json = $result;
+			$this->_view->json = $this->retrieve('user/userCourses', $postParams);
 		}
 		catch(Exception $ex){
-			$this->_view->json = $this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
+			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
 	}
 	
