@@ -12,20 +12,22 @@ class Learnapp extends Controller{
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-			'http://127.0.0.1', 'http://localhost', 'http://fragbis',
-			'http://127.0.0.1/', 'http://localhost/', 'http://fragbis/',
-			'http://m.learnapp.fr', 'http://m.learnapp.fr/',
+		'http://127.0.0.1', 'http://localhost', 'http://fragbis',
+		'http://127.0.0.1/', 'http://localhost/', 'http://fragbis/',
+		'http://m.learnapp.fr', 'http://m.learnapp.fr/',
 	);
 	
 	function initialize(){
 		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
+			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 			header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 			header('Access-Control-Allow-Credentials: true');
 		}
 		if (!defined('ENV') || ENV!=='devel')
-			$this->setLayout('json');
+			$this->setLayout('json');	//On production environment, use JSON format
 		else{
-			$this->setLayout('clean');
+			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
 		}
 		//Force set this view script for all inherited classes
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/learnapp.phtml');
@@ -43,11 +45,17 @@ class Learnapp extends Controller{
 		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
 	}
 	
+	/**
+	 * 
+	 * @param int		$errcode			HTTP error code (such as 404, 403, 500 etc.)
+	 * @param string	$errmsg				The main error message
+	 * @param array		$additionalinfos	If you want to send more messages
+	 */
 	function exitOnError($errcode, $errmsg, $additionalinfos=array()){
 		$errs = array(
-				'success'	=> '0',
-				'code'		=> $errcode,
-				'message'	=> $errmsg
+			'success'	=> '0',
+			'code'		=> $errcode,
+			'message'	=> $errmsg
 		);
 		if (!empty($additionalinfos))
 			$errs['more info'] = $additionalinfos;
@@ -62,7 +70,7 @@ class Learnapp extends Controller{
 	function checkRestrictedHosts(){
 		if (!empty($_SERVER['HTTP_ORIGIN']) || !empty($_SERVER['HTTP_REFERER'])){
 			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-				!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 			if (in_array($origin, $this->allowedHosts))
 				return true;
 		}
@@ -70,27 +78,12 @@ class Learnapp extends Controller{
 	}
 	
 	/**
-	 * @param string $method	The original method name given by the Docebo API such as "user/profile"
-	 * @param array $postParams
+	 * @param string	$method		(required) The original method name given by the Docebo API such as "user/profile"
+	 * @param array		$postParams
 	 * @return array (for JSON encode)
 	 */
-	function retrieve($method='', $postParams=array()){
-		if (empty($method)){
-			if (!empty($_REQUEST['method']))
-				$method = $_REQUEST['method'];
-			else
-				return $this->returnJsonError('Missing required "method" parameter');
-		}
-		$instance = null;
-		foreach (array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $_SERVER['REMOTE_ADDR']) as $remotehost){
-			if (in_array($remotehost, $this->allowedHosts)){
-				if (isset($this->mapHost2Instance[$remotehost])){
-					$instance = $this->mapHost2Instance[$remotehost];
-					break;
-				}
-			}
-		}
-		return YnYCurl::call($method, $postParams, $instance);
+	function retrieve($method, $postParams=array()){
+		return YnYCurl::call($method, $postParams, 'provalliance');
 	}
 	
 	/**
@@ -102,17 +95,5 @@ class Learnapp extends Controller{
 			'success'	=> 0,
 			'message'	=> $message
 		);
-	}
-	
-	function retrieveLpDataForUser(){
-		//Check arguments
-		if (empty($_REQUEST['id_user']) || empty($_REQUEST['id_learningplan'])){
-			$this->exitOnError(201, 'Mandatory input parameter is missing');
-		}
-		$postParams = array(
-			'id_user'         => $_REQUEST['id_user'],
-			'id_learningplan' => $_REQUEST['id_learningplan']
-		);
-		return $this->retrieve('yny_learningplan/getEvaluationData', $postParams);
 	}
 }

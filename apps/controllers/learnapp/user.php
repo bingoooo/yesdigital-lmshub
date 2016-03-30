@@ -15,13 +15,11 @@ class User extends Learnapp{
 	}
 	
 	function doPostBack(){
-		$result = $this->retrieve('user/profile', array('id_user'=>$_SESSION['Learnapp']['id_user']));
-		$this->_view->json = $result;
+		//Nothing to code
 	}
 	
 	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
+		$this->exitOnError(403, 'Unauthorized request');
 	}
-	
 	
 }
