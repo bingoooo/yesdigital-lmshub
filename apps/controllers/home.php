@@ -10,6 +10,7 @@ use FragTale\Controller;
  */
 class Home extends Controller{
 	function main(){
-		
+		header('HTTP/1.0 403 Forbidden');
+		exit;
 	}
 }
