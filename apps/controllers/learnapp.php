@@ -12,9 +12,15 @@ class Learnapp extends Controller{
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-		'http://127.0.0.1', 'http://localhost', 'http://fragbis',
-		'http://127.0.0.1/', 'http://localhost/', 'http://fragbis/',
 		'http://m.learnapp.fr', 'http://m.learnapp.fr/',
+	);
+	
+	/**
+	 * @var array
+	 */
+	protected $develHosts = array(
+			'http://127.0.0.1', 'http://localhost', 'http://fragbis',
+			'http://127.0.0.1/', 'http://localhost/', 'http://fragbis/',
 	);
 	
 	function initialize(){
@@ -68,9 +74,16 @@ class Learnapp extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
+		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+		//First, check the permission in case of devel or sandbox environment
+		if (stripos($_SERVER['HTTP_HOST'], 'apisdbx')!==false ||
+				(defined('ENV') && ENV==='devel')){
+			if (in_array($origin, $this->develHosts))
+				return true;
+		}
+		//2nd, check on production env
 		if (!empty($_SERVER['HTTP_ORIGIN']) || !empty($_SERVER['HTTP_REFERER'])){
-			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 			if (in_array($origin, $this->allowedHosts))
 				return true;
 		}
