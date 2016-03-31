@@ -20,7 +20,6 @@ class Login extends Learnapp{
 		if (!empty($result['success']) && !empty($result['token'])){
 			$_SESSION['Learnapp']['token']	= $result['token'];
 			$_SESSION['Learnapp']['id_user']= $result['id_user'];
-			unset($result['token']);
 			$this->_view->json = $result;
 		}
 		else{
