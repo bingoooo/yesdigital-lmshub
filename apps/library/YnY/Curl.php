@@ -44,6 +44,8 @@ class Curl{
 			'user/profile',
 			'user/lostpassword',
 			'organization/listObjects',
+			'yny_user/messages',
+			'yny_user/notifications',
 	);
 	
 	/**
