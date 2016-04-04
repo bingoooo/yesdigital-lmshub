@@ -26,8 +26,8 @@ class Learnapp extends Controller{
 	function initialize(){
 		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
-			header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
+			header('Access-Control-Allow-Origin: '.$origin);
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Allow-Headers: Content-Type');
 		}
@@ -76,10 +76,11 @@ class Learnapp extends Controller{
 	
 	function checkRestrictedHosts(){
 		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
 		//First, check the permission in case of devel or sandbox environment
-		if (stripos($_SERVER['HTTP_HOST'], 'apisdbx')!==false ||
-				(defined('ENV') && ENV==='devel')){
+		if (stripos($origin, 'apisdbx')!==false || stripos($origin, 'localhost')!==false ||
+				(defined('ENV') && ENV==='devel')
+				){
 			if (in_array($origin, $this->develHosts))
 				return true;
 		}
@@ -88,7 +89,7 @@ class Learnapp extends Controller{
 			if (in_array($origin, $this->allowedHosts))
 				return true;
 		}
-		$this->exitOnError(403, 'Forbidden for '.$_SERVER['REMOTE_ADDR']);
+		$this->exitOnError(403, 'Forbidden for '.$origin);
 	}
 	
 	/**

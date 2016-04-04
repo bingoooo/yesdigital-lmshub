@@ -13,11 +13,13 @@ class Objects extends Organization{
 	
 	function doPostBack(){
 		try{
+			$posts = $this->getPHPInputs();
 	        $postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
-	        if (!empty($_POST['id_course'])) {
-	            $postParams['id_course'] = (int)$_POST['id_course'];
-	            if (!empty($_POST['id_org']))
-	            	$postParams['id_org'] = (int)$_POST['id_org'];
+	        $id_course = !empty($_POST['id_course']) ? $_POST['id_course'] : (!empty($posts['id_course']) ? $posts['id_course'] : null);
+	        if ($id_course) {
+	            $postParams['id_course'] = (int)$id_course;
+	            if ($id_org = (!empty($_POST['id_org']) ? $_POST['id_org'] : (!empty($posts['id_org']) ? $posts['id_org'] : null)))
+	            	$postParams['id_org'] = (int)$id_org;
 				$this->_view->json = $this->retrieve('organization/listObjects', $postParams);
 	        }
 	        else

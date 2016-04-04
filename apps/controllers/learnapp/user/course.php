@@ -12,14 +12,19 @@ class Courses extends User{
 	}
 	
 	function doPostBack(){
+		//Nothing to code. Just preventing the parent "doPostBack" function behavior
+	}
+	
+	function main(){
 		try{
-			if (empty($_POST['id_course'])){
+			$posts = !empty($_POST[id_course]) ? $_POST : $this->getPHPInputs();
+			if (empty($posts['id_course'])){
 				$this->_view->json = $this->returnJsonError('Missing required "id_course" parameter');
 				return;
 			}
 			
 			$id_user	= $_SESSION['Learnapp']['id_user'];
-			$id_course	= (int)$_POST['id_course'];
+			$id_course	= (int)$posts['id_course'];
 			
 			## Get the 2 lists
 			$filteredSessions = array();
@@ -56,10 +61,6 @@ class Courses extends User{
 		catch(Exception $ex){
 			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
-	}
-	
-	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
 	}
 	
 }

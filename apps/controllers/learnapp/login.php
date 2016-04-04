@@ -12,11 +12,16 @@ class Login extends Learnapp{
 	}
 	
 	function doPostBack(){
-		if (empty($_POST['email']) || empty($_POST['password'])){
+		//Nothing to code. Just preventing the parent "doPostBack" function behavior
+	}
+	
+	function main(){
+		$posts = $this->getPHPInputs();
+		if (empty($posts['email']) || empty($posts['password'])){
 			unset($_SESSION['Learnapp']);
 			$this->exitOnError(403, 'Unrecognized user');
 		}
-		$result = $this->retrieve('user/authenticate', array('username'=>trim($_POST['email']), 'password'=>trim($_POST['password'])));
+		$result = $this->retrieve('user/authenticate', array('username'=>trim($posts['email']), 'password'=>trim($posts['password'])));
 		if (!empty($result['success']) && !empty($result['token'])){
 			$_SESSION['Learnapp']['token']	= $result['token'];
 			$_SESSION['Learnapp']['id_user']= $result['id_user'];
@@ -26,9 +31,5 @@ class Login extends Learnapp{
 			unset($_SESSION['Learnapp']);
 			$this->_view->json = $this->returnJsonError('Invalid user');
 		}
-	}
-	
-	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
 	}
 }

@@ -13,11 +13,13 @@ class Play extends Organization{
 	
 	function doPostBack(){
 		try{
-	        $postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
-	        if (!empty($_POST['id_org'])) {
-	            $postParams['id_org'] = (int)$_POST['id_org'];
-	            if (!empty($_POST['id_scormitem']))
-	            	$postParams['id_scormitem'] = (int)$_POST['id_scormitem'];
+			$posts = $this->getPHPInputs();
+			$postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
+	        $id_org = !empty($_POST['id_org']) ? $_POST['id_org'] : (!empty($posts['id_org']) ? $posts['id_org'] : null);
+			if ($id_org) {
+	            $postParams['id_org'] = (int)id_org;
+	            if ($id_scormitem = (!empty($_POST['id_scormitem']) ? $_POST['id_scormitem'] : (!empty($posts['id_scormitem']) ? $posts['id_scormitem'] : null)))
+	            	$postParams['id_scormitem'] = (int)$id_scormitem;
 				$this->_view->json = $this->retrieve('organization/play', $postParams);
 	        }
 	        else

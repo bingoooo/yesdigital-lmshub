@@ -17,8 +17,9 @@ class Lostpassword extends User{
 	
 	function main(){
 		try{
-			if (!empty($_POST['email']))
-				$this->_view->json = $this->retrieve('user/lostpassword', array('email'=>trim($_POST['email'])));
+			$posts = !empty($_POST[email]) ? $_POST : $this->getPHPInputs();
+			if (!empty($posts['email']))
+				$this->_view->json = $this->retrieve('user/lostpassword', array('email'=>trim($posts['email'])));
 			else
 				$this->_view->json = $this->returnJsonError('Missing required parameter "email"');
 		}
