@@ -79,21 +79,21 @@ $style = array(
 						}
 					}?></td>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Start date:</td>
-					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['date_assign']) ? $LP['learning_plan']['learning_plan_user_details']['date_assign'] :
-					(
-						!empty($LP['learning_plan']['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_begin_validity'] : '&nbsp;'
-					);?></td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						$date_begin = !empty($LP['learning_plan_user_details']['date_assign']) ? $LP['learning_plan_user_details']['date_assign'] :
+							(!empty($LP['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan_user_details']['date_begin_validity'] : null);
+						echo $date_begin ? date('d.m.Y', strtotime($date_begin)) : '&nbsp;';?></td>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('End date:')?></td>
-					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['course_completed']) ? $LP['learning_plan']['learning_plan_user_details']['course_completed'] :
-					(
-						!empty($LP['learning_plan']['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan']['learning_plan_user_details']['date_end_validity'] : '&nbsp;'
-					);?></td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						$date_end = !empty($LP['learning_plan_user_details']['course_completed']) ? $LP['learning_plan_user_details']['course_completed'] :
+							(!empty($LP['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan_user_details']['date_end_validity'] : null);
+						echo $date_end ? date('d.m.Y', strtotime($date_end)) : '&nbsp;';?></td>
 				</tr>
 				<tr>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Date:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo date('d.m.Y')?></td>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Total time:</td>
-					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan']['learning_plan_user_details']['time_spent']) ? $LP['learning_plan']['learning_plan_user_details']['time_spent'] : '';?></td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan_user_details']['time_spent']) ? $LP['learning_plan_user_details']['time_spent'] : '';?></td>
 				</tr>
 			</table>
 		</div>
