@@ -29,6 +29,7 @@ class Learnapp extends Controller{
 				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
 			header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 			header('Access-Control-Allow-Credentials: true');
+			header('Access-Control-Allow-Headers: Content-Type');
 		}
 		if (!defined('ENV') || ENV!=='devel')
 			$this->setLayout('json');	//On production environment, use JSON format
@@ -108,5 +109,14 @@ class Learnapp extends Controller{
 			'success'	=> 0,
 			'message'	=> $message
 		);
+	}
+	
+	/**
+	 * This returns all the parameters posted or getted from the client into an associative array or into an object
+	 * @param bool $assoc	If true, returns an associative array, if not, an object
+	 * @return array|object
+	 */
+	function getPHPInputs($assoc=true){
+		return json_decode(file_get_contents('php://input'), $assoc);
 	}
 }

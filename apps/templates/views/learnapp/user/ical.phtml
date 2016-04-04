@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:m.learnapp.fr
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+<?php if (!empty($view->iCalEvents) && is_array($view->iCalEvents)){
+foreach ($view->iCalEvents as $event){
+?>BEGIN:VEVENT
+UID:<?php echo sha1(uniqid())?>@yesnyou.com
+CLASS:PUBLIC
+SEQUENCE:0
+TRANSP:OPAQUE
+DTSTART:<?php echo (!empty($event['DTSTART']) ? date('Ymd\THis\Z', ($event['DTSTART']/1000)) : '')."\r\n";?>
+DTEND:<?php echo (!empty($event['DTEND']) ? date('Ymd\THis\Z', ($event['DTEND']/1000)) : '')."\r\n";?>
+DTSTAMP:<?php echo date('Ymd\THis\Z')."\r\n";?>
+CREATED:<?php echo date('Ymd\THis\Z')."\r\n";?>
+LAST-MODIFIED:<?php echo date('Ymd\THis\Z')."\r\n";?>
+DESCRIPTION:<?php echo (!empty($event['DESCRIPTION']) ? $event['DESCRIPTION'] : '')."\r\n";?>
+SUMMARY:<?php echo (!empty($event['SUMMARY']) ? $event['SUMMARY'] : '')."\r\n";?>
+END:VEVENT
+<?php }}
+?>END:VCALENDAR

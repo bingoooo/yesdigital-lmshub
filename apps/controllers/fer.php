@@ -34,7 +34,8 @@ class Fer extends Controller{
 	
 	function initialize(){
 		if ($this->checkRestrictedHosts())//First of all, check if the remote host is allowed to connect
-			header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+			if (!empty($_SERVER['HTTP_ORIGIN']))
+				header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 		if (!defined('ENV') || ENV!=='devel')
 			$this->setLayout('json');
 		else{

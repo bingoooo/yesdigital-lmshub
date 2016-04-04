@@ -26,8 +26,8 @@ class Courses extends User{
 			// First, the session list
 			$sessions = $this->retrieve('yny_session_api/list', array('id_course'=>$id_course));
 			if (!empty($sessions['sessions'])) {
-				foreach ( $sessions ['sessions'] as $session ) {
-					if (! empty ( $session ['id_session'] )) {
+				foreach ($sessions['sessions'] as $session) {
+					if (!empty($session['id_session'])) {
 						// 2nd, users foreach sessions
 						$lstUsers = $this->retrieve('yny_session_api/listUsers', array (
 							'id_course' => $id_course,
