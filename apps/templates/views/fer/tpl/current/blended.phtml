@@ -93,7 +93,18 @@ $style = array(
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Date:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo date('d.m.Y')?></td>
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Total time:</td>
-					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo !empty($LP['learning_plan_user_details']['time_spent']) ? $LP['learning_plan_user_details']['time_spent'] : '';?></td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						//Should be in seconds
+						$totaltime = !empty($LP['learning_plan_user_details']['time_spent']) ? (int)$LP['learning_plan_user_details']['time_spent'] : 0;
+						if ($totaltime){
+							$hrs = floor($totaltime / 3600);
+							if (strlen($hrs)===1) $hrs = '0'.$hrs;
+							$mns = floor(($totaltime / 60) % 60);
+							if (strlen($mns)===1) $mns = '0'.$mns;
+							$scs = $totaltime % 60;
+							if (strlen($scs)===1) $scs = '0'.$scs;
+							echo $hrs.':'.$mns.':'.$scs;
+						}?></td>
 				</tr>
 			</table>
 		</div>
