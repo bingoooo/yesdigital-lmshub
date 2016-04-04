@@ -134,9 +134,15 @@ $style = array(
 			}
 		}?>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
+			<table>
+				<tr>
+					<td>
 			<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
 				1
-			</div>
+			</div>&nbsp;
+					
+					</td>
+					<td>
 			<h2 class="skills-aptitude-title" style="<?php echo $style['.skills-aptitude-title']?>">Needs Analysis</h2>
 			<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
 				<?php if (!empty($NA['course_user_details']['date_completed'])){?>
@@ -147,6 +153,10 @@ $style = array(
 				Elearning DOCEBO “Survey”
 				<?php }?>
 			</div>
+					
+					</td>
+				</tr>
+			</table>
 		</div>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 			<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
@@ -196,6 +206,7 @@ $style = array(
 		</div>
 
 		<br><br><br>
+		<pagebreak />
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			EVALUATOR COMMENTS
@@ -222,7 +233,6 @@ $style = array(
 		<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">SKILLS:</h2>
 			<div>Learner's current level for each of the skills below:</div>
-			<br>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
 					'listening_current_level'	=>'Listening:',
@@ -258,9 +268,8 @@ $style = array(
 			Learner’s level
 		</h1>
 		<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
-			<br><br>
+			<br>
 			<div>Learner's overall current and recommended levels:</div>
-			<br><br>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
 					'learner_self_level'		=>'Self-evaluation level:',
@@ -281,7 +290,7 @@ $style = array(
 					</select>
 					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
 					&nbsp;
-					<span class="profile-value"><?php echo $LvlScale[$ReportContent[$key]['value']];?></span>
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php echo $LvlScale[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
