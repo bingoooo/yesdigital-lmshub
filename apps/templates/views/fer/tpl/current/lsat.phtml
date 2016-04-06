@@ -147,8 +147,10 @@ $style = array(
 				<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
 					<?php if (!empty($NA['course_user_details']['date_completed'])){?>
 					<b>Completed <?php echo date('d.m.Y', strtotime($NA['course_user_details']['date_completed']))?></b>
+					<?php if (!$isRO){?>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="#"><i>See all the answers</i></a>
+					<?php }?>
 					<?php }else{?>
 					Elearning DOCEBO “Survey”
 					<?php }?>
@@ -187,8 +189,10 @@ $style = array(
 				<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
 					<?php if (!empty($IT['course_user_details']['date_completed'])){?>
 					<b>Completed <?php echo date('d.m.Y', strtotime($IT['course_user_details']['date_completed']))?></b>
+					<?php if (!$isRO){?>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="#"><i>See all the answers</i></a>
+					<?php }?>
 					<br><br>
 					<i>Estimated level is <b><?php echo '...'?></b></i>
 					<?php }else{?>

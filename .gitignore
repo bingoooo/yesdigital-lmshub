@@ -5,3 +5,4 @@
 .buildpath
 *.log
 /sessions/
+/logs/
