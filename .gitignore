@@ -6,3 +6,4 @@
 *.log
 /sessions/
 /logs/
+/storage/

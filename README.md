@@ -19,14 +19,15 @@ Cette API n'utilise pas les fonctions CMS de ce framework (voir le chapitre Lice
 pour savoir comment récupérer le framework et CMS dans son entier).
 
 
-RÉPERTOIRES À CRÉER ET À CHMODER POUR APACHE
---------------------------------------------
+RÉPERTOIRES À CRÉER (si non encore existants) ET À CHMODER POUR APACHE
+----------------------------------------------------------------------
 
 Apache (ou www-data selon la distribution) doit avoir les droits d'écriture sur les dossiers suivants :
 1* APPLICATION_ROOT/logs *
 2* APPLICATION_ROOT/sessions *
 3* APPLICATION_ROOT/public/icals *
 4* APPLICATION_ROOT/public/uploads *
+5* APPLICATION_ROOT/storage *
 
 
 

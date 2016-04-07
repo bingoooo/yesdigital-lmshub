@@ -1,0 +1,18 @@
+<?php
+if (!empty($view->json)){
+	if (defined('ENV') && ENV=='devel'){
+		if (!is_array($view->json)){
+			if ($json = json_decode($view->json, true))
+				$view->json = $json;
+		}
+		echo '<pre>'.print_r($view->json, true).'</pre>';
+	}
+	else{
+		if (!empty($view->headers) && is_array($view->headers)){
+			foreach ($view->headers as $key=>$value)
+				header($key.':'.$value);
+		}
+		echo is_array($view->json) ? json_encode($view->json) : $view->json;
+		exit;
+	}
+}
