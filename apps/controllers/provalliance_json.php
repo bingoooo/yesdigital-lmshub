@@ -69,13 +69,10 @@ class Provalliance_Json extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		if ((defined('ENV') && ENV==='devel') || $this->allowedHosts==='*'){
-			return '*';
-		}
 		//Only for AJAX request
 		if ($origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
 			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : false)){
-			if (in_array($origin, $this->allowedHosts))
+			if (in_array($origin, $this->allowedHosts) || $this->allowedHosts === '*')
 				return $origin;
 		}
 		$this->exitOnError(403, 'Forbidden');
