@@ -17,7 +17,9 @@ class Provalliance_Json extends Controller{
 	 * Else, you must set for example: array('https://yesnyou.com', 'https://api.yesnyou.com', ...)
 	 * @var mixed array|string
 	 */
-	protected $allowedHosts = '*';//array();
+	protected $allowedHosts = array('https://d36spl5w3z9i0o.cloudfront.net', 'https://d36spl5w3z9i0o.cloudfront.net/');
+	
+	protected $develAllowedHosts = array('http://localhost', 'http://localhost/');
 	
 	function initialize(){
 		if ($origin = $this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
@@ -69,10 +71,13 @@ class Provalliance_Json extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		//Only for AJAX request
-		if ($origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : false)){
-			if (in_array($origin, $this->allowedHosts) || $this->allowedHosts === '*')
+		//Only for AJAX request (so, HTTP_ORIGIN is set)
+		if ($origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : false){
+			if ( stripos($origin, 'cloudfront.net') ||
+				($_SERVER['HTTP_HOST']==='apisdbx.yesnyou.com') ||
+				(in_array($origin, $this->allowedHosts) || $this->allowedHosts === '*') ||
+				(defined('ENV') && ENV==='devel' && (in_array($origin, $this->develAllowedHosts) || $this->develAllowedHosts === '*'))
+				)
 				return $origin;
 		}
 		$this->exitOnError(403, 'Forbidden');
