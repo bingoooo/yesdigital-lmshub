@@ -17,7 +17,15 @@ class Provalliance_Json extends Controller{
 	 * Else, you must set for example: array('https://yesnyou.com', 'https://api.yesnyou.com', ...)
 	 * @var mixed array|string
 	 */
-	protected $allowedHosts = array('https://d36spl5w3z9i0o.cloudfront.net', 'https://d36spl5w3z9i0o.cloudfront.net/');
+	protected $allowedHosts = array(
+			'https://d36spl5w3z9i0o.cloudfront.net', 'https://d36spl5w3z9i0o.cloudfront.net/',
+			'https://www.provalliancelearning.com', 'https://www.provalliancelearning.com/',
+			'https://provalliancelearning.com', 'https://provalliancelearning.com/',
+			'https://www.provalliancelearning.com', 'https://www.provalliancelearning.com/',
+			'https://provalliancelearning.com', 'https://provalliancelearning.com/',
+			'http://afoschi-etime-git.docebo.info', 'http://afoschi-etime-git.docebo.info/',
+			'https://www.yesnyoulearning.com', 'https://www.yesnyoulearning.com/',
+	);
 	
 	protected $develAllowedHosts = array('http://localhost', 'http://localhost/');
 	
