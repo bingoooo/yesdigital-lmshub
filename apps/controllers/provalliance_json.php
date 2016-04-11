@@ -25,6 +25,7 @@ class Provalliance_Json extends Controller{
 			'https://provalliancelearning.com', 'https://provalliancelearning.com/',
 			'http://afoschi-etime-git.docebo.info', 'http://afoschi-etime-git.docebo.info/',
 			'https://www.yesnyoulearning.com', 'https://www.yesnyoulearning.com/',
+			'http://ec2-54-220-117-43.eu-west-1.compute.amazonaws.com',
 	);
 	
 	protected $develAllowedHosts = array('http://localhost', 'http://localhost/');
