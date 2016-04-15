@@ -72,7 +72,7 @@ $style = array(
 								}
 							}
 						}
-						echo !empty($LvlScale[$level]) ? $LvlScale[$level] : 'Unmatched level for ID '.$level;?>
+						echo !empty($LvlScale[$level]) ? $LvlScale[$level] : '';?>
 					</td>
 				</tr>
 				<tr>
@@ -170,7 +170,20 @@ $style = array(
 					<?php if (!empty($WT['course_user_details']['date_completed'])){?>
 					<b>Completed <?php echo date('d.m.Y', strtotime($WT['course_user_details']['date_completed']))?></b>
 					<br><br>
-					<i>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.</i>
+					<i><?php if (!empty($WT['course_training_materials'])){
+								foreach ($WT['course_training_materials'] as $material){
+									if (!empty($material['training_material_qas'])){
+										foreach ($material['training_material_qas'] as $qas){
+											if (!empty($qas['user_answer'])){
+												foreach ($qas['user_answer'] as $nswr){
+													if (!empty($nswr['answer']))
+														echo nl2br($nswr['answer']).'<br>';
+												}
+											}
+										}
+									}
+								}
+							}?></i>
 					<?php }else{?>
 					Elearning DOCEBO “Test”
 					<?php }?>
