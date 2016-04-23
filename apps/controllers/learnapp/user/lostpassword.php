@@ -21,7 +21,7 @@ class Lostpassword extends User{
 	
 	function main(){
 		try{
-			$posts = !empty($_POST[email]) ? $_POST : $this->getPHPInputs();
+			$posts = !empty($_POST['email']) ? $_POST : $this->getPHPInputs();
 			if (!empty($posts['email']))
 				$this->_view->json = $this->retrieve('user/lostpassword', array('email'=>trim($posts['email'])));
 			else

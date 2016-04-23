@@ -19,7 +19,7 @@ class Ical extends User{
 	function main(){
 		if ($this->_view->isMeta()){
 			try{
-				$posts = !empty($_POST[iCalEvents]) ? $_POST : $this->getPHPInputs();
+				$posts = !empty($_POST['iCalEvents']) ? $_POST : $this->getPHPInputs();
 				if (empty($posts['iCalEvents'])){
 					$this->_view->json = $this->returnJsonError('Empty iCal Events');
 					return false;
