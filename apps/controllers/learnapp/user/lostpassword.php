@@ -8,7 +8,11 @@ use FragTale\Controller\Learnapp\User;
 class Lostpassword extends User{
 	
 	function initialize(){
-		//Nothing to code
+		if (!defined('ENV') || ENV!=='devel')
+			$this->setLayout('json');	//On production environment, use JSON format
+		else{
+			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
+		}
 	}
 	
 	function doPostBack(){
