@@ -5,11 +5,7 @@ use FragTale\Controller\Learnapp\User;
 /**
  * @author fabrice
  */
-class Courses extends User{
-	
-	function initialize(){
-		parent::initialize();
-	}
+class Course extends User{
 	
 	function doPostBack(){
 		//Nothing to code. Just preventing the parent "doPostBack" function behavior
@@ -17,7 +13,7 @@ class Courses extends User{
 	
 	function main(){
 		try{
-			$posts = !empty($_POST[id_course]) ? $_POST : $this->getPHPInputs();
+			$posts = !empty($_POST['id_course']) ? $_POST : $this->getPHPInputs();
 			if (empty($posts['id_course'])){
 				$this->_view->json = $this->returnJsonError('Missing required "id_course" parameter');
 				return;
@@ -56,7 +52,10 @@ class Courses extends User{
 				);
 			}
 			else
-				$this->_view->json = $this->returnJsonError('No data found');
+				if (!empty($sessions['message']))
+					$this->_view->json = $this->returnJsonError($sessions['message']);
+				else
+					$this->_view->json = $this->returnJsonError('No data found');
 		}
 		catch(Exception $ex){
 			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));

@@ -26,7 +26,7 @@ class Learnapp extends Controller{
 	function initialize(){
 		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
+				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');
 			header('Access-Control-Allow-Origin: '.$origin);
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Allow-Headers: Content-Type');
@@ -79,8 +79,8 @@ class Learnapp extends Controller{
 			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
 		//First, check the permission in case of devel or sandbox environment
 		if (stripos($origin, 'apisdbx')!==false || stripos($origin, 'localhost')!==false ||
-				(defined('ENV') && ENV==='devel')
-				){
+			(defined('ENV') && ENV==='devel')
+		){
 			if (in_array($origin, $this->develHosts))
 				return true;
 		}
