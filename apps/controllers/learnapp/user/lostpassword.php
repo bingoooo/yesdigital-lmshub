@@ -13,6 +13,9 @@ class Lostpassword extends User{
 		else{
 			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
 		}
+		//Force set this view script for all inherited classes
+		$this->_view->setCurrentScript(TPL_ROOT.'/views/learnapp.phtml');
+		$this->_view->json = array();
 	}
 	
 	function doPostBack(){
