@@ -16,6 +16,7 @@ class Fer extends Controller{
 			'54.86.250.179', 'afoschi-etime-git.docebo.info',	//AFOSCHI LMS Sandbox
 			'54.85.129.207',	//Seemed to be the e-time API server that calling the FER for the Sandbox
 			'80.215.234.41', '89.225.245.6',	//Yes'n'You IP address
+			'54.72.164.181', 'd-eu-smtpgw.docebopaas.com', 'www.yesnyoulearning.com', 'yesnyoulearning.com'	//Production YnY
 	);
 	
 	/**
@@ -30,6 +31,8 @@ class Fer extends Controller{
 			'54.86.250.179'	=>'default',
 			'afoschi-etime-git.docebo.info'	=> 'default',
 			'54.85.129.207'	=>'default',
+			'54.72.164.181'	=>'default',
+			'd-eu-smtpgw.docebopaas.com'	=>'default',
 	);
 	
 	function initialize(){
