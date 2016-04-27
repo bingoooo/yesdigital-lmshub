@@ -31,8 +31,8 @@ class Fer extends Controller{
 			'54.86.250.179'	=>'default',
 			'afoschi-etime-git.docebo.info'	=> 'default',
 			'54.85.129.207'	=>'default',
-			'54.72.164.181'	=>'default',
-			'd-eu-smtpgw.docebopaas.com'	=>'default',
+			'54.72.164.181'	=>'yny',		//prod
+			'd-eu-smtpgw.docebopaas.com'	=>'yny',//prod
 	);
 	
 	function initialize(){
