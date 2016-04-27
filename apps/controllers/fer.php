@@ -77,6 +77,7 @@ class Fer extends Controller{
 		
 		$this->logAjaxRequest($errcode.' '.$errmsg);
 		
+		header('Access-Control-Allow-Origin: *');
 		header("Content-type: application/json; charset=UTF-8");
 		header('HTTP/1.0 '.$errcode.' '.$errmsg);
 		die(json_encode($errs));
