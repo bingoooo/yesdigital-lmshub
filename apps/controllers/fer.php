@@ -36,6 +36,8 @@ class Fer extends Controller{
 		if ($this->checkRestrictedHosts())//First of all, check if the remote host is allowed to connect
 			if (!empty($_SERVER['HTTP_ORIGIN']))
 				header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+			else
+				$this->exitOnError(403, 'No HTTP ORIGIN sent by client');
 		if (!defined('ENV') || ENV!=='devel')
 			$this->setLayout('json');
 		else{
@@ -53,7 +55,8 @@ class Fer extends Controller{
 			'User'		=>$this->retrieveUserData(),
 			'LP_Data'	=>$this->retrieveLpDataForUser()
 		);*/
-		$this->_view->json = $this->retrieveLpDataForUser();
+		if (defined('ENV') && ENV!=='devel')
+			$this->_view->json = $this->retrieveLpDataForUser();
 	}
 	
 	function logAjaxRequest($addedmsg=''){
