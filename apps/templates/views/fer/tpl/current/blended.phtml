@@ -26,7 +26,7 @@ if (!empty($LP['level_scale'])){
 $style = array(
 	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
 	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
-	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: transparent; padding: 10px; font-family: Arial;',
+	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: white; padding: 10px; font-family: Arial;',
 	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
 	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; margin: 10px 0; font-weight: normal; font-family: Arial;',
 	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
@@ -121,8 +121,8 @@ $style = array(
 					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
-					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
+					<!-- <td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td> -->
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -131,30 +131,30 @@ $style = array(
 						if (empty($LPC['course_info']['course_name'])||
 							strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
 						$nbCourses++;
-						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php echo $LPC['course_info']['course_name'];?></td>
 					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
-					if (!empty($LPC['course_user_details']['score_given'])){
-						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
-						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
-					}?></td>
-					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+						$score = !empty($LPC['course_user_details']['score_given']) ? (float)$LPC['course_user_details']['score_given'] : 0;
+						$totalPercentage += $score;
+						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
+					?></td>
+					<!-- <td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td> -->
 				</tr><?php
 					}
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total e-learning average')?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
-					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent;?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
+					<!-- <td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent;?></td> -->
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
 					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+					<!-- <td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td> -->
 				</tr>
 			</table>
 			
@@ -180,24 +180,44 @@ $style = array(
 							continue;
 						}
 						$nbCourses++;
-						if (isset($LPC['course_info']['status']) && $LPC['course_info']['status']==2) $nbAttendances++;?>
+						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;
+						$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
+						$criteria_evaluation = null;
+						if (!empty($session['user_session_details']['criteria_evalution'])){
+							foreach ($session['user_session_details']['criteria_evalution'] as $crit){
+								if (!isset($crit['name'])) continue;
+								if (!isset($criteria_evaluation[$crit['name'].'-'.$crit['value']])){
+									$criteria_evaluation[$crit['name'].'-'.$crit['value']] = $crit;
+								}
+							}
+						}?>
 				<tr>
-					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php
+						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])+3600) : '');
+					?></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php
-					if (!empty($LPC['course_user_details']['score_given'])){
-						$totalPercentage += (float)$LPC['course_user_details']['score_given'];
-						echo str_replace('.', ',',$LPC['course_user_details']['score_given']).'%';
-					}?></td>
+						$score = !empty($session['user_session_details']['evaluation_score']) ? (float)$session['user_session_details']['evaluation_score'] : 0;
+						$totalPercentage += $score;
+						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
+					?></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td>
+						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php
+						//Time spent
+						if (!empty($session['session_info']['date_end'])){
+							$t_begin	= strtotime($session['session_info']['date_begin']);
+							$t_end		= strtotime($session['session_info']['date_end']);
+							$duration	= $t_end - $t_begin;
+							echo gmdate('H:i', $duration);
+						}
+						else echo '-';?></td>
 				</tr><?php
 					}
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total skill sessions average')?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo str_replace('.', ',',number_format(($totalPercentage/$nbCourses), 2)).'%';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent;?></td>
 				</tr>
