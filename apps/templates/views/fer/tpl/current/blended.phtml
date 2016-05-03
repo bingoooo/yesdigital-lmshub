@@ -204,10 +204,11 @@ $style = array(
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php
 						//Time spent
-						if (!empty($session['session_info']['date_end'])){
+						if (!empty($session['session_info']['date_end']) && $score){
 							$t_begin	= strtotime($session['session_info']['date_begin']);
 							$t_end		= strtotime($session['session_info']['date_end']);
 							$duration	= $t_end - $t_begin;
+							$totalTimeSpent += $duration;
 							echo gmdate('H:i', $duration);
 						}
 						else echo '-';?></td>
@@ -219,7 +220,7 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent;?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i', $totalTimeSpent);?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
