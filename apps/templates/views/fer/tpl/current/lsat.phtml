@@ -228,9 +228,7 @@ $style = array(
 				<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
 					<?php if (!empty($ST['course_sessions'][0]['session_info']['date_end'])){?>
 					<b>Session date <?php echo date('d.m.Y', strtotime($ST['course_sessions'][0]['session_info']['date_end']))?></b>
-					<?php }else{?>
-					ILT Session
-					<?php }?>
+					<?php }else echo ' - ';?>
 				</div>
 			</div>
 			<div style="clear:both"></div>

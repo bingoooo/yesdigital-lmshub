@@ -124,8 +124,8 @@ $style = array(
 					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
 						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
-					<!-- <td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td> -->
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
 				</tr>
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
@@ -141,9 +141,12 @@ $style = array(
 						$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
 						$score = !empty($LPC['course_user_details']['score_given']) ? (float)$LPC['course_user_details']['score_given'] : 0;
 						$totalPercentage += $score;
-						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
+						echo $score ? number_format($score, 2, ',', '.').'%' : ' - ';
 					?></td>
-					<!-- <td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php //Time spent ???? echo !empty($LPC['course_user_details']['score_given']) ? $LPC['course_user_details']['score_given'] : '';?></td> -->
+					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
+						//Time spent
+						echo !empty($LPC['?']['?']) ? $LPC['?']['?'] : ' - ';
+						?></td>
 				</tr><?php
 					}
 				}?>
@@ -151,13 +154,13 @@ $style = array(
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total e-learning average')?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
-					<!-- <td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent;?></td> -->
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? $totalTimeSpent : ' - ';?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
 					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<!-- <td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td> -->
+					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
 				</tr>
 			</table>
 			
