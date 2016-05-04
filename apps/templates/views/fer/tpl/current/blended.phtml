@@ -36,6 +36,7 @@ $style = array(
 	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
 	'.top-bar-lightgrey'	=>'border-top: 1px solid lightgrey;',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
+	'.left-bar-lightgrey'	=>'border-left: 1px solid lightgrey;',
 	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
 	'.profile-label'		=>'text-transform: uppercase; font-size: 13px;',
 	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
@@ -198,13 +199,13 @@ $style = array(
 						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])+3600) : '');
 					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><b><?php
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
 						$score = !empty($session['user_session_details']['evaluation_score']) ? (float)$session['user_session_details']['evaluation_score'] : 0;
 						$totalPercentage += $score;
 						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
 					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><b><?php
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
 						//Time spent
 						if (!empty($session['session_info']['date_end']) && $score){
 							$t_begin	= strtotime($session['session_info']['date_begin']);
@@ -220,23 +221,26 @@ $style = array(
 					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-block .left-bar'].
 						$style['.top-bar-lightgrey']?>"><i>Objectives</i></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
-						$style['.left-bar'].$style['.top-bar-lightgrey']?>"></td>
+						/*$style['.left-bar-lightgrey'].*/$style['.top-bar-lightgrey']?>"></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
-						$style['.left-bar'].$style['.top-bar-lightgrey']?>"></td>
+						/*$style['.left-bar-lightgrey'].*/$style['.top-bar-lightgrey']?>"></td>
 				</tr><?php
 							foreach ($criteria_evaluation as $crit){?>
 				<tr>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
 						$style['.lpadding-40'].$style['.top-bar-lightgrey']?>"><?php echo $crit['name']?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
+						/*$style['.left-bar-lightgrey'].*/$style['.profile-block .left-bar']?>"><?php echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+						/*$style['.left-bar-lightgrey'].*/$style['.profile-block .left-bar']?>"></td>
 				</tr>			
 							<?php
 							}
-						}
-					}
+						}?>
+				<tr>
+					<td>&nbsp;<td>
+				</tr>
+				<?php }
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total skill sessions average')?></td>

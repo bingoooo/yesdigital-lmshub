@@ -72,7 +72,7 @@ $style = array(
 								}
 							}
 						}
-						echo !empty($LvlScale[$level]) ? $LvlScale[$level] : '';?>
+						echo !empty($LvlScale[$level]) ? $LvlScale[$level] : $level;?>
 					</td>
 				</tr>
 				<tr>
@@ -207,7 +207,9 @@ $style = array(
 					<a href="#"><i>See all the answers</i></a>
 					<?php }?>
 					<br><br>
-					<i>Estimated level is <b><?php echo '...'?></b></i>
+					<?php if (!empty($IT['course_user_details']['score_given'])){?>
+					<i>Estimated level is <b><?php echo (int)$IT['course_user_details']['score_given']?></b></i>
+					<?php }?>
 					<?php }else{?>
 					Elearning SCORM Content
 					<?php }?>
@@ -224,8 +226,8 @@ $style = array(
 			<div style="<?php echo $style['.float-second-block']?>">
 				<h2 class="skills-aptitude-title" style="<?php echo $style['.skills-aptitude-title']?>">Speaking Test</h2>
 				<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
-					<?php if (!empty($ST['course_user_details']['date_completed'])){?>
-					<b>Session date <?php echo date('d.m.Y', strtotime($ST['course_user_details']['date_completed']))?></b>
+					<?php if (!empty($ST['course_sessions'][0]['session_info']['date_end'])){?>
+					<b>Session date <?php echo date('d.m.Y', strtotime($ST['course_sessions'][0]['session_info']['date_end']))?></b>
 					<?php }else{?>
 					ILT Session
 					<?php }?>
