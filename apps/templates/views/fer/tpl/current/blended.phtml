@@ -34,6 +34,7 @@ $style = array(
 	'td'					=>'padding: 10px 5px; font-size: 13px; font-family: Arial;',
 	'.profile-block td'		=>'padding: 15px 0;',
 	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
+	'.top-bar-lightgrey'	=>'border-top: 1px solid lightgrey;',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
 	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
 	'.profile-label'		=>'text-transform: uppercase; font-size: 13px;',
@@ -45,6 +46,7 @@ $style = array(
 	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; font-family: Arial;',
 	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
 	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
+	'.lpadding-40'			=>'padding-left:40px;',
 );?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
@@ -192,17 +194,17 @@ $style = array(
 							}
 						}?>
 				<tr>
-					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php
+					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php
 						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])+3600) : '');
-					?></td>
+					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php
+						$style['.left-bar'].$style['.profile-block .left-bar']?>"><b><?php
 						$score = !empty($session['user_session_details']['evaluation_score']) ? (float)$session['user_session_details']['evaluation_score'] : 0;
 						$totalPercentage += $score;
 						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
-					?></td>
+					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
-						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php
+						$style['.left-bar'].$style['.profile-block .left-bar']?>"><b><?php
 						//Time spent
 						if (!empty($session['session_info']['date_end']) && $score){
 							$t_begin	= strtotime($session['session_info']['date_begin']);
@@ -211,8 +213,29 @@ $style = array(
 							$totalTimeSpent += $duration;
 							echo gmdate('H:i', $duration);
 						}
-						else echo '-';?></td>
+						else echo '-';?></b></td>
 				</tr><?php
+						if ($criteria_evaluation){?>
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-block .left-bar'].
+						$style['.top-bar-lightgrey']?>"><i>Objectives</i></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.left-bar'].$style['.top-bar-lightgrey']?>"></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.left-bar'].$style['.top-bar-lightgrey']?>"></td>
+				</tr><?php
+							foreach ($criteria_evaluation as $crit){?>
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.lpadding-40'].$style['.top-bar-lightgrey']?>"><?php echo $crit['name']?></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+				</tr>			
+							<?php
+							}
+						}
 					}
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
