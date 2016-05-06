@@ -98,15 +98,35 @@ $style = array(
 					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Total time:</td>
 					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
 						//Should be in seconds
+						#First, totaltime is only elearning
 						$totaltime = !empty($LP['learning_plan_user_details']['time_spent']) ? (int)$LP['learning_plan_user_details']['time_spent'] : 0;
+						#calculate session time
+						if (!empty($LP['learning_plan_courses'])){
+							foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+								if (empty($LPC['course_info']['course_name']) ||
+									!in_array(strtolower($LPC['course_info']['course_type']), array('videoconference', 'classroom', 'webinar', 'telephone')))
+								{
+									continue;
+								}
+								$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
+								if (!$session)
+									continue;
+								$duration = 0;
+								if (!empty($session['user_session_details']['evaluation_score'])){
+									if (!empty($session['user_session_details']['attendance_hours'])){
+										$duration = (float)$session['user_session_details']['attendance_hours']*3600;
+									}
+									elseif (!empty($session['session_info']['date_end'])){
+										$t_begin	= strtotime($session['session_info']['date_begin']);
+										$t_end		= strtotime($session['session_info']['date_end']);
+										$duration	= $t_end - $t_begin;
+									}
+								}
+								$totaltime+=$duration;
+							}
+						}
 						if ($totaltime){
-							$hrs = floor($totaltime / 3600);
-							if (strlen($hrs)===1) $hrs = '0'.$hrs;
-							$mns = floor(($totaltime / 60) % 60);
-							if (strlen($mns)===1) $mns = '0'.$mns;
-							$scs = $totaltime % 60;
-							if (strlen($scs)===1) $scs = '0'.$scs;
-							echo $hrs.':'.$mns.':'.$scs;
+							echo gmdate('H:i:s', $totaltime);
 						}?></td>
 				</tr>
 			</table>
@@ -145,7 +165,12 @@ $style = array(
 					?></td>
 					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
 						//Time spent
-						echo !empty($LPC['?']['?']) ? $LPC['?']['?'] : ' - ';
+						if (!empty($LPC['course_user_details']['time_spent'])){
+							$timespent = (float)$LPC['course_user_details']['time_spent'];
+							$totalTimeSpent += $timespent;
+							echo gmdate('H:i:s', $timespent);
+						}
+						else echo ' - ';
 						?></td>
 				</tr><?php
 					}
@@ -155,7 +180,7 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? $totalTimeSpent : ' - ';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i:s', $totalTimeSpent) : ' - ';?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
@@ -192,8 +217,8 @@ $style = array(
 						if (!empty($session['user_session_details']['criteria_evalution'])){
 							foreach ($session['user_session_details']['criteria_evalution'] as $crit){
 								if (!isset($crit['name'])) continue;
-								if (!isset($criteria_evaluation[$crit['name'].'-'.$crit['value']])){
-									$criteria_evaluation[$crit['name'].'-'.$crit['value']] = $crit;
+								if (!isset($criteria_evaluation[$crit['name']])){
+									$criteria_evaluation[$crit['name']] = $crit;
 								}
 							}
 						}?>
@@ -210,14 +235,20 @@ $style = array(
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
 						//Time spent
-						if (!empty($session['session_info']['date_end']) && $score){
-							$t_begin	= strtotime($session['session_info']['date_begin']);
-							$t_end		= strtotime($session['session_info']['date_end']);
-							$duration	= $t_end - $t_begin;
-							$totalTimeSpent += $duration;
-							echo gmdate('H:i', $duration);
+						$duration = 0;
+						if ($score){
+							if (!empty($session['user_session_details']['attendance_hours'])){
+								$duration = (float)$session['user_session_details']['attendance_hours']*3600;
+								$totalTimeSpent += $duration;
+							}
+							elseif (!empty($session['session_info']['date_end'])){
+								$t_begin	= strtotime($session['session_info']['date_begin']);
+								$t_end		= strtotime($session['session_info']['date_end']);
+								$duration	= $t_end - $t_begin;
+								$totalTimeSpent += $duration;
+							}
 						}
-						else echo '-';?></b></td>
+						echo $duration ? gmdate('H:i', $duration) : ' - ';?></b></td>
 				</tr><?php
 						if ($criteria_evaluation){?>
 				<tr>
@@ -233,7 +264,7 @@ $style = array(
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
 						$style['.lpadding-40'].$style['.top-bar-lightgrey']?>"><?php echo $crit['name']?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
-						/*$style['.left-bar-lightgrey'].*/$style['.profile-block .left-bar']?>"><?php echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
+						/*$style['.left-bar-lightgrey'].*/$style['.profile-block .left-bar']?>"><?php //echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar-lightgrey'].
 						/*$style['.left-bar-lightgrey'].*/$style['.profile-block .left-bar']?>"></td>
 				</tr>			

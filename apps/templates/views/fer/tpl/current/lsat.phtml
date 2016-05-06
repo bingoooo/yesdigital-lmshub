@@ -20,6 +20,23 @@ if (!empty($LP['level_scale'])){
 	foreach ($LP['level_scale'] as $i=>$lvl)
 		$LvlScale[$lvl['id']] = $lvl['name'];
 }
+## Itest's Levels
+$ITLvls = array(
+	1 => 'A1.2',
+	2 => 'A1.4',
+	3 => 'A2.2',
+	4 => 'A2.4',
+	5 => 'A2.6',
+	6 => 'B1.2',
+	7 => 'B1.4',
+	8 => 'B1.6',
+	9 => 'B2.2',
+	10 => 'B2.4',
+	11 => 'B2.6',
+	12 => 'C1.2',
+	13 => 'C1.4',
+	14 => 'C2',
+);
 /**
  * Unfortunately, we need to set all the CSS inline. Using a PHP hack
  */
@@ -207,11 +224,13 @@ $style = array(
 					<a href="#"><i>See all the answers</i></a>
 					<?php }?>
 					<br><br>
-					<?php if (!empty($IT['course_user_details']['score_given'])){?>
-					<i>Estimated level is <b><?php echo (int)$IT['course_user_details']['score_given']?></b></i>
-					<?php }?>
+					<?php if (!empty($IT['course_user_details']['score_given'])){
+						$lvlIx = (int)$IT['course_user_details']['score_given'];
+						if (isset($ITLvls[$lvlIx])){?>
+					<i>Estimated level is <b><?php echo $ITLvls[$lvlIx]?></b></i>
+					<?php }}?>
 					<?php }else{?>
-					Elearning SCORM Content
+					-
 					<?php }?>
 				</div>
 			</div>
