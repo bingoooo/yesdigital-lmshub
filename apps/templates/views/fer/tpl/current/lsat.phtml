@@ -338,6 +338,8 @@ $style = array(
 			<textarea name="evaluator_comments" id="evaluator_comments" style="<?php echo $style['#evaluator_comments']?>"><?php
 			if (!empty($ReportContent['evaluator_comments']['value']))
 				echo $ReportContent['evaluator_comments']['value'];
+			elseif (!empty($ST['course_sessions'][0]['user_session_details']['evaluation_text']))
+				echo $ST['course_sessions'][0]['user_session_details']['evaluation_text'];
 			?></textarea>
 			<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
 			<div style="font-size:12px;">

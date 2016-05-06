@@ -101,7 +101,7 @@ $style = array(
 	'.top-bar-lightgrey'	=>'border-top: 1px solid lightgrey;',
 	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
 	'.left-bar-lightgrey'	=>'border-left: 1px solid lightgrey;',
-	'.profile-block .left-bar'=>'padding-left: 20px; font-family: Arial;',
+	'.profile-block .left-bar'=>'font-family: Arial;text-align: center;',
 	'.profile-label'		=>'text-transform: uppercase; font-size: 13px;',
 	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
 	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
@@ -111,6 +111,7 @@ $style = array(
 	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; font-family: Arial;',
 	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
 	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
+	'.lpadding-20'			=>'padding-left:20px;',
 	'.lpadding-40'			=>'padding-left:40px;',
 );?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
@@ -220,7 +221,8 @@ $style = array(
 						$nbCourses++;
 						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
 				<tr>
-					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php echo $LPC['course_info']['course_name'];?></td>
+					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php echo $LPC['course_info']['course_name'];?></b><?php
+						echo !empty($LPC['course_user_details']['date_completed']) ? ' - '.date('d.m.Y H:i', strtotime($LPC['course_user_details']['date_completed'])) : ''; ?></td>
 					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
 						$score = !empty($LPC['course_user_details']['score_given']) ? (float)$LPC['course_user_details']['score_given'] : 0;
@@ -288,7 +290,7 @@ $style = array(
 						}?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php
-						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])) : '');
+						echo '<b>'.$LPC['course_info']['course_name'].'</b>'.($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])) : '');
 					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
@@ -316,7 +318,7 @@ $style = array(
 				</tr><?php
 						if ($criteria_evaluation){?>
 				<tr>
-					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-block .left-bar'].
+					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.lpadding-20'].
 						$style['.top-bar-lightgrey']?>"><i>Objectives</i></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
 						$style['.left-bar-lightgrey'].$style['.top-bar-lightgrey']?>"></td>
@@ -334,11 +336,8 @@ $style = array(
 				</tr>			
 							<?php
 							}
-						}?>
-				<tr>
-					<td>&nbsp;<td>
-				</tr>
-				<?php }
+						}
+					}
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total skill sessions average')?></td>
