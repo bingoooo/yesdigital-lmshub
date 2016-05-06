@@ -20,6 +20,70 @@ if (!empty($LP['level_scale'])){
 	foreach ($LP['level_scale'] as $i=>$lvl)
 		$LvlScale[$lvl['id']] = $lvl['name'];
 }
+# Temporary : set all acquired and recommended levels in hard code taken from the LMS due to data missing from ETime
+$acquiredLevels = array(
+	1117 => 'A1.1',
+	1118 => 'A1.2',
+	1119 => 'A1.3',
+	1120 => 'A1.4',
+	1121 => 'A2.1',
+	1122 => 'A2.2',
+	1123 => 'A2.3',
+	1124 => 'A2.4',
+	1125 => 'A2.5',
+	1126 => 'A2.6',
+	1127 => 'B1.1',
+	1128 => 'B1.2',
+	1129 => 'B1.3',
+	1130 => 'B1.4',
+	1131 => 'B1.5',
+	1132 => 'B1.6',
+	1133 => 'B2.1',
+	1134 => 'B2.2',
+	1135 => 'B2.3',
+	1136 => 'B2.4',
+	1137 => 'B2.5',
+	1138 => 'B2.6',
+	1139 => 'C1.1',
+	1140 => 'C1.2',
+	1141 => 'C1.3',
+	1142 => 'C1.4',
+	1143 => 'C2',
+);
+$recommendedLevels = array(
+	1322 => 'A1.1',
+	1323 => 'A1.2',
+	1324 => 'A1.3',
+	1325 => 'A1.4',
+	1326 => 'A2.1',
+	1327 => 'A2.2',
+	1328 => 'A2.3',
+	1329 => 'A2.4',
+	1330 => 'A2.5',
+	1331 => 'A2.6',
+	1332 => 'B1.1',
+	1333 => 'B1.2',
+	1334 => 'B1.3',
+	1335 => 'B1.4',
+	1336 => 'B1.5',
+	1337 => 'B1.6',
+	1338 => 'B2.1',
+	1339 => 'B2.2',
+	1340 => 'B2.3',
+	1341 => 'B2.4',
+	1342 => 'B2.5',
+	1343 => 'B2.6',
+	1344 => 'C1.1',
+	1345 => 'C1.2',
+	1346 => 'C1.3',
+	1347 => 'C1.4',
+	1348 => 'C2',
+);
+if (empty($LvlScale)) $LvlScale = $recommendedLevels;
+$levelSelectors = $LvlScale;
+if (count($levelSelectors)<count($recommendedLevels))
+	$levelSelectors = $recommendedLevels;
+
 /**
  * Unfortunately, we need to set all the CSS inline. Using a PHP hack
  */
@@ -224,7 +288,7 @@ $style = array(
 						}?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php
-						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])+3600) : '');
+						echo $LPC['course_info']['course_name'].($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])) : '');
 					?></b></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
@@ -333,17 +397,17 @@ $style = array(
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey"
 						style="<?php echo $style['.level-scale'].$style['.bg-grey']?>">
 						<option></option>
-						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<?php foreach ($levelSelectors as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
 							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
 								echo ' selected';
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
-					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
+					<?php }elseif (!empty($levelSelectors[$ReportContent[$key]['value']])){?>
 					&nbsp;
 					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
-						echo $LvlScale[$ReportContent[$key]['value']];?></span>
+						echo $levelSelectors[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
@@ -357,25 +421,26 @@ $style = array(
 			<div>Learner's overall current and recommended levels:</div>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
-					'learner_current_level'		=>'Current level:',
-					'learner_recommended_level'	=>'Recommended level:',
-				) as $key=>$text){?>
+					'acquired_level'	=>'Current level:',
+					'recommended_level'	=>'Recommended level:',
+				) as $key=>$text){
+					$thisLvlSelector = ($key === 'acquired_level') ? $acquiredLevels : $recommendedLevels;?>
 				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<label for="<?php echo $key?>" class="level-label" style="<?php echo $style['.level-label']?>"><?php echo $text?></label>
 					<?php if (!$isRO){?>
 					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale" style="<?php echo $style['.level-scale']?>">
 						<option></option>
-						<?php foreach ($LvlScale as $lK=>$lT){?>
+						<?php foreach ($thisLvlSelector as $lK=>$lT){?>
 						<option value="<?php echo $lK?>"<?php
 							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
 								echo ' selected';
 						?>><?php echo $lT?></option>
 						<?php }?>
 					</select>
-					<?php }elseif (!empty($LvlScale[$ReportContent[$key]['value']])){?>
+					<?php }elseif (!empty($thisLvlSelector[$ReportContent[$key]['value']])){?>
 					&nbsp;
 					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
-						echo $LvlScale[$ReportContent[$key]['value']];?></span>
+						echo $thisLvlSelector[$ReportContent[$key]['value']];?></span>
 					<?php }?>
 				</div>
 				<?php }?>
