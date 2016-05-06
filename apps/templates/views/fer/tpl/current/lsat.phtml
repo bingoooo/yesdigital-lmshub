@@ -140,7 +140,7 @@ $style = array(
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
-			Profil
+			PROFILE
 		</h1>
 		<div style="background:white;">
 			<table style="<?php echo $style['table']?>">
@@ -195,13 +195,7 @@ $style = array(
 						//Should be in seconds
 						$totaltime = !empty($LP['learning_plan_user_details']['time_spent']) ? (int)$LP['learning_plan_user_details']['time_spent'] : 0;
 						if ($totaltime){
-							$hrs = floor($totaltime / 3600);
-							if (strlen($hrs)===1) $hrs = '0'.$hrs;
-							$mns = floor(($totaltime / 60) % 60);
-							if (strlen($mns)===1) $mns = '0'.$mns;
-							$scs = $totaltime % 60;
-							if (strlen($scs)===1) $scs = '0'.$scs;
-							echo $hrs.':'.$mns.':'.$scs;
+							echo gmdate('H:i', $totaltime);
 						}?></td>
 				</tr>
 			</table>
