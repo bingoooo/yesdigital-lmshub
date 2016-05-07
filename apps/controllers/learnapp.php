@@ -12,7 +12,8 @@ class Learnapp extends Controller{
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-		'http://m.learnapp.fr', 'https://m.learnapp.fr/',
+		'http://m.learnapp.fr', 'https://m.learnapp.fr',
+		'http://m.learnapp.fr/', 'https://m.learnapp.fr/',
 	);
 	
 	/**
