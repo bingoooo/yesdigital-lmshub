@@ -14,6 +14,7 @@ class Objects extends Organization{
 	function doPostBack(){
 		try{
 			$posts = $this->getPHPInputs();
+			$this->logAjaxRequest(print_r($posts, true));
 	        $postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
 	        $id_course = !empty($_POST['id_course']) ? $_POST['id_course'] : (!empty($posts['id_course']) ? $posts['id_course'] : null);
 	        if ($id_course) {
