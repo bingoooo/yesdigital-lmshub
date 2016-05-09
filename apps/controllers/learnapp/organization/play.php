@@ -12,6 +12,10 @@ class Play extends Organization{
 	}
 	
 	function doPostBack(){
+		//Nothing to code. Just preventing the parent "doPostBack" function behavior
+	}
+	
+	function main(){
 		try{
 			$posts = $this->getPHPInputs();
 			$postParams['id_user'] = $_SESSION['Learnapp']['id_user'];
@@ -28,10 +32,6 @@ class Play extends Organization{
 		catch(Exception $ex){
 			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
-	}
-	
-	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
 	}
 	
 }

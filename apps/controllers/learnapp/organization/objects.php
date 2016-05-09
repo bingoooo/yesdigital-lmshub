@@ -12,6 +12,10 @@ class Objects extends Organization{
 	}
 	
 	function doPostBack(){
+		//Nothing to code. Just preventing the parent "doPostBack" function behavior
+	}
+	
+	function main(){
 		try{
 			$posts = $this->getPHPInputs();
 			$this->logAjaxRequest(print_r($posts, true));
@@ -29,10 +33,6 @@ class Objects extends Organization{
 		catch(Exception $ex){
 			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 		}
-	}
-	
-	function main(){
-		//Nothing to code. Just preventing the parent "main" function behavior
 	}
 	
 }
