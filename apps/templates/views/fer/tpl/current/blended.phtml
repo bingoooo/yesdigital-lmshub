@@ -115,8 +115,9 @@ $style = array(
 	'.lpadding-40'			=>'padding-left:40px;',
 );?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
+<div style="text-align:center">
 	<img
-     style="width:35%;position:absolute;right:0;top:0;"
+     style="width:35%;"
      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAB3CAMAAACQeH8xAAAAt1BMVEX///8AAAAAdL6dnZ15q9bG
 2u3k5OQqKip8fHx9rNa/v7/U1NSlpaW6urr19fWIiIjr6+sgICCvr69ERERtbW0AeMDc3NyXl5fG
 xsY7Ozv4+Pizs7NkZGSQkJDg4OBMTExcXFypyOQmhsZ2dnafwOA4ODjMzMxgYGAxMTGLi4sXFxdU
@@ -212,7 +213,7 @@ gIONjpWnDHrtAKxr5C3aMH4PzZiDofZrgRUIzdPUztMh/4X84vmHcDrBUTy1QnN8hPnnBdoh/NLA
 IlS+/i36/EAnZJutH5psbsK8896Fa1OahKYUHIbZrehxlG13PKg97aLUjbVo5y7CbNyEeiT084vR
 5ZyPdqjXR4Iw1EW6C3P9demvNX9GhZagbtHThuXf1o/7PurB095tNMZ6EatktVXjfyd1NmlwbgK6
 AAAAAElFTkSuQmCC"/>
-
+</div>
 	
 	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
@@ -296,7 +297,7 @@ AAAAAElFTkSuQmCC"/>
 			</table>
 		</div>
 		
-		<br><br><br><br>
+		<br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			All courses in the learning plan
@@ -354,8 +355,11 @@ AAAAAElFTkSuQmCC"/>
 				</tr>
 			</table>
 			
+			<?php if (!$isRO){?>
 			<br><br><br><br>
+			<?php }else{?>
 			<pagebreak />
+			<?php }?>
 			
 			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">Session results:</h2>
 			<table style="<?php echo $style['table']?>">
