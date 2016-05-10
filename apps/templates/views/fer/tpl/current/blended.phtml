@@ -290,7 +290,7 @@ $style = array(
 						}?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php
-						echo '<b>'.$LPC['course_info']['course_name'].'</b>'.($session ? ' - '.date('d/m/Y H:i', strtotime($session['session_info']['date_begin'])) : '');
+						echo '<b>'.$LPC['course_info']['course_name'].'</b>'.($session ? ' - '.date('d.m.Y H:i', strtotime($session['session_info']['date_begin'])) : '');
 					?></td>
 					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
