@@ -88,7 +88,7 @@ if (count($levelSelectors)<count($recommendedLevels))
  * Unfortunately, we need to set all the CSS inline. Using a PHP hack
  */
 $style = array(
-	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
+	'#report_container'		=>'position:relative;background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
 	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
 	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: white; padding: 10px; font-family: Arial;',
 	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
@@ -116,7 +116,7 @@ $style = array(
 );?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<img
-     style="width:30%;float:right;margin-right:15px;"
+     style="width:35%;position:absolute;right:0;top:0;"
      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAB3CAMAAACQeH8xAAAAt1BMVEX///8AAAAAdL6dnZ15q9bG
 2u3k5OQqKip8fHx9rNa/v7/U1NSlpaW6urr19fWIiIjr6+sgICCvr69ERERtbW0AeMDc3NyXl5fG
 xsY7Ozv4+Pizs7NkZGSQkJDg4OBMTExcXFypyOQmhsZ2dnafwOA4ODjMzMxgYGAxMTGLi4sXFxdU
