@@ -330,12 +330,13 @@ $style = array(
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
 						$style['.left-bar-lightgrey'].$style['.top-bar-lightgrey']?>"></td>
 				</tr><?php
-							foreach ($criteria_evaluation as $crit){?>
+							foreach ($criteria_evaluation as $crit){
+								if (empty($crit['name'])) continue;?>
 				<tr>
 					<td style="<?php echo $style['td'].$style['.profile-block td'].
 						$style['.lpadding-40']//.$style['.top-bar-lightgrey']?>"><?php echo $crit['name']?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td']./*$style['.top-bar-lightgrey'].*/
-						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><?php echo ' - ';//echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><?php echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
 					<td style="<?php echo $style['td'].$style['.profile-block td']./*$style['.top-bar-lightgrey'].*/
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"></td>
 				</tr>			
