@@ -29,7 +29,7 @@ class Learnapp extends Controller{
 		/*	$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
 				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');*/
 			//header('Access-Control-Allow-Origin: '.$origin);
-			header('Access-Control-Allow-Origin: *');
+			header('Access-Control-Allow-Origin: http://learnapp.fr https://learnapp.fr  http://m.learnapp.fr https://m.learnapp.fr');
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Allow-Headers: Content-Type');
 		//}
