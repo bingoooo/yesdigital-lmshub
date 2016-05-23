@@ -76,6 +76,7 @@ class Learnapp extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
+		return true;
 		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
 			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
 		//First, check the permission in case of devel or sandbox environment
