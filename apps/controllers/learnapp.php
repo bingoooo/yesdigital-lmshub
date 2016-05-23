@@ -25,8 +25,8 @@ class Learnapp extends Controller{
 	);
 	
 	function initialize(){
-		//if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
-		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
+			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
 				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');
 			header('Access-Control-Allow-Origin: '.$origin);
 			//header('Access-Control-Allow-Origin: http://learnapp.fr https://learnapp.fr  http://m.learnapp.fr https://m.learnapp.fr');
@@ -35,7 +35,7 @@ class Learnapp extends Controller{
 			header('P3P: CP="NON DSP LAW CUR ADM DEV TAI PSA PSD HIS OUR DEL IND UNI PUR COM NAV INT DEM CNT STA POL HEA PRE LOC IVD SAM IVA OTC"');
 			header('Access-Control-Allow-Headers: X-Accept-Charset, X-Accept, Content-Type, Authorization, Accept, Origin, X-Requested-With');
 			header('Access-Control-Max-Age: 1');
-		//}
+		}
 		if (!defined('ENV') || ENV!=='devel')
 			$this->setLayout('json');	//On production environment, use JSON format
 		else{
@@ -80,7 +80,6 @@ class Learnapp extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		return true;
 		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
 			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
 		//First, check the permission in case of devel or sandbox environment
