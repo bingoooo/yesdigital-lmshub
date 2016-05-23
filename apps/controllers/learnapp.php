@@ -33,7 +33,7 @@ class Learnapp extends Controller{
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Allow-Methods: POST, OPTIONS, GET, PUT');
 			header('P3P: CP="NON DSP LAW CUR ADM DEV TAI PSA PSD HIS OUR DEL IND UNI PUR COM NAV INT DEM CNT STA POL HEA PRE LOC IVD SAM IVA OTC"');
-			header('Access-Control-Allow-Headers: Authorization, X-Requested-With, Content-Type');
+			header('Access-Control-Allow-Headers: X-Accept-Charset, X-Accept, Content-Type, Authorization, Accept, Origin, X-Requested-With');
 			header('Access-Control-Max-Age: 1');
 		//}
 		if (!defined('ENV') || ENV!=='devel')
