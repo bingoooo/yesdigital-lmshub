@@ -17,7 +17,11 @@ class Profile extends User{
 	
 	function main(){
 		try{
-			$this->_view->json = $this->retrieve('user/profile', array('id_user'=>$_SESSION['Learnapp']['id_user']));
+			if (empty($_SESSION['Learnapp']['id_user'])){
+				$this->_view->json = array('success'=>false, 'message'=>'Session not opened, credentials missing');
+			}
+			else
+				$this->_view->json = $this->retrieve('user/profile', array('id_user'=>$_SESSION['Learnapp']['id_user']));
 		}
 		catch(Exception $ex){
 			$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
