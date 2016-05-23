@@ -8,10 +8,10 @@ use FragTale\Controller\Learnapp;
 class User extends Learnapp{
 	
 	function initialize(){
-		if (empty($_SESSION['Learnapp']['id_user'])){
-			$this->exitOnError(403, 'User is not logged in.');
-		}
 		parent::initialize();
+		if (empty($_SESSION['Learnapp']['id_user'])){
+			$this->_view->json = array('success'=>false, 'message'=>'Session not opened, credentials missing');
+		}
 	}
 	
 	function doPostBack(){
