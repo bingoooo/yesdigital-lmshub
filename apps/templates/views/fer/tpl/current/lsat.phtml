@@ -157,14 +157,23 @@ $style = array(
 						$level = null;
 						if (!empty($User['fields']) && is_array($User['fields'])){
 							foreach ($User['fields'] as $i=>$field){
-								if (!empty($field['name']) && !empty($field['value']) && in_array(strtolower($field['name']), array('acquired level', 'recommended level'))){
+								if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])=='recommended level'){
 									$level = $field['value'];
 									break;
 								}
 							}
+							if (!$level){
+								foreach ($User['fields'] as $i=>$field){
+									if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])=='acquired level'){
+										$level = $field['value'];
+										break;
+									}
+								}
+							}
 						}
-						echo !empty($LvlScale[$level]) ? $LvlScale[$level] :
-								(!empty($recommendedLevels[$level]) ? $recommendedLevels[$level] : $level);?>
+						echo !empty($recommendedLevels[$level]) ? $recommendedLevels[$level] :
+								(!empty($LvlScale[$level]) ? $LvlScale[$level] : 
+										(!empty($acquiredLevels[$level]) ? $acquiredLevels[$level] : $level));?>
 					</td>
 				</tr>
 				<tr>
