@@ -218,6 +218,7 @@ $style = array(
 			Language Skills Aptitude Test
 		</h1>
 		<?php $NA = $IT = $WT = $ST = null;
+		$ix = 1;
 		foreach ($LP['learning_plan_courses'] as $Course){
 			if (!empty($Course['course_info']['course_name'])){
 				$coursename = strtolower($Course['course_info']['course_name']);
@@ -230,15 +231,16 @@ $style = array(
 				elseif (stripos($coursename, 'speaking')!==false)
 					$ST = $Course;
 			}
-		}?>
+		}
+		if ($NA){?>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 			<div style="<?php echo $style['.float-first-block']?>">
 				<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
-					1
+					<?php echo $ix;$ix++;?>
 				</div>
 			</div>
 			<div style="<?php echo $style['.float-second-block']?>">
-				<h2 class="skills-aptitude-title" style="<?php echo $style['.skills-aptitude-title']?>">Needs Analysis</h2>
+				<h2 class="skills-aptitude-title" style="<?php echo $style['.skills-aptitude-title']?>"><!-- Needs Analysis -->SELF-EVALUATION</h2>
 				<div class="skills-aptitude-text" style="<?php echo $style['.skills-aptitude-text']?>">
 					<?php if (!empty($NA['course_user_details']['date_completed'])){?>
 					<b>Completed <?php echo date('d.m.Y', strtotime($NA['course_user_details']['date_completed']))?></b>
@@ -254,10 +256,12 @@ $style = array(
 			</div>
 			<div style="clear:both"></div>
 		</div>
+		<?php }
+		if ($WT){?>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 			<div style="<?php echo $style['.float-first-block']?>">
 				<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
-					2
+					<?php echo $ix;$ix++;?>
 				</div>
 			</div>
 			<div style="<?php echo $style['.float-second-block']?>">
@@ -292,10 +296,12 @@ $style = array(
 			</div>
 			<div style="clear:both"></div>
 		</div>
+		<?php }
+		if ($IT){?>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 			<div style="<?php echo $style['.float-first-block']?>">
 				<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
-					3
+					<?php echo $ix;$ix++;?>
 				</div>
 			</div>
 			<div style="<?php echo $style['.float-second-block']?>">
@@ -321,10 +327,12 @@ $style = array(
 			</div>
 			<div style="clear:both"></div>
 		</div>
+		<?php }
+		if ($ST){?>
 		<div class="skills-aptitude-block" style="<?php echo $style['.skills-aptitude-block']?>">
 			<div style="<?php echo $style['.float-first-block']?>">
 				<div class="skills-aptitude-number" style="<?php echo $style['.skills-aptitude-number']?>">
-					4
+					<?php echo $ix;$ix++;?>
 				</div>
 			</div>
 			<div style="<?php echo $style['.float-second-block']?>">
@@ -337,7 +345,7 @@ $style = array(
 			</div>
 			<div style="clear:both"></div>
 		</div>
-
+		<?php }?>
 		<br><br><br>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
@@ -358,8 +366,11 @@ $style = array(
 			</div>
 			<?php }?>
 		</div>
-		
+		<?php if (!$isRO){?>
 		<br><br><br>
+		<?php }else{?>
+		<pagebreak />
+		<?php }?>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			SKILL’S LEVEL
