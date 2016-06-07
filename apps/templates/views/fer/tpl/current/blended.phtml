@@ -452,19 +452,26 @@ $style = array(
 				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<span class="level-label" style="<?php echo $style['.level-label']?>">PROGRESS:</span>
 					&nbsp;
+					<?php if (!$isRO){
+						$satisfatory = isset($ReportContent['progress_satisfactory']['value']) ? $ReportContent['progress_satisfactory']['value'] : null;?>
 					<label for="progress_satisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
 						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
-						if (isset($ReportContent['progress_satisfactory']['value']) && (int)$ReportContent['progress_satisfactory']['value']===1) echo ' checked';?> />
+						if (null!==$satisfatory && $satisfatory==='1') echo ' checked';?> />
 						&nbsp;
 						Satisfactory
 					</label>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label for="progress_unsatisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
 						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory"<?php
-						if (isset($ReportContent['progress_satisfactory']['value']) && (int)$ReportContent['progress_satisfactory']['value']===0) echo ' checked';?> />
+						if (null!==$satisfatory && $satisfatory==='0') echo ' checked';?> />
 						&nbsp;
 						Unsatisfactory
 					</label>
+					<?php }else{?>
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
+						if (null!==$satisfatory)
+							echo $satisfatory==='1' ? 'Satisfactory' : ($satisfatory==='0' ? 'Unsatisfactory' : '');?></span>
+					<?php }?>
 				</div>
 			</div>
 		</div>
