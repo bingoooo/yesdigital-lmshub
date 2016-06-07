@@ -246,7 +246,7 @@ $style = array(
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total e-learning average')?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i', $totalTimeSpent) : ' - ';?></td>
 				</tr>
@@ -348,7 +348,7 @@ $style = array(
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total skill sessions average')?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i', $totalTimeSpent);?></td>
 				</tr>
@@ -454,14 +454,14 @@ $style = array(
 					&nbsp;
 					<label for="progress_satisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
 						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
-						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===1) echo ' selected';?> />
+						if (isset($ReportContent['progress_satisfactory']['value']) && (int)$ReportContent['progress_satisfactory']['value']===1) echo ' checked';?> />
 						&nbsp;
 						Satisfactory
 					</label>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<label for="progress_unsatisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
 						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory"<?php
-						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===0) echo ' selected';?> />
+						if (isset($ReportContent['progress_satisfactory']['value']) && (int)$ReportContent['progress_satisfactory']['value']===0) echo ' checked';?> />
 						&nbsp;
 						Unsatisfactory
 					</label>
