@@ -52,7 +52,7 @@ class Learnapp extends Controller{
 	
 	function logAjaxRequest($addedmsg=''){
 		$msg = $_SERVER['REMOTE_ADDR'].' | '.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI'].(!empty($_SERVER['HTTP_USER_AGENT']) ? ' | '.$_SERVER['HTTP_USER_AGENT'] : '**No UA**');
-		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg.(!empty($addedmsg)? ' | '.$addedmsg : '');
+		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg.(!empty($addedmsg)? ' | '.$addedmsg : '').' | '.print_r($_SERVER, true);
 		$logFile = DOC_ROOT.'/logs/log-'.date('Ym').'.log';
 		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
 	}
