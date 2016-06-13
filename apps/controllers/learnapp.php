@@ -27,7 +27,7 @@ class Learnapp extends Controller{
 	function initialize(){
 		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-				(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');
+				(!empty($_SERVER['HTTP_REFERER']) ? $this->getUrlDomain($_SERVER['HTTP_REFERER']) : '*');
 			header('Access-Control-Allow-Origin: '.$origin);
 			header('Access-Control-Allow-Credentials: true');
 			header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
@@ -51,8 +51,10 @@ class Learnapp extends Controller{
 	}
 	
 	function logAjaxRequest($addedmsg=''){
-		$msg = $_SERVER['REMOTE_ADDR'].' | '.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI'].(!empty($_SERVER['HTTP_USER_AGENT']) ? ' | '.$_SERVER['HTTP_USER_AGENT'] : '**No UA**');
-		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg.(!empty($addedmsg)? ' | '.$addedmsg : '').' | '.print_r($_SERVER, true);
+		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+			(!empty($_SERVER['HTTP_REFERER']) ? $this->getUrlDomain($_SERVER['HTTP_REFERER']) : '*');
+		$msg = $_SERVER['REMOTE_ADDR'].' - ORIGIN - '.$origin.' | '.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI'].(!empty($_SERVER['HTTP_USER_AGENT']) ? ' | '.$_SERVER['HTTP_USER_AGENT'] : '**No UA**');
+		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg.(!empty($addedmsg)? ' | '.$addedmsg : '');
 		$logFile = DOC_ROOT.'/logs/log-'.date('Ym').'.log';
 		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
 	}
@@ -75,7 +77,7 @@ class Learnapp extends Controller{
 		$this->logAjaxRequest($errcode.' '.$errmsg);
 		
 		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');
+			(!empty($_SERVER['HTTP_REFERER']) ? $this->getUrlDomain($_SERVER['HTTP_REFERER']) : '*');
 		header('Access-Control-Allow-Origin: '.$origin);
 		header("Content-type: application/json; charset=UTF-8");
 		header('HTTP/1.0 '.$errcode.' '.$errmsg);
@@ -127,5 +129,18 @@ class Learnapp extends Controller{
 	 */
 	function getPHPInputs($assoc=true){
 		return json_decode(file_get_contents('php://input'), $assoc);
+	}
+	
+	/**
+	 * Returns only the "Origin" part of a given URL
+	 * @param string $url	This URL MUST contains the HTTP(S) protocole
+	 * @return string
+	 */
+	function getUrlDomain($url){
+		if (stripos($url, 'http')!==0) return false;
+		$urlParts = explode('//', $url);
+		if (count($urlParts)!==2) return false;
+		$urlSubParts = explode('/', $urlParts[1]);
+		return $urlParts[0].'//'.$urlSubParts[0];
 	}
 }
