@@ -74,6 +74,9 @@ class Learnapp extends Controller{
 		
 		$this->logAjaxRequest($errcode.' '.$errmsg);
 		
+		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
+			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '*');
+		header('Access-Control-Allow-Origin: '.$origin);
 		header("Content-type: application/json; charset=UTF-8");
 		header('HTTP/1.0 '.$errcode.' '.$errmsg);
 		die(json_encode($errs));
