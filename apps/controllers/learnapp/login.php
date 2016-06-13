@@ -21,7 +21,7 @@ class Login extends Learnapp{
 		$password = !empty($_POST['password']) ? trim($_POST['password']) : (!empty($posts['password']) ? trim($posts['password']) : null);
 		if (!$email || !$password){
 			unset($_SESSION['Learnapp']);
-			$this->exitOnError(403, 'Missing required parameters');
+			$this->exitOnError(403, 'Missing required parameters; given: '.print_r(array('PHPINPUTS'=>$posts, 'POST'=>$_POST, 'REQUEST'=>$_REQUEST), true));
 		}
 		$result = $this->retrieve('user/authenticate', array('username'=>$email, 'password'=>$password));
 		if (!empty($result['success']) && !empty($result['token'])){
