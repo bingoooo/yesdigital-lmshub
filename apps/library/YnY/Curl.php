@@ -43,6 +43,7 @@ class Curl{
 			'user/logout',
 			'user/profile',
 			'user/lostpassword',
+			'user/edit',
 			'organization/listObjects',
 			'organization/play',
 			'yny_user/messages',
