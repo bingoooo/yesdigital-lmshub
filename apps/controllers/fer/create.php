@@ -52,6 +52,10 @@ class Create extends Fer{
 		if (!$this->processing()){
 			//do some stuff
 		}
+		if (defined('DEVEL')){
+			header("Content-type: application/json; charset=UTF-8");
+			die(json_encode($this->_view->json));
+		}
 	}
 	
 	function processing(){
