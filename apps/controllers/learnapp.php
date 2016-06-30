@@ -86,7 +86,7 @@ class Learnapp extends Controller{
 	
 	function checkRestrictedHosts(){
 		$origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] :
-			(!empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $_SERVER['HTTP_HOST']);
+			(!empty($_SERVER['HTTP_REFERER']) ? $this->getUrlDomain($_SERVER['HTTP_REFERER']) : '*');
 		//First, check the permission in case of devel or sandbox environment
 		if (stripos($origin, 'apisdbx')!==false || stripos($origin, 'localhost')!==false ||
 			(defined('ENV') && ENV==='devel')
