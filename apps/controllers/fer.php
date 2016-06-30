@@ -12,7 +12,7 @@ class Fer extends Controller{
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-			'127.0.0.1', 'localhost', '::1', 'ip6-localhost', 'fragbis',
+			'127.0.0.1', 'localhost', '::1', 'ip6-localhost', 'fragbis', '192.168.2.95',
 			'54.86.250.179', 'afoschi-etime-git.docebo.info',	//AFOSCHI LMS Sandbox
 			'54.85.129.207',	//Seemed to be the e-time API server that calling the FER for the Sandbox
 			'80.215.234.41', '89.225.245.6',	//Yes'n'You IP address
@@ -27,19 +27,20 @@ class Fer extends Controller{
 	 */
 	protected $mapHost2Instance = array(
 			'127.0.0.1'		=>'default',
-			'localhost'		=>'default',
+			'localhost'		=>'yny',
 			'54.86.250.179'	=>'default',
 			'afoschi-etime-git.docebo.info'	=> 'default',
 			'54.85.129.207'	=>'default',
 			'54.72.164.181'	=>'yny',		//prod
 			'd-eu-smtpgw.docebopaas.com'	=>'yny',//prod
+			'192.168.2.205'	=>'yny'
 	);
 	
 	function initialize(){
 		if ($this->checkRestrictedHosts())//First of all, check if the remote host is allowed to connect
 			if (!empty($_SERVER['HTTP_ORIGIN']))
 				header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
-			else
+			elseif (!defined('ENV') || ENV!=='devel')
 				$this->exitOnError(403, 'No HTTP ORIGIN sent by client');
 		if (!defined('ENV') || ENV!=='devel')
 			$this->setLayout('json');
@@ -58,7 +59,7 @@ class Fer extends Controller{
 			'User'		=>$this->retrieveUserData(),
 			'LP_Data'	=>$this->retrieveLpDataForUser()
 		);*/
-		if (defined('ENV') && ENV!=='devel')
+		if (defined('ENV') && ENV==='devel')
 			$this->_view->json = $this->retrieveLpDataForUser();
 	}
 	
@@ -87,7 +88,7 @@ class Fer extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		if (defined('ENV') && ENV==='devel')
+		if (defined('DEVEL') || (defined('ENV') && ENV==='devel'))
 			return true;
 		if (in_array($_SERVER['REMOTE_ADDR'], $this->allowedHosts))
 			return true;
@@ -109,11 +110,25 @@ class Fer extends Controller{
 				return $this->returnJsonError('Missing required "method" parameter');
 		}
 		$instance = null;
-		foreach (array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $_SERVER['REMOTE_ADDR']) as $remotehost){
-			if (in_array($remotehost, $this->allowedHosts)){
-				if (isset($this->mapHost2Instance[$remotehost])){
-					$instance = $this->mapHost2Instance[$remotehost];
-					break;
+		if (defined('DEVEL') || (defined('ENV') && ENV==='devel')){
+			//On development, set the server IP instance
+			foreach (array($_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_HOST'], $_SERVER['SERVER_ADDR']) as $remotehost){
+				if (in_array($remotehost, $this->allowedHosts)){
+					if (isset($this->mapHost2Instance[$remotehost])){
+						$instance = $this->mapHost2Instance[$remotehost];
+						break;
+					}
+				}
+			}
+		}
+		else{
+			//On prod, it is the caller that must define which connection to given instance
+			foreach (array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $_SERVER['REMOTE_ADDR']) as $remotehost){
+				if (in_array($remotehost, $this->allowedHosts)){
+					if (isset($this->mapHost2Instance[$remotehost])){
+						$instance = $this->mapHost2Instance[$remotehost];
+						break;
+					}
 				}
 			}
 		}
