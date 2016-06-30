@@ -7,11 +7,6 @@ use FragTale\Controller\Learnapp\User;
  */
 class Ical extends User{
 	
-	function initialize(){
-		if ($this->_view->isMeta())
-			parent::initialize();
-	}
-	
 	function doPostBack(){
 		//Nothing to code
 	}
@@ -32,7 +27,7 @@ class Ical extends User{
 				else
 					$this->_view->json = array('success' => false, 'error' => 'ICS file creation: permission denied');
 			}
-			catch(Exception $ex){die('test');
+			catch(Exception $ex){
 				$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
 			}
 		}
