@@ -193,7 +193,7 @@ $style = array(
 							}
 						}
 						if ($totaltime){
-							echo gmdate('H:i', $totaltime);
+							echo gmdate('H:i:s', $totaltime);
 						}?></td>
 				</tr>
 			</table>
@@ -219,7 +219,8 @@ $style = array(
 				if (!empty($LP['learning_plan_courses'])){
 					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
 						if (empty($LPC['course_info']['course_name'])||
-							strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
+							strtolower($LPC['course_info']['course_type'])!=='elearning' ||
+							strtolower($LPC['course_info']['course_category_name'])==='microlearning') continue;
 						$nbCourses++;
 						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
 				<tr>
@@ -236,7 +237,7 @@ $style = array(
 						if (!empty($LPC['course_user_details']['time_spent'])){
 							$timespent = (float)$LPC['course_user_details']['time_spent'];
 							$totalTimeSpent += $timespent;
-							echo gmdate('H:i', $timespent);
+							echo gmdate('H:i:s', $timespent);
 						}
 						else echo ' - ';
 						?></td>
@@ -248,12 +249,12 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i', $totalTimeSpent) : ' - ';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i:s', $totalTimeSpent) : ' - ';?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
-					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+					<td class="/*left-bar*/" style="<?php echo $style['td'].$style['.profile-block td']//.$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php //echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="/*left-bar*/" style="<?php echo $style['td'].$style['.profile-block td']/*.$style['.left-bar']*/.$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
 				</tr>
 			</table>
 			
@@ -319,7 +320,7 @@ $style = array(
 								$totalTimeSpent += $duration;
 							}
 						}
-						echo $duration ? gmdate('H:i', $duration) : ' - ';?></b></td>
+						echo $duration ? gmdate('H:i:s', $duration) : ' - ';?></b></td>
 				</tr><?php
 						if ($criteria_evaluation){?>
 				<tr>
@@ -350,12 +351,12 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i', $totalTimeSpent);?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i:s', $totalTimeSpent);?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
-					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
-					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+					<td class="/*left-bar*/" style="<?php echo $style['td'].$style['.profile-block td']//.$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php //echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="/*left-bar*/" style="<?php echo $style['td'].$style['.profile-block td']/*.$style['.left-bar']*/.$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
 				</tr>
 			</table>
 		</div>
@@ -382,6 +383,7 @@ $style = array(
 		<br><br><br>
 		<!-- <pagebreak /> -->
 		
+		<?php /*
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">SKILL’S LEVEL</h1>
 		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
 			<!-- <h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">SKILLS:</h2> -->
@@ -420,10 +422,11 @@ $style = array(
 		</div>
 		
 		<br><br>
-		
-		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">LEARNER’S LEVEL</h1>
+		*/?>
+					
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">LEARNER’S COMPLETED LEVEL</h1>
 		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
-			<div>Learner's overall current and recommended levels:</div>
+			<div>Learner's overall current and recommended level at the end of the Learning Plan:</div>
 			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
 				<?php foreach (array(
 					'acquired_level'	=>'Current level:',
