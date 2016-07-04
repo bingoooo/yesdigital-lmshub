@@ -346,7 +346,11 @@ $style = array(
 			<div style="clear:both"></div>
 		</div>
 		<?php }?>
+		<?php if (!$isRO){?>
 		<br><br><br>
+		<?php }else{?>
+		<pagebreak />
+		<?php }?>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			REPORT
@@ -366,11 +370,11 @@ $style = array(
 			</div>
 			<?php }?>
 		</div>
-		<?php if (!$isRO){?>
+		<?php //if (!$isRO){?>
 		<br><br><br>
-		<?php }else{?>
+		<?php /*}else{?>
 		<pagebreak />
-		<?php }?>
+		<?php }*/?>
 		
 		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
 			CURRENT LEVELS
