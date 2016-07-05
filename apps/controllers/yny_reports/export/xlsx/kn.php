@@ -133,7 +133,7 @@ class Kn extends Xlsx{
 					$line++;
 				}
 			}
-			$this->sendXlsx('BNP');
+			$this->sendXlsx('K&N');
 		}
 	}
 }
