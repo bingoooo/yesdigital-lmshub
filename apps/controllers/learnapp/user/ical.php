@@ -19,6 +19,7 @@ class Ical extends User{
 					$this->_view->json = $this->returnJsonError('Empty iCal Events');
 					return false;
 				}
+				$this->logAjaxRequest(print_r($posts, true));
 				$filename	= md5($_SESSION['Learnapp']['id_user']);
 				$filepath	= PUB_ROOT.'/icals/'.$filename.'.ics';
 				$filecontent= $this->getBlock('learnapp/user/ical', array('iCalEvents'=>$posts['iCalEvents']));
