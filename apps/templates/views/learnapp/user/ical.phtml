@@ -1,4 +1,4 @@
-BEGIN:VCALENDAR
+<? try{?>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:m.learnapp.fr
 CALSCALE:GREGORIAN
@@ -22,4 +22,4 @@ SUMMARY:<?php echo (!empty($event['SUMMARY']) ? $event['SUMMARY'] : '')."\r\n";?
 LOCATION:<?php echo (!empty($event['LOCATION']) ? $event['LOCATION'] : '')."\r\n";?>
 END:VEVENT
 <?php }}
-?>END:VCALENDAR
+?>END:VCALENDAR<?php }catch(Exception $ex){echo $ex->getMessage();}
