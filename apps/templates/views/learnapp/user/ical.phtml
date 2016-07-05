@@ -1,10 +1,9 @@
-<? ini_set('display_errors', 'On'); error_reporting(E_ALL);try{?>BEGIN:VCALENDAR
+<?php if (!empty($view->iCalEvents) && is_array($view->iCalEvents)){?>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:m.learnapp.fr
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-<?php if (!empty($view->iCalEvents) && is_array($view->iCalEvents)){
-foreach ($view->iCalEvents as $event){
+<?php foreach ($view->iCalEvents as $event){
 	$dtstart= is_numeric($event['DTSTART']) ? date('Ymd\THis\Z', $event['DTSTART']) : $event['DTSTART'];
 	$dtend	= is_numeric($event['DTEND']) ? date('Ymd\THis\Z', $event['DTEND']) : $event['DTEND'];
 ?>BEGIN:VEVENT
@@ -21,5 +20,5 @@ DESCRIPTION:<?php echo (!empty($event['DESCRIPTION']) ? $event['DESCRIPTION'] : 
 SUMMARY:<?php echo (!empty($event['SUMMARY']) ? $event['SUMMARY'] : '')."\r\n";?>
 LOCATION:<?php echo (!empty($event['LOCATION']) ? $event['LOCATION'] : '')."\r\n";?>
 END:VEVENT
-<?php }}
-?>END:VCALENDAR<?php }catch(Exception $ex){echo $ex->getMessage();}
+<?php }
+?>END:VCALENDAR<?php }
