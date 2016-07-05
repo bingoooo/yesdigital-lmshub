@@ -22,11 +22,13 @@ class Ical extends User{
 				$filename	= md5($_SESSION['Learnapp']['id_user']);
 				$filepath	= PUB_ROOT.'/icals/'.$filename.'.ics';
 				$filecontent= $this->getBlock('learnapp/user/ical', array('iCalEvents'=>$posts['iCalEvents']));
-				$this->logAjaxRequest($filecontent);
-				if (file_put_contents($filepath, $filecontent))
-					$this->_view->json = array('success' => true, 'ical' => WEB_ROOT.'/icals/'.$filename.'.ics');
-				else
-					$this->_view->json = array('success' => false, 'error' => 'ICS file creation: permission denied');
+				if ($filecontent){
+					if (file_put_contents($filepath, $filecontent))
+						$this->_view->json = array('success' => true, 'ical' => WEB_ROOT.'/icals/'.$filename.'.ics');
+					else
+						$this->_view->json = array('success' => false, 'error' => 'ICS file creation: permission denied');
+				}
+				else $this->_view->json = $this->returnJsonError('Empty iCal Events');
 			}
 			catch(Exception $ex){
 				$this->exitOnError(500, 'Server error', array('Exception code '.$ex->getCode(), $ex->getMessage()));
