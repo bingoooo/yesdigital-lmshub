@@ -122,6 +122,12 @@ class Xlsx extends Export{
 	}
 	
 	function retrieveData($branchname='bnp'){
+		$topBranchIds = array('bnp'=>647, 'kn'=>null);
+		$branchIds = array();
+		if (!empty($topBranchIds[$branchname])){
+			$branchIds = $this->fetchChildBranchids($topBranchIds[$branchname]);
+			$branchIds[] = $topBranchIds[$branchname];
+		}
 		$query =
 			'SELECT DISTINCT '.
 				
@@ -167,18 +173,33 @@ class Xlsx extends Export{
 				
 			'FROM UserInfo UI '.
 				'INNER JOIN BranchUsers BU ON BU.user_id = UI.user_id '.
-				//'INNER JOIN BranchInfo BI ON BI.branch_id = BU.branch_id '.
+				'INNER JOIN BranchInfo BI ON BI.branch_id = BU.branch_id '.
 				'INNER JOIN UserCourses UC ON UI.user_id = UC.user_id '.
 				'INNER JOIN CourseInfo CI ON CI.course_id = UC.course_id '.
-				'INNER JOIN LearningPlanCourses LPC ON LPC.course_id = CI.course_id '.
-				'INNER JOIN LearningPlanInfo LPI ON LPI.path_id = LPC.path_id '.
+				'LEFT JOIN LearningPlanCourses LPC ON LPC.course_id = CI.course_id '.
+				'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = LPC.path_id '.
 				//'LEFT JOIN UserLearningPlans ULP ON ULP.path_id = LPI.path_id AND ULP.user_id = UI.user_id '.
-				'INNER JOIN UserLearningPlans ULP ON ULP.path_id = LPI.path_id AND ULP.user_id = UI.user_id '.
+				'LEFT JOIN UserLearningPlans ULP ON ULP.path_id = LPI.path_id AND ULP.user_id = UI.user_id '.
 				"LEFT JOIN UserAdditionalInfo RL ON RL.user_id = UI.user_id AND RL.attribute like '%recommended%' ".
 				"LEFT JOIN UserAdditionalInfo AL ON AL.user_id = UI.user_id AND AL.attribute like '%acquired%' ".
-				//'WHERE BI.branch_name = \'$branch_name\' '.
-			'ORDER BY UI.lastname ASC, UI.firstname ASC, LPI.path_id, CI.course_id ASC '.
-			'LIMIT 0, 1000';
+			'WHERE LPI.path_name NOT LIKE \'%lsat%\' AND CI.course_category_name NOT LIKE \'%catchup%\' '.
+				(!empty($branchIds) ? "AND (BI.branch_id IN (".implode(',', $branchIds).") OR BI.parent_id IN (".implode(',', $branchIds).")) " : '').
+			'ORDER BY UI.lastname ASC, UI.firstname ASC, LPI.path_id, CI.course_id ASC '
+			.'LIMIT 0, 10';
 		return $this->getDb($this->dbinstancename)->getTable($query);
+	}
+	
+	function fetchChildBranchids($parentbranchid){
+		$branchids = $subbranchids = array();
+		if ($result = $this->getDb($this->dbinstancename)->getTable("SELECT DISTINCT branch_id FROM BranchInfo WHERE parent_id = $parentbranchid")){
+			foreach ($result as $row){
+				$branchids[] = $row['branch_id'];
+			}
+			foreach ($branchids as $branchid){
+				if ($result = $this->fetchChildBranchids($branchid))
+					$subbranchids = array_merge($subbranchids, $result);
+			}
+		}
+		return array_merge($branchids, $subbranchids);
 	}
 }
