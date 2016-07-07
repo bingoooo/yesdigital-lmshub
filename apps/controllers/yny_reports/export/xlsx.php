@@ -185,7 +185,7 @@ class Xlsx extends Export{
 			'WHERE LPI.path_name NOT LIKE \'%lsat%\' AND CI.course_category_name NOT LIKE \'%catchup%\' '.
 				(!empty($branchIds) ? "AND (BI.branch_id IN (".implode(',', $branchIds).") OR BI.parent_id IN (".implode(',', $branchIds).")) " : '').
 			'ORDER BY UI.lastname ASC, UI.firstname ASC, LPI.path_id, CI.course_id ASC '
-			//.'LIMIT 0, 100'
+			//.'LIMIT 0, 10'
 		;
 		return $this->getDb($this->dbinstancename)->getTable($query);
 	}

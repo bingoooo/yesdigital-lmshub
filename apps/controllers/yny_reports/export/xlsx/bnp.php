@@ -13,104 +13,160 @@ class Bnp extends Xlsx{
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
-			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/bnp.xlsx');
-			$iUser	= 0;
-			$line	= 3;
+			$finalData = array();
+			//Final Sorting: by path type
 			foreach ($this->_view->data as $uid=>$User){
-				### First sort courses and determine learning type
-				$elearnings = $microlearnings = $sessions = array();
-				$globalTime = 0;
 				if (!empty($User['courses'])){
+					$globalTime = 0;
+					$Courses = array();
+					$pathType= $this->definePathType($User['courses']);
 					foreach ($User['courses'] as $course_id=>$Course){
 						$globalTime += (int)$Course['user_course_timespent'];
 						if ($Course['course_type']==='elearning'){
-							if (stripos($Course['course_name'], 'micro')!==false)
-								$microlearnings[$course_id] = $Course;
+							if (stripos($Course['course_name'], 'microlearning')!==false)
+								$Courses['ML'][$course_id] = $Course;
 							else
-								$elearnings[$course_id] = $Course;
+								$Courses['EL'][$course_id] = $Course;
 						}
+						elseif (stripos($Course['course_code'], 'BK_')!==false)
+							$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
+						elseif (stripos($Course['course_code'], 'ESP_')!==false)
+							$Courses['ESP'][$course_id] = $Course;//Webcoaching
 						else
-							$sessions[$course_id] = $Course;
+							$Courses['SKS'][$course_id] = $Course;
 					}
+					$User['total_time_spent']	= $globalTime;
+					$User['courses']			= $Courses;
+					$finalData[$pathType][$uid]	= $User;
 				}
-				else continue;
-				
-				$line++;
-				$iUser++;
-				
-				if (!empty($User['user_lp_date_begin_validity']) && strpos($User['user_lp_date_begin_validity'], '0000')===false){
-					$t_year   = substr($User['user_lp_date_begin_validity'],0,4);
-					$t_month  = substr($User['user_lp_date_begin_validity'],5,2);// Fixed problems with offsets
-					$t_day    = substr($User['user_lp_date_begin_validity'],7,2);
-					$t_date   = \PHPExcel_Shared_Date::FormattedPHPToExcel($t_year, $t_month, $t_day);
-				}
-				else $t_date = null;
-				$this->PHPXL->setActiveSheetIndex(0)
-					->setCellValue('A'.$line, $iUser)
-					->setCellValue('B'.$line, !empty($User['firstname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
-					->setCellValue('C'.$line, strtoupper($User['firstname']))
-					->setCellValue('D'.$line, ''/*$uid*/)
-					->setCellValue('E'.$line, $this->definePathType($User['courses']))
-					->setCellValue('F'.$line, $User['recommended_level'])//Date de début de parcours
-					->setCellValue('G'.$line, $t_date)//Date de début de parcours
-					//->setCellValue('H'.$line, $LP['user_lp_date_end_validity'])//Date de fin de parcours//--> it is a formula for instance
-					->setCellValue('I'.$line, \PHPExcel_Shared_Date::FormattedPHPToExcel(0, 0, 0, 9)/*'09:00:00'*/)//Objectifs
-					->setCellValue('M'.$line, '06:00:00')//Objectifs
-					->setCellValue('P'.$line, '05:00:00')//Objectifs
-					->setCellValue('T'.$line, '08:00:00')//Objectifs
-					->setCellValue('W'.$line, '12:00:00')//Objectifs
-				;
-				
-				if (!empty($elearnings)){
-					$nbDone = $elTimespent = 0;
-					foreach ($elearnings as $EL){
-						//Calculate timespent on elearnings
-						$elTimespent += (float)$EL['user_course_timespent'];
-						//Check EL done checking the dates
-						if (!empty($EL['user_course_date_first_access']) && stripos($EL['user_course_date_first_access'], '0000-00-00')===false){
-							//Here, the user has at least begun its elearning
-							if (!empty($EL['user_course_date_completed']) && stripos($EL['user_course_date_completed'], '0000-00-00')===false){
+			}
+			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/bnp.xlsx');
+			$iUser	= 0;
+			$line	= 3;
+			foreach ($finalData as $pathTypeName=>$PathType){
+				foreach ($PathType as $uid=>$User){
+					$line++;
+					$iUser++;
+					
+					if (!empty($User['user_lp_date_begin_validity']) && strpos($User['user_lp_date_begin_validity'], '0000')===false){
+						$t_year   = substr($User['user_lp_date_begin_validity'],0,4);
+						$t_month  = substr($User['user_lp_date_begin_validity'],5,2);// Fixed problems with offsets
+						$t_day    = substr($User['user_lp_date_begin_validity'],7,2);
+						$t_date   = \PHPExcel_Shared_Date::FormattedPHPToExcel($t_year, $t_month, $t_day);
+					}
+					else $t_date = null;
+					$this->PHPXL->setActiveSheetIndex(0)
+						->setCellValue('A'.$line, $iUser)
+						->setCellValue('B'.$line, !empty($User['firstname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
+						->setCellValue('C'.$line, strtoupper($User['firstname']))
+						->setCellValue('D'.$line, ''/*$uid*/)
+						->setCellValue('E'.$line, $pathTypeName)
+						->setCellValue('F'.$line, $User['recommended_level'])//Date de début de parcours
+						->setCellValue('G'.$line, $t_date)//Date de début de parcours
+					;
+					
+					#PRE-LEARNING
+					if (!empty($User['courses']['EL'])){
+						$nbDone = $elTimespent = 0;
+						foreach ($User['courses']['EL'] as $EL){
+							//Calculate timespent on elearnings
+							$elTimespent += (float)$EL['user_course_timespent'];
+							//Check EL done checking the dates
+							if (!empty($EL['user_course_date_first_access']) && stripos($EL['user_course_date_first_access'], '0000-00-00')===false){
+								//Here, the user has at least begun its elearning
+								if (!empty($EL['user_course_date_completed']) && stripos($EL['user_course_date_completed'], '0000-00-00')===false){
+									//It is completed
+									$nbDone++;
+								}
+								else $nbDone+= .5;
+							}
+							//$nbDone += (float)$EL['user_course_status'];
+						}
+						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
+						$this->PHPXL->setActiveSheetIndex(0)
+							->setCellValue('I'.$line, /*'09:00:00'*/ \PHPExcel_Shared_Date::FormattedPHPToExcel(0, 0, 0, 9))//Objectif
+							->setCellValue('J'.$line, $nbDone)//Modules réalisés
+							//->setCellValue('K'.$line, $strTimespent)//Temps en heures
+						;
+					}
+					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('I'.$line, null);
+					
+					#Cours formateur
+					if (!empty($User['courses']['SKS'])){
+						$nbSessions = count($User['courses']['SKS']);
+						$nbDone = 0;
+						foreach ($User['courses']['SKS'] as $session){
+							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+								$nbDone += (strtolower($session['course_type'])==='telephone') ? .5 : 1;
+							}
+						}
+						//$strDone = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
+						$this->PHPXL->setActiveSheetIndex(0)
+							->setCellValue('M'.$line, '=6/24')//Objectifs
+							->setCellValue('N'.$line, "=$nbDone/24")
+						;
+					}
+					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
+					
+					#Microlearning
+					if (!empty($User['courses']['ML'])){
+						$microlearning = reset($User['courses']['ML']);
+						$this->PHPXL->setActiveSheetIndex(0)
+							->setCellValue('P'.$line, '=5/24')//Objectifs
+					 		//->setCellValue('Q'.$line, '')//ML réalisés
+					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
+					 	;
+					 }
+					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
+					
+					 #Webcoaching
+					 if (!empty($User['courses']['ESP'])){
+						$nbDone = 0;
+						foreach ($User['courses']['ESP'] as $session){
+							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
 								//It is completed
+								if (strtolower($session['course_type'])==='telephone')
+									$nbDone += .5;
+								else
+									$nbDone += 1;
+							}
+						}
+						$strTime = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
+					 	$this->PHPXL->setActiveSheetIndex(0)
+					 		->setCellValue('T'.$line, '=8/24')//Objectifs
+					 		->setCellValue('U'.$line, $nbDone)
+					 		->setCellValue('V'.$line, $strTime)
+					 	;
+					 }
+					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
+					 
+					 #Ateliers
+					 if (!empty($User['courses']['BK'])){
+						$nbDone = $timeSpent = 0;
+						foreach ($User['courses']['BK'] as $session){
+							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+								//It is completed
+								if (strtolower($session['course_type'])==='telephone')
+									$timeSpent += .5;
+								else
+									$timeSpent += 1;
 								$nbDone++;
 							}
-							else $nbDone+= .5;
 						}
-						//$nbDone += (float)$EL['user_course_status'];
-					}
-					//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
-					$this->PHPXL->setActiveSheetIndex(0)
-						->setCellValue('J'.$line, $nbDone)//Modules réalisés
-						//->setCellValue('K'.$line, $strTimespent)//Temps en heures
-					;
+						//$strTime = '0'.(int)$timeSpent.':'.(is_int($timeSpent)? '00' : '30').':00';
+					 	$this->PHPXL->setActiveSheetIndex(0)
+							->setCellValue('W'.$line, '=12/24')//Objectifs
+					 		->setCellValue('X'.$line, $nbDone)
+					 		->setCellValue('Y'.$line, '='.$timeSpent.'/24')
+					 	;
+					 }
+					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('W'.$line, null);
+				
+					## Formules Excel
+					$this->setExcelFormulas($line);
+					## Formats
+					$this->formatExcelRow($line);
 				}
-				if (!empty($sessions)){
-					$nbSessions = count($sessions);
-					$nbDone = 0;
-					foreach ($sessions as $session){
-						if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
-							//It is completed
-							$nbDone++;
-						}
-					}
-					$this->PHPXL->setActiveSheetIndex(0)
-						->setCellValue('N'.$line, "0$nbDone:00")
-					;
-				}
-				
-				/*if (!empty($microlearnings)){
-					$microlearning = reset($microlearnings);
-					$this->PHPXL->setActiveSheetIndex(0)
-						//->setCellValue('Q'.$line, '')//ML réalisés
-						//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
-					;
-				}*/
-				
-				//TODO Webcoaching + atliers thématiques
-				
-				## Formules Excel
-				$this->setExcelFormulas($line);
-				## Formats
-				$this->formatExcelRow($line);
 			}
 			$this->sendXlsx('BNP');
 		}
@@ -248,10 +304,10 @@ class Bnp extends Xlsx{
 	}
 	function definePathType($arrCourses){
 		foreach ($arrCourses as $course_id=>$Course){
-			if (stripos($Course['course_name'], 'business')!==false){
+			if (stripos($Course['course_code'], 'BK_')!==false || stripos($Course['course_name'], 'business key')!==false){
 				return 'PROFESSIONNALISER';
 			}
-			if (stripos($Course['course_name'], 'microlearning - week')!==false){
+			if (stripos($Course['course_name'], 'microlearning - week')!==false || stripos($Course['course_code'], 'ML_W')!==false){
 				return 'MAINTENIR';
 			}
 		}
