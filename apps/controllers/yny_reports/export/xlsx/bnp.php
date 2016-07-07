@@ -13,7 +13,12 @@ class Bnp extends Xlsx{
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
-			$finalData = array();
+			$finalData = array(
+					'DÉCOUVRIR'			=>array(),
+					'PERFECTIONNER'		=>array(),
+					'PROFESSIONNALISER'	=>array(),
+					'MAINTENIR'			=>array(),
+			);
 			//Final Sorting: by path type
 			foreach ($this->_view->data as $uid=>$User){
 				if (!empty($User['courses'])){
@@ -94,16 +99,20 @@ class Bnp extends Xlsx{
 					#Cours formateur
 					if (!empty($User['courses']['SKS'])){
 						$nbSessions = count($User['courses']['SKS']);
-						$nbDone = 0;
+						$nbDone = $timeSpent = 0;
 						foreach ($User['courses']['SKS'] as $session){
 							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
-								$nbDone += (strtolower($session['course_type'])==='telephone') ? .5 : 1;
+								$nbDone++;
+								if (strtolower($session['course_type'])==='telephone')
+									$timeSpent += .5;
+								else
+									$timeSpent += 1;
 							}
 						}
 						//$strDone = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
 						$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('M'.$line, (6 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-							->setCellValue('N'.$line, "=$nbDone/24")
+							->setCellValueExplicit('N'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
 					}
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
