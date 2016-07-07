@@ -78,21 +78,23 @@ class Bnp extends Xlsx{
 					;
 					
 					#PRE-LEARNING
-					if (!empty($User['courses']['EL'])){
+					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
 						$nbDone = $elTimespent = 0;
-						foreach ($User['courses']['EL'] as $EL){
-							//Calculate timespent on elearnings
-							$elTimespent += (float)$EL['user_course_timespent'];
-							//Check EL done checking the dates
-							if (!empty($EL['user_course_date_first_access']) && stripos($EL['user_course_date_first_access'], '0000-00-00')===false){
-								//Here, the user has at least begun its elearning
-								if (!empty($EL['user_course_date_completed']) && stripos($EL['user_course_date_completed'], '0000-00-00')===false){
-									//It is completed
-									$nbDone++;
+						if (!empty($User['courses']['EL'])){
+							foreach ($User['courses']['EL'] as $EL){
+								//Calculate timespent on elearnings
+								$elTimespent += (float)$EL['user_course_timespent'];
+								//Check EL done checking the dates
+								if (!empty($EL['user_course_date_first_access']) && stripos($EL['user_course_date_first_access'], '0000-00-00')===false){
+									//Here, the user has at least begun its elearning
+									if (!empty($EL['user_course_date_completed']) && stripos($EL['user_course_date_completed'], '0000-00-00')===false){
+										//It is completed
+										$nbDone++;
+									}
+									else $nbDone+= .5;
 								}
-								else $nbDone+= .5;
+								//$nbDone += (float)$EL['user_course_status'];
 							}
-							//$nbDone += (float)$EL['user_course_status'];
 						}
 						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
 						$this->PHPXL->setActiveSheetIndex(0)
@@ -104,16 +106,18 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('I'.$line, null);
 					
 					#Cours formateur
-					if (!empty($User['courses']['SKS'])){
+					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
 						$nbSessions = count($User['courses']['SKS']);
 						$nbDone = $timeSpent = 0;
-						foreach ($User['courses']['SKS'] as $session){
-							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
-								$nbDone++;
-								if (strtolower($session['course_type'])==='telephone')
-									$timeSpent += .5;
-								else
-									$timeSpent += 1;
+						if (!empty($User['courses']['SKS'])){
+							foreach ($User['courses']['SKS'] as $session){
+								if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+									$nbDone++;
+									if (strtolower($session['course_type'])==='telephone')
+										$timeSpent += .5;
+									else
+										$timeSpent += 1;
+								}
 							}
 						}
 						//$strDone = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
@@ -125,8 +129,8 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
 					
 					#Microlearning
-					if (!empty($User['courses']['ML'])){
-						$microlearning = reset($User['courses']['ML']);
+					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
 						$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		//->setCellValue('Q'.$line, '')//ML réalisés
@@ -136,38 +140,37 @@ class Bnp extends Xlsx{
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
 					
 					 #Webcoaching
-					 if (!empty($User['courses']['ESP'])){
+					 if (in_array($pathTypeName, array('MAINTENIR', 'PROFESSIONNALISER'))){
 						$nbDone = $timeSpent = 0;
-						foreach ($User['courses']['ESP'] as $session){
-							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+						if (!empty($User['courses']['ESP'])){
+							foreach ($User['courses']['ESP'] as $session){
 								if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
 									$nbDone++;
 									if (strtolower($session['course_type'])==='telephone')
-										$timeSpent += .5;
+										$timeSpent += (float)0.5;
 									else
-										$timeSpent += 1;
+										$timeSpent += (float)1;
 								}
 							}
 						}
 					 	$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('T'.$line, (8 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-					 		->setCellValue('U'.$line, $nbDone)
-							->setCellValueExplicit('V'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
+							->setCellValueExplicit('U'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
 					 
 					 #Ateliers
-					 if (!empty($User['courses']['BK'])){
+					  if (in_array($pathTypeName, array('PROFESSIONNALISER'))){
 						$nbDone = $timeSpent = 0;
-						foreach ($User['courses']['BK'] as $session){
-							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+						if (!empty($User['courses']['BK'])){
+							foreach ($User['courses']['BK'] as $session){
 								if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
 									$nbDone++;
 									if (strtolower($session['course_type'])==='telephone')
-										$timeSpent += .5;
+										$timeSpent += (float)0.5;
 									else
-										$timeSpent += 1;
+										$timeSpent += (float)1;
 								}
 							}
 						}
@@ -175,7 +178,7 @@ class Bnp extends Xlsx{
 					 	$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('W'.$line, (12 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		->setCellValue('X'.$line, $nbDone)
-							->setCellValueExplicit('Y'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
+							//->setCellValueExplicit('Y'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('W'.$line, null);
@@ -315,6 +318,10 @@ class Bnp extends Xlsx{
 			->setCellValue('R'.$line, "=(Q$line*0.083)*15/360")//Timespent formula
 			->setCellValue('S'.$line, "=R$line/P$line")//Progression ratio
 			
+			
+			//Ateliers
+			->setCellValue('Y'.$line, "=(X$line*1.5)*15/360")//Timespent formula
+		
 			//Totaux
 			->setCellValue('AA'.$line, "=Y$line+U$line+R$line+N$line+K$line")//Total time en heures
 			->setCellValue('AB'.$line, "=AA$line/H$line")//Total time en heures
