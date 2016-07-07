@@ -44,7 +44,7 @@ class Bnp extends Xlsx{
 					$User['courses']			= $Courses;
 					$finalData[$pathType][$uid]	= $User;
 				}
-			}
+			}$this->_view->data = $finalData;
 			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/bnp.xlsx');
 			$iUser	= 0;
 			$line	= 3;
