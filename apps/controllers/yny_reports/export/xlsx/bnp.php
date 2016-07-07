@@ -78,7 +78,7 @@ class Bnp extends Xlsx{
 					;
 					
 					#PRE-LEARNING
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (stripos($pathTypeName, 'maintenir')===false){
 						$nbDone = $elTimespent = 0;
 						if (!empty($User['courses']['EL'])){
 							foreach ($User['courses']['EL'] as $EL){
@@ -98,8 +98,7 @@ class Bnp extends Xlsx{
 						}
 						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
 						$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('I'.$line, (9 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-							->setCellValueExplicit('I'.$line, '=TIME(9,0,0)', \PHPExcel_Cell_DataType::TYPE_FORMULA)//Objectif
+							->setCellValueExplicit('I'.$line, (9 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 							->setCellValue('J'.$line, $nbDone)//Modules réalisés
 							//->setCellValue('K'.$line, $strTimespent)//Temps en heures
 						;
@@ -107,7 +106,7 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('I'.$line, null);
 					
 					#Cours formateur
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (stripos($pathTypeName, 'maintenir')===false){
 						$nbSessions = count($User['courses']['SKS']);
 						$nbDone = $timeSpent = 0;
 						if (!empty($User['courses']['SKS'])){
@@ -130,7 +129,7 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
 					
 					#Microlearning
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (stripos($pathTypeName, 'maintenir')===false){
 						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
 						$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
@@ -162,7 +161,7 @@ class Bnp extends Xlsx{
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
 					 
 					 #Ateliers
-					  if (in_array($pathTypeName, array('PROFESSIONNALISER'))){
+					  if (stripos($pathTypeName, 'profession')!==false){
 						$nbDone = $timeSpent = 0;
 						if (!empty($User['courses']['BK'])){
 							foreach ($User['courses']['BK'] as $session){
@@ -306,26 +305,29 @@ class Bnp extends Xlsx{
 	}
 	function setExcelFormulas($line, $pathTypeName){
 		$this->PHPXL->setActiveSheetIndex(0)
-			->setCellValue('H'.$line, "=IF(I$line=\"\",0,I$line)+IF(M$line=\"\",0,M$line)+IF(P$line=\"\",0,P$line)+IF(T$line=\"\",0,T$line)+IF(W$line=\"\",0,W$line)")//Durée totale du parcours
+			->setCellValue('H'.$line, "=I$line+M$line+P$line+T$line+W$line")//Durée totale du parcours
 		
 			//E/PRE-Learnings
 			->setCellValue('K'.$line, "=(J$line*1.5)*15/360")//Temps en heures
-			->setCellValue('L'.$line, "=IF(OR(I$line=\"\",I$line=0),0,K$line/I$line)")
+			->setCellValue('L'.$line, "=K$line/I$line")
 		
 			// Sessions (cours formateur)
-			->setCellValue('O'.$line, "=IF(OR(M$line=\"\",M$line=0),0,N$line/M$line)")
+			->setCellValue('O'.$line, "=N$line/M$line")
 		
 			//Microlearnings
 			->setCellValue('R'.$line, "=(Q$line*0.083)*15/360")//Timespent formula
-			->setCellValue('S'.$line, "=IF(OR(P$line=\"\",P$line=0),0,R$line/P$line)")//Progression ratio
+			->setCellValue('S'.$line, "=R$line/P$line")//Progression ratio
 			
+			//Webcoaching
+			->setCellValue('V'.$line, "=U$line/T$line")//Progression ratio
 			
 			//Ateliers
 			->setCellValue('Y'.$line, "=(X$line*1.5)*15/360")//Timespent formula
-		
+			->setCellValue('Z'.$line, "=Y$line/W$line")//Progression ratio
+			
 			//Totaux
-			->setCellValue('AA'.$line, "=IF(Y$line=\"\",0,Y$line)+IF(U$line=\"\",0,U$line)+IF(R$line=\"\",0,R$line)+IF(N$line=\"\",0,N$line)+IF(K$line=\"\",0,K$line)")//Total time en heures
-			->setCellValue('AB'.$line, "=IF(OR(H$line=\"\",H$line=0),0,AA$line/H$line)")//Total time en heures
+			->setCellValue('AA'.$line, "=Y$line+U$line+R$line+N$line+K$line")//Total time en heures
+			->setCellValue('AB'.$line, "=AA$line/H$line")//Total time en heures
 		;
 	}
 	function definePathType($arrCourses){
