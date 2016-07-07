@@ -125,7 +125,7 @@ class Xlsx extends Export{
 		$topBranchIds = array('bnp'=>647, 'kn'=>null);
 		$branchIds = array();
 		if (!empty($topBranchIds[$branchname])){
-			//$branchIds = $this->fetchChildBranchids($topBranchIds[$branchname]);
+			$branchIds = $this->fetchChildBranchids($topBranchIds[$branchname]);
 			$branchIds[] = $topBranchIds[$branchname];
 		}
 		$query =

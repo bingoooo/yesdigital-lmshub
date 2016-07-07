@@ -12,7 +12,7 @@ class Bnp extends Xlsx{
 		$this->buildDataTree($this->retrieveData('bnp'));
 		
 		$finalData = array(
-				'DÉCOUVRIR'			=>array(),
+				'DECOUVRIR'			=>array(),
 				'PERFECTIONNER'		=>array(),
 				'PROFESSIONNALISER'	=>array(),
 				'MAINTENIR'			=>array(),
@@ -78,7 +78,7 @@ class Bnp extends Xlsx{
 					;
 					
 					#PRE-LEARNING
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (in_array($pathTypeName, array('DECOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
 						$nbDone = $elTimespent = 0;
 						if (!empty($User['courses']['EL'])){
 							foreach ($User['courses']['EL'] as $EL){
@@ -106,7 +106,7 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('I'.$line, null);
 					
 					#Cours formateur
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (in_array($pathTypeName, array('DECOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
 						$nbSessions = count($User['courses']['SKS']);
 						$nbDone = $timeSpent = 0;
 						if (!empty($User['courses']['SKS'])){
@@ -129,11 +129,11 @@ class Bnp extends Xlsx{
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
 					
 					#Microlearning
-					if (in_array($pathTypeName, array('DÉCOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
+					if (in_array($pathTypeName, array('DECOUVRIR', 'PERFECTIONNER', 'PROFESSIONNALISER'))){
 						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
 						$this->PHPXL->setActiveSheetIndex(0)
 							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-					 		//->setCellValue('Q'.$line, '')//ML réalisés
+					 		->setCellValue('Q'.$line, 0)//ML réalisés
 					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
 					 	;
 					 }
@@ -338,6 +338,6 @@ class Bnp extends Xlsx{
 		}
 		if (count($arrCourses)>13)
 			return 'PERFECTIONNER';
-		return 'DÉCOUVRIR';
+		return 'DECOUVRIR';
 	}
 }
