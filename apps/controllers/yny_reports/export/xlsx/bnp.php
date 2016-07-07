@@ -98,7 +98,7 @@ class Bnp extends Xlsx{
 						}
 						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
 						$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('I'.$line, (9 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('I'.$line, (9 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 							->setCellValue('J'.$line, $nbDone)//Modules réalisés
 							//->setCellValue('K'.$line, $strTimespent)//Temps en heures
 						;
@@ -122,8 +122,8 @@ class Bnp extends Xlsx{
 						}
 						//$strDone = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
 						$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('M'.$line, (6 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-							//->setCellValueExplicit('N'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
+							->setCellValueExplicit('M'.$line, (6 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('N'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
 					}
 					else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('M'.$line, null);
@@ -132,7 +132,7 @@ class Bnp extends Xlsx{
 					if (stripos($pathTypeName, 'maintenir')===false){
 						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
 						$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		->setCellValue('Q'.$line, 0)//ML réalisés
 					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
 					 	;
@@ -154,8 +154,8 @@ class Bnp extends Xlsx{
 							}
 						}
 					 	$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('T'.$line, (8 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-							//->setCellValueExplicit('U'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
+							->setCellValueExplicit('T'.$line, (8 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('U'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
@@ -176,7 +176,7 @@ class Bnp extends Xlsx{
 						}
 						//$strTime = '0'.(int)$timeSpent.':'.(is_int($timeSpent)? '00' : '30').':00';
 					 	$this->PHPXL->setActiveSheetIndex(0)
-							//->setCellValueExplicit('W'.$line, (12 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('W'.$line, (12 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		->setCellValue('X'.$line, $nbDone)
 							//->setCellValueExplicit('Y'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
