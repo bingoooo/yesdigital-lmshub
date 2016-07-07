@@ -133,13 +133,12 @@ class Bnp extends Xlsx{
 						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
 						
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
-					 		->setCellValue('Q'.$line, 0)//ML réalisés
+							->setCellValueExplicit('P'.$line, (8 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValue('Q'.$line, 0)//ML réalisés
 					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
-					 $this->PHPXL->setActiveSheetIndex(0)->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					 
 					 #Webcoaching
 					 if (in_array($pathTypeName, array('MAINTENIR', 'PROFESSIONNALISER'))){
