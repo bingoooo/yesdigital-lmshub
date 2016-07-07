@@ -183,10 +183,7 @@ class Xlsx extends Export{
  				'WHERE BI.branch_id IN ('.implode(',', $branchIds).') '.
  					'OR BI.parent_id IN ('.implode(',', $branchIds).') '.
 			') AS V1 '.
-			'LEFT JOIN (SELECT ULP.*, LPC.course_id '.
-    			'FROM UserLearningPlans ULP '.
-				'INNER JOIN LearningPlanCourses LPC ON LPC.path_id = ULP.path_id '.
-			') AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
+			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC;';
 		return $this->getDb($this->dbinstancename)->getTable($query);
