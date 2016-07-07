@@ -84,7 +84,7 @@ class Bnp extends Xlsx{
 						}
 						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValueExplicit('I'.$line, (9*60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('I'.$line, (9 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 							->setCellValue('J'.$line, $nbDone)//Modules réalisés
 							//->setCellValue('K'.$line, $strTimespent)//Temps en heures
 						;
@@ -102,7 +102,7 @@ class Bnp extends Xlsx{
 						}
 						//$strDone = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValue('M'.$line, '=6/24')//Objectifs
+							->setCellValueExplicit('M'.$line, (6 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 							->setCellValue('N'.$line, "=$nbDone/24")
 						;
 					}
@@ -112,7 +112,7 @@ class Bnp extends Xlsx{
 					if (!empty($User['courses']['ML'])){
 						$microlearning = reset($User['courses']['ML']);
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValue('P'.$line, '=5/24')//Objectifs
+							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		//->setCellValue('Q'.$line, '')//ML réalisés
 					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
 					 	;
@@ -121,21 +121,22 @@ class Bnp extends Xlsx{
 					
 					 #Webcoaching
 					 if (!empty($User['courses']['ESP'])){
-						$nbDone = 0;
+						$nbDone = $timeSpent = 0;
 						foreach ($User['courses']['ESP'] as $session){
 							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
-								//It is completed
-								if (strtolower($session['course_type'])==='telephone')
-									$nbDone += .5;
-								else
-									$nbDone += 1;
+								if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+									$nbDone++;
+									if (strtolower($session['course_type'])==='telephone')
+										$timeSpent += .5;
+									else
+										$timeSpent += 1;
+								}
 							}
 						}
-						$strTime = '0'.(int)$nbDone.':'.(is_int($nbDone)? '00' : '30').':00';
 					 	$this->PHPXL->setActiveSheetIndex(0)
-					 		->setCellValue('T'.$line, '=8/24')//Objectifs
+							->setCellValueExplicit('T'.$line, (8 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		->setCellValue('U'.$line, $nbDone)
-					 		->setCellValue('V'.$line, $strTime)
+							->setCellValueExplicit('V'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('P'.$line, null);
@@ -145,19 +146,20 @@ class Bnp extends Xlsx{
 						$nbDone = $timeSpent = 0;
 						foreach ($User['courses']['BK'] as $session){
 							if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
-								//It is completed
-								if (strtolower($session['course_type'])==='telephone')
-									$timeSpent += .5;
-								else
-									$timeSpent += 1;
-								$nbDone++;
+								if (!empty($session['user_course_date_completed']) && stripos($session['user_course_date_completed'], '0000-00-00')===false){
+									$nbDone++;
+									if (strtolower($session['course_type'])==='telephone')
+										$timeSpent += .5;
+									else
+										$timeSpent += 1;
+								}
 							}
 						}
 						//$strTime = '0'.(int)$timeSpent.':'.(is_int($timeSpent)? '00' : '30').':00';
 					 	$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValue('W'.$line, '=(12/24)')//Objectifs
+							->setCellValueExplicit('W'.$line, (12 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 					 		->setCellValue('X'.$line, $nbDone)
-					 		->setCellValue('Y'.$line, '='.$timeSpent.'/24')
+							->setCellValueExplicit('Y'.$line, ($timeSpent * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 					 	;
 					 }
 					 else $this->PHPXL->setActiveSheetIndex(0)->setCellValue('W'.$line, null);
