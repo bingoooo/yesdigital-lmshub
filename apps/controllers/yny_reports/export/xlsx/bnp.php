@@ -11,15 +11,13 @@ class Bnp extends Xlsx{
 		//Retrieving and sorting data
 		$this->buildDataTree($this->retrieveData('bnp'));
 		
-		//Building Excel file
-		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
-			$finalData = array(
-					'DÉCOUVRIR'			=>array(),
-					'PERFECTIONNER'		=>array(),
-					'PROFESSIONNALISER'	=>array(),
-					'MAINTENIR'			=>array(),
-			);
-			//Final Sorting: by path type
+		$finalData = array(
+				'DÉCOUVRIR'			=>array(),
+				'PERFECTIONNER'		=>array(),
+				'PROFESSIONNALISER'	=>array(),
+				'MAINTENIR'			=>array(),
+		);
+		if (!empty($this->_view->data)){
 			foreach ($this->_view->data as $uid=>$User){
 				if (!empty($User['courses'])){
 					$globalTime = 0;
@@ -30,13 +28,13 @@ class Bnp extends Xlsx{
 						if ($Course['course_type']==='elearning'){
 							if (stripos($Course['course_name'], 'microlearning')!==false)
 								$Courses['ML'][$course_id] = $Course;
-							else
-								$Courses['EL'][$course_id] = $Course;
+								else
+									$Courses['EL'][$course_id] = $Course;
 						}
 						elseif (stripos($Course['course_code'], 'BK_')!==false)
-							$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
+						$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
 						elseif (stripos($Course['course_code'], 'ESP_')!==false)
-							$Courses['ESP'][$course_id] = $Course;//Webcoaching
+						$Courses['ESP'][$course_id] = $Course;//Webcoaching
 						else
 							$Courses['SKS'][$course_id] = $Course;
 					}
@@ -44,7 +42,14 @@ class Bnp extends Xlsx{
 					$User['courses']			= $Courses;
 					$finalData[$pathType][$uid]	= $User;
 				}
-			}$this->_view->data = $finalData;
+			}
+			$this->_view->data = $finalData;
+		}
+		else return;
+		
+		//Building Excel file
+		if (empty($_REQUEST['debug'])){
+			//Final Sorting: by path type
 			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/bnp.xlsx');
 			$iUser	= 0;
 			$line	= 3;
