@@ -84,7 +84,7 @@ class Bnp extends Xlsx{
 						}
 						//$strTimespent = "Estimé : ".(($nbDone*1.5)*15/360)."\nRéalisé : ".$elTimespent;
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValue('I'.$line, "=TIME(9,0,0)")//Objectif
+							->setCellValueExplicit('I'.$line, (9*60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
 							->setCellValue('J'.$line, $nbDone)//Modules réalisés
 							//->setCellValue('K'.$line, $strTimespent)//Temps en heures
 						;
