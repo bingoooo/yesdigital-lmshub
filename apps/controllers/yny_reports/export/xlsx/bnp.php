@@ -43,6 +43,7 @@ class Bnp extends Xlsx{
 					$finalData[$pathType][$uid]	= $User;
 				}
 			}
+			
 			$this->_view->data = $finalData;
 		}
 		else return;
@@ -62,7 +63,8 @@ class Bnp extends Xlsx{
 						$t_year   = substr($User['user_lp_date_begin_validity'],0,4);
 						$t_month  = substr($User['user_lp_date_begin_validity'],5,2);// Fixed problems with offsets
 						$t_day    = substr($User['user_lp_date_begin_validity'],7,2);
-						$t_date   = \PHPExcel_Shared_Date::FormattedPHPToExcel($t_year, $t_month, $t_day);
+						//$t_date   = \PHPExcel_Shared_Date::FormattedPHPToExcel($t_year, $t_month, $t_day);
+						$t_date   = date('d/m/Y', strtotime($User['user_lp_date_begin_validity']));
 					}
 					else $t_date = null;
 					$this->PHPXL->setActiveSheetIndex(0)
