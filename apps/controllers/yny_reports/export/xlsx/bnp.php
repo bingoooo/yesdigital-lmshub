@@ -131,8 +131,9 @@ class Bnp extends Xlsx{
 					#Microlearning
 					if (stripos($pathTypeName, 'maintenir')===false){
 						//if (!empty($User['courses']['ML'])) $microlearning = reset($User['courses']['ML']);
+						
 						$this->PHPXL->setActiveSheetIndex(0)
-							->setCellValueExplicit('P'.$line, (5 * 60*60)/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)//Objectif
+							->setCellValueExplicit('P'.$line, (5.0 * 60*60)/86400 , \PHPExcel_Cell_DataType::TYPE_NUMERIC )//Objectif
 					 		->setCellValue('Q'.$line, 0)//ML réalisés
 					 		//->setCellValue('R'.$line, $microlearning['user_course_timespent'])
 					 	;
