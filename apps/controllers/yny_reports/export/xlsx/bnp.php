@@ -300,8 +300,6 @@ class Bnp extends Xlsx{
 	}
 	
 	function setExcelFinalFormat($finalrowindex){
-		//Set vertical alignment center to all sheet
-		//$this->XlActiveSheet->getStyle('A1:AB'.$finalrowindex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
 		//Set center alignment for columns
 		foreach (array('D', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB') AS $aCol){
 			$this->XlActiveSheet->getStyle($aCol.'3:'.$aCol.$finalrowindex)
