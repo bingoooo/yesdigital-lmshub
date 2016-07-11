@@ -23,11 +23,11 @@ class Kn extends Xlsx{
 					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? '' : date('d/m/Y', strtotime($LP['user_lp_date_begin_validity'])); 
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? '' : date('d/m/Y', strtotime($LP['user_lp_date_end_validity'])); 
 					$this->PHPXL->setActiveSheetIndex(0)
-						->setCellValue('A'.$line, $User['firstname'])
-						->setCellValue('B'.$line, !empty($User['lastname']) ? $User['lastname'] : trim($User['login'], '/'))
+						->setCellValue('A'.$line, strtoupper($User['firstname']))
+						->setCellValue('B'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('C'.$line, $User['email'])
-						->setCellValue('D'.$line, '')//Country
-						->setCellValue('E'.$line, '')//Branch
+						->setCellValue('D'.$line, strtoupper($User['country']))//Country
+						->setCellValue('E'.$line, strtoupper($User['branch_name']))//Branch
 						->setCellValue('F'.$line, '')//BU/FU
 						->setCellValue('G'.$line, $User['recommended_level'])//Starting level
 						->setCellValue('H'.$line, $User['acquired_level'])//Current level
