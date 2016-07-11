@@ -44,6 +44,7 @@ class Curl{
 			'user/profile',
 			'user/lostpassword',
 			'user/edit',
+			'user/profile_image',
 			'organization/listObjects',
 			'organization/play',
 			'yny_user/messages',
