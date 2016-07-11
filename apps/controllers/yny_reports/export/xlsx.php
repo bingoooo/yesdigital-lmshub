@@ -14,6 +14,11 @@ class Xlsx extends Export{
 	 */
 	protected $PHPXL;
 	
+	/**
+	 * @var \PHPExcel_Worksheet
+	 */
+	protected $XlActiveSheet;
+	
 	function initialize(){
 		require_once LIB_ROOT.'/PHPExcel.php';
 		$this->PHPXL = new \PHPExcel();
@@ -122,7 +127,7 @@ class Xlsx extends Export{
 	}
 	
 	function retrieveData($branchname='bnp'){
-		$topBranchIds = array('bnp'=>647, 'kn'=>null);
+		$topBranchIds = array('bnp'=>647, 'kn'=>768);
 		$branchIds = array();
 		if (!empty($topBranchIds[$branchname])){
 			$branchIds = $this->fetchChildBranchids($topBranchIds[$branchname]);

@@ -14,10 +14,12 @@ class Kn extends Xlsx{
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
 			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/kn.xlsx');
-			$line = 2;
+			$this->XlActiveSheet = $this->PHPXL->setActiveSheetIndex(0);
+			$line = 1;
 			foreach ($this->_view->data as $uid=>$User){
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
+					$line++;
 					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? '' : date('d/m/Y', strtotime($LP['user_lp_date_begin_validity'])); 
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? '' : date('d/m/Y', strtotime($LP['user_lp_date_end_validity'])); 
 					$this->PHPXL->setActiveSheetIndex(0)
@@ -130,10 +132,20 @@ class Kn extends Xlsx{
 						->setCellValue('AE'.$line, $globalTime)//Total time en heures
 						->setCellValue('AF'.$line, $lastAccess)
 					;
-					$line++;
 				}
 			}
+			$this->setExcelFinalFormat($line);
 			$this->sendXlsx('K&N');
 		}
 	}
+	
+	function setExcelFinalFormat($finalrowindex){
+		//Set center alignment for columns
+		foreach (array('G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'T', 'V', 'X', 'Z', 'AB', 'AC', 'AD', 'AE', 'AF') AS $aCol){
+			$this->XlActiveSheet->getStyle($aCol.'2:'.$aCol.$finalrowindex)
+			->getAlignment()
+			->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		}
+	}
+	
 }

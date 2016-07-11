@@ -7,11 +7,6 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Bnp extends Xlsx{
 	
-	/**
-	 * @var \PHPExcel_Worksheet
-	 */
-	protected $XlActiveSheet;
-	
 	function main(){
 		//Retrieving and sorting data
 		$this->buildDataTree($this->retrieveData('bnp'));
