@@ -5,7 +5,7 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
 /**
  * @author fabrice
  */
-class Kn extends Xlsx{
+class Generic extends Xlsx{
 	
 	function main(){
 		//Retrieving and sorting data
@@ -13,9 +13,9 @@ class Kn extends Xlsx{
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
-			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/kn.xlsx');
+			$this->PHPXL = \PHPExcel_IOFactory::load(TPL_ROOT.'/xlsx/generic.xlsx');
 			$this->XlActiveSheet = $this->PHPXL->setActiveSheetIndex(0);
-			$line = 1;
+			$line = 2;
 			foreach ($this->_view->data as $uid=>$User){
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
@@ -23,19 +23,19 @@ class Kn extends Xlsx{
 					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_begin_validity'])); 
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
-						->setCellValue('A'.$line, strtoupper($User['firstname']))
-						->setCellValue('B'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
-						->setCellValue('C'.$line, $User['email'])
-						->setCellValue('D'.$line, strtoupper($User['country']))//Country
-						->setCellValue('E'.$line, strtoupper($User['branch_name']))//Branch
-						->setCellValue('F'.$line, '')//BU/FU
-						->setCellValue('G'.$line, $User['recommended_level'])//Starting level
-						->setCellValue('H'.$line, $User['acquired_level'])//Current level
-						->setCellValue('I'.$line, $LP['path_name'])//Booked program
-						->setCellValue('J'.$line, $lpstartdate)
-						->setCellValue('K'.$line, $lpenddate)
-						->setCellValue('N'.$line, '')//On track ??
-					;
+						->setCellValue('A'.$line, $User['email'])
+						->setCellValue('B'.$line, strtoupper($User['country']))//Country
+						->setCellValue('C'.$line, strtoupper($User['firstname']))
+						->setCellValue('D'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
+						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
+						->setCellValue('F'.$line, $User['acquired_level'])//Current level
+						->setCellValue('G'.$line, $LP['path_name'])//Booked program
+						->setCellValue('H'.$line, $LP['user_lp_date_begin_validity'])
+						->setCellValue('I'.$line, $LP['user_lp_date_end_validity'])
+						->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch
+						->setCellValue('K'.$line, $lpstartdate)
+						->setCellValue('L'.$line, $lpenddate)
+						;
 					
 					$elearnings = $microlearnings = $sessions = array();
 					$globalTime = $iCol = $nbElearnings = $nbElCompleted = $nbSessionPassed = 0;
@@ -105,7 +105,7 @@ class Kn extends Xlsx{
 				}
 			}
 			$this->setExcelFinalFormat($line);
-			$this->sendXlsx('K&N');
+			$this->sendXlsx('Generic');
 		}
 	}
 	
