@@ -9,9 +9,8 @@ class Generic extends Xlsx{
 	
 	function main(){
 		//Retrieving and sorting data
-		$data = 'kn';
-		if(isset($_REQUEST['data'])) $data = $_REQUEST['data'];
-		$this->buildDataTree($this->retrieveData($data));
+		
+		$this->buildDataTree($this->retrieveGeneric());
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -55,7 +54,6 @@ class Generic extends Xlsx{
 							if(strpos($Course['course_code'], 'ESP')!==false){
 								$esp[$course_id] = $Course;
 							}
-																					
 							if(strpos($Course['course_code'], 'SKS')!==false){
 								$sessions[$course_id] = $Course;
 							}
@@ -173,6 +171,27 @@ class Generic extends Xlsx{
 		}
 	}
 	
+	function retrieveGeneric(){
+		// TODO : Generic retrieve of DB entries
+		$query =
+			'SELECT DISTINCT '.
+			'V1.*, '.
+			'LPI.*, '.
+			'V2.course_completed AS user_lp_completed, '.
+			'V2.date_assign AS user_lp_date_assign, '.
+			'V2.date_begin_validity AS user_lp_date_begin_validity, '.
+			'V2.date_end_validity AS user_lp_date_end_validity, '.
+			'V2.catchup_user_limit AS user_lp_catchup_limit, '.
+			'V2.timespent AS user_lp_timespent '.
+			'FROM V_USER_COURSES AS V1 '.
+			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
+			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
+			'WHERE LPI.path_code LIKE "%BK%" '.
+			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC LIMIT 1000;';
+
+		return $this->getDb($this->dbinstancename)->getTable($query);
+	}
+	
 	function setExcelFinalFormat($finalrowindex){
 		//Set center alignment for columns
 		foreach (array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V') AS $aCol){
@@ -181,7 +200,7 @@ class Generic extends Xlsx{
 			->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		}
 		//Set date format
-		foreach (array('H', 'I', 'R', 'T', 'V', 'X', 'Z', 'AF') as $aCol){
+		foreach (array('H', 'I', 'V') as $aCol){
 			$this->XlActiveSheet->getStyle($aCol.'2:'.$aCol.$finalrowindex)
 			->getNumberFormat()
 			->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
