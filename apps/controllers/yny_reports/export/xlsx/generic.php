@@ -3,13 +3,13 @@ namespace FragTale\Controller\Yny_Reports\Export\Xlsx;
 use FragTale\Controller\Yny_Reports\Export\Xlsx;
 
 /**
- * @author fabrice
+ * @author fabrice & benjamin
  */
 class Generic extends Xlsx{
 	
 	function main(){
 		//Retrieving and sorting data
-		
+		// TODO : Sorting search query with a $_REQUEST['account'] or else
 		$this->buildDataTree($this->retrieveGeneric());
 		
 		//Building Excel file
@@ -24,8 +24,8 @@ class Generic extends Xlsx{
 					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_begin_validity'])); 
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
-						->setCellValue('A'.$line, 'TODO' /*$LP['path_name']*/)//Account
-						->setCellValue('B'.$line, 'TODO' /*strtoupper($User['contract'])*/)//Contract
+						->setCellValue('A'.$line, 'TODO' /*$LP['account_name']*/)// TODO : Account
+						->setCellValue('B'.$line, 'TODO' /*strtoupper($User['contract'])*/)// TODO : Contract
 						->setCellValue('C'.$line, strtoupper($User['firstname']))
 						->setCellValue('D'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
@@ -33,8 +33,8 @@ class Generic extends Xlsx{
 						->setCellValue('G'.$line, $LP['path_name'])//Booked program
 						->setCellValue('H'.$line, $lpstartdate)
 						->setCellValue('I'.$line, $lpenddate)
-						// ->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch
-						// ->setCellValue('K'.$line, $lpstartdate)
+						// ->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch																					
+						->setCellValue('K'.$line, $lpstartdate)
 						// ->setCellValue('L'.$line, $lpenddate)
 						;
 					
@@ -78,6 +78,7 @@ class Generic extends Xlsx{
 						}
 					}
 					
+					// Insert entries into the xlsx file
 					if (!empty($elearnings)){
 						$el_done = 0;
 						$el_count = count($elearnings);
