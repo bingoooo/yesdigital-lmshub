@@ -11,6 +11,10 @@ class Generic extends Xlsx{
 		//Retrieving and sorting data
 		// TODO : Sorting search query with a $_REQUEST['account'] or else
 		$this->buildDataTree($this->retrieveGeneric());
+		$BUTable = $this->_view->branchUsers;
+		$BITable = $this->_view->branch;
+		// var_dump($BUTable);
+		
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -18,14 +22,34 @@ class Generic extends Xlsx{
 			$this->XlActiveSheet = $this->PHPXL->setActiveSheetIndex(0);
 			$line = 2;
 			foreach ($this->_view->data as $uid=>$User){
+				// WIP : retrieve branch infos
+				$User['branch_ids'] = array();
+				foreach($BUTable as $key => $datas){
+					if($datas["user_id"] == $uid){
+						array_push($User['branch_ids'], $datas['branch_id']);
+					}
+				}
+				foreach ($User['branch_ids'] as $key => $id){
+					foreach ($BITable as $index => $values){
+						if($values['branch_id'] == $id && $id !== 0){
+							if(isset($User['account'])){
+								$User['account'] .= '|'.$User['contract'];
+							} else {
+								$User['account'] = $User['contract'];
+							}
+							$User['contract'] = $values['branch_name'];
+						}
+					}
+				}
+				
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
 					$line++;
 					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_begin_validity'])); 
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
-						->setCellValue('A'.$line, 'TODO' /*$LP['account_name']*/)// TODO : Account
-						->setCellValue('B'.$line, 'TODO' /*strtoupper($User['contract'])*/)// TODO : Contract
+						->setCellValue('A'.$line, $User['account'])// TODO : Account
+						->setCellValue('B'.$line, strtoupper($User['contract']))// TODO : Contract
 						->setCellValue('C'.$line, strtoupper($User['firstname']))
 						->setCellValue('D'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
@@ -174,6 +198,10 @@ class Generic extends Xlsx{
 	
 	function retrieveGeneric(){
 		// TODO : Generic retrieve of DB entries
+		$branches = 'SELECT * FROM BranchInfo;';
+		$branchUsers = 'SELECT * FROM BranchUsers;';
+		$this->_view->branch = $this->getDb($this->dbinstancename)->getTable($branches);
+		$this->_view->branchUsers = $this->getDb($this->dbinstancename)->getTable($branchUsers);
 		$query =
 			'SELECT DISTINCT '.
 			'V1.*, '.
@@ -187,9 +215,10 @@ class Generic extends Xlsx{
 			'FROM V_USER_COURSES AS V1 '.
 			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
-			'WHERE LPI.path_code LIKE "%BK%" '.
+			'WHERE V1.branch_id = 440 '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC LIMIT 1000;';
 
+		// var_dump($this->_view->branchUsers);
 		return $this->getDb($this->dbinstancename)->getTable($query);
 	}
 	
