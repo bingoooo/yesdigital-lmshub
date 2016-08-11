@@ -60,7 +60,7 @@ class Xlsx extends Export{
 				if (empty($row['user_id'])) continue;
 				$uid = $row['user_id'];
 				if (!isset($this->_view->data[$uid])){
-					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_name') as $field)
+					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_name', 'branch_id') as $field)
 						$this->_view->data[$uid][$field] = isset($row[$field]) ? $row[$field] : null;
 				}
 				if (!empty($row['path_id'])){
