@@ -7,14 +7,15 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Generic extends Xlsx{
 	
+	private $tree = array();
+	
 	function main(){
 		//Retrieving and sorting data
 		// TODO : Sorting search query with a $_REQUEST['account'] or else
-		$this->buildDataTree($this->retrieveGeneric());
-		$BUTable = $this->_view->branchUsers;
+		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
+		$this->buildDataTree($this->retrieveGeneric($PMCode));
 		$BITable = $this->_view->branch;
-		// var_dump($BUTable);
-		
+		// echo 'retrieved : '.$BITable[0]['branch_name'].'<br>';
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -23,25 +24,11 @@ class Generic extends Xlsx{
 			$line = 2;
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
-				$User['branch_ids'] = array();
-				foreach($BUTable as $key => $datas){
-					if($datas["user_id"] == $uid){
-						array_push($User['branch_ids'], $datas['branch_id']);
-					}
+				$User['account'] = $this->getBranchPath($User['branch_id'], $BITable);
+				// echo $User['account'].'<br>';
+				if($User['branch_id'] == 190){
+					echo $User['branch_name'].'<br>';
 				}
-				foreach ($User['branch_ids'] as $key => $id){
-					foreach ($BITable as $index => $values){
-						if($values['branch_id'] == $id && $id !== 0){
-							if(isset($User['account'])){
-								$User['account'] .= '|'.$User['contract'];
-							} else {
-								$User['account'] = $User['contract'];
-							}
-							$User['contract'] = $values['branch_name'];
-						}
-					}
-				}
-				
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
 					$line++;
@@ -49,7 +36,7 @@ class Generic extends Xlsx{
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, $User['account'])// TODO : Account
-						->setCellValue('B'.$line, strtoupper($User['contract']))// TODO : Contract
+						->setCellValue('B'.$line, strtoupper($User['branch_name']))// TODO : Contract
 						->setCellValue('C'.$line, strtoupper($User['firstname']))
 						->setCellValue('D'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
@@ -191,17 +178,24 @@ class Generic extends Xlsx{
 					;
 				}
 			}
+			$PM = "";
+			foreach ($this->_view->branch as $key => $values){
+				if($values['branch_id'] == $PMCode){
+					$PM = strtoupper($values['branch_name']);
+					break;
+				}
+			}
 			$this->setExcelFinalFormat($line);
-			$this->sendXlsx('Generic');
+			// $this->sendXlsx('Generic-'.$PM);
 		}
 	}
 	
-	function retrieveGeneric(){
+	function retrieveGeneric($code){
 		// TODO : Generic retrieve of DB entries
 		$branches = 'SELECT * FROM BranchInfo;';
-		$branchUsers = 'SELECT * FROM BranchUsers;';
 		$this->_view->branch = $this->getDb($this->dbinstancename)->getTable($branches);
-		$this->_view->branchUsers = $this->getDb($this->dbinstancename)->getTable($branchUsers);
+		$BITable = $this->_view->branch;
+		$this->getTreeFromPM($code, $BITable);
 		$query =
 			'SELECT DISTINCT '.
 			'V1.*, '.
@@ -215,11 +209,42 @@ class Generic extends Xlsx{
 			'FROM V_USER_COURSES AS V1 '.
 			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
-			'WHERE V1.branch_id = 440 '.
-			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC LIMIT 1000;';
+			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
+			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC;';
 
 		// var_dump($this->_view->branchUsers);
 		return $this->getDb($this->dbinstancename)->getTable($query);
+	}
+	
+	function getTreeFromPM($branchId, $tree, $table = array()){
+		$count = 0;
+		$id = 0;
+			foreach($tree as $index => $datas){
+				if ($datas['parent_id'] == $branchId){
+					$count++;
+					$id = $datas['branch_id'];
+					$this->getTreeFromPM($datas['branch_id'], $tree);
+				}
+			}
+			if ($count > 0 && !in_array($datas['branch_id'], $this->tree)){
+				array_push($this->tree, $id);
+			}
+	}
+	
+	function getBranchPath($branchId, $table, $path = ""){
+		$parentId = 0;
+		foreach ($table as $key => $datas){
+			if($datas['branch_id'] == $branchId){
+				$parentId = $datas['parent_id'];
+				$path = $datas['branch_name'].'|'.$path;
+				break;
+			}
+		}
+		if($parentId == 0){
+			return $path;
+		} else {
+			return $this->getBranchPath($parentId, $table, $path);
+		}
 	}
 	
 	function setExcelFinalFormat($finalrowindex){
