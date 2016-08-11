@@ -15,7 +15,7 @@ class Generic extends Xlsx{
 		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
 		$this->buildDataTree($this->retrieveGeneric($PMCode));
 		$BITable = $this->_view->branch;
-		// echo 'retrieved : '.$BITable[0]['branch_name'].'<br>';
+		// echo 'retrieved : '.count($this->tree).'<br>';
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -26,9 +26,9 @@ class Generic extends Xlsx{
 				// WIP : retrieve branch infos
 				$User['account'] = $this->getBranchPath($User['branch_id'], $BITable);
 				// echo $User['account'].'<br>';
-				if($User['branch_id'] == 190){
+				/*if($User['branch_id'] == 190){
 					echo $User['branch_name'].'<br>';
-				}
+				}*/
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
 					$line++;
@@ -186,7 +186,7 @@ class Generic extends Xlsx{
 				}
 			}
 			$this->setExcelFinalFormat($line);
-			// $this->sendXlsx('Generic-'.$PM);
+			$this->sendXlsx('Generic-'.$PM);
 		}
 	}
 	
@@ -224,10 +224,10 @@ class Generic extends Xlsx{
 					$count++;
 					$id = $datas['branch_id'];
 					$this->getTreeFromPM($datas['branch_id'], $tree);
+					if ($count > 0 && !in_array($datas['branch_id'], $this->tree)){
+						array_push($this->tree, $id);
+					}
 				}
-			}
-			if ($count > 0 && !in_array($datas['branch_id'], $this->tree)){
-				array_push($this->tree, $id);
 			}
 	}
 	
