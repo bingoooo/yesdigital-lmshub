@@ -136,7 +136,14 @@ $style = array(
 	'.float-first-block'	=>'float:left;width:120px;overflow:hidden;white-space:nowrap;',
 	'.float-second-block'	=>'float:left;max-width:75%;',
 	'.sub-text'				=>'color:rgb(86,86,86)',
-);?>
+);
+function secondsToHours($seconds){
+	$hours = sprintf('%02d', floor($seconds / 3600));
+	$minutes = sprintf('%02d', floor(($seconds / 60) % 60));
+	$seconds = sprintf('%02d', $seconds % 60);
+	return "$hours:$minutes:$seconds";
+}
+?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div style="text-align:center"><?php echo $view->getBlock('fer/images/logo-1');?></div>
 	<br>
@@ -206,7 +213,7 @@ $style = array(
 						//Should be in seconds
 						$totaltime = !empty($LP['learning_plan_user_details']['time_spent']) ? (int)$LP['learning_plan_user_details']['time_spent'] : 0;
 						if ($totaltime){
-							echo gmdate('H:i:s', $totaltime);
+							echo secondsToHours($totaltime);
 						}?></td>
 				</tr>
 			</table>

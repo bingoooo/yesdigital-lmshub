@@ -113,7 +113,14 @@ $style = array(
 	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
 	'.lpadding-20'			=>'padding-left:20px;',
 	'.lpadding-40'			=>'padding-left:40px;',
-);?>
+);
+function secondsToHours($seconds){
+	$hours = sprintf('%02d', floor($seconds / 3600));
+	$minutes = sprintf('%02d', floor(($seconds / 60) % 60));
+	$seconds = sprintf('%02d', $seconds % 60);
+	return "$hours:$minutes:$seconds";
+}
+?>
 <div id="report_container" style="<?php echo $style['#report_container']?>">
 	<div style="text-align:center"><?php echo $view->getBlock('fer/images/logo-1');?></div>
 	<br>
@@ -193,7 +200,7 @@ $style = array(
 							}
 						}
 						if ($totaltime){
-							echo gmdate('H:i:s', $totaltime);
+							echo secondsToHours($totaltime);
 						}?></td>
 				</tr>
 			</table>
@@ -237,7 +244,7 @@ $style = array(
 						if (!empty($LPC['course_user_details']['time_spent'])){
 							$timespent = (float)$LPC['course_user_details']['time_spent'];
 							$totalTimeSpent += $timespent;
-							echo gmdate('H:i:s', $timespent);
+							echo secondsToHours($timespent);
 						}
 						else echo ' - ';
 						?></td>
@@ -249,7 +256,7 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i:s', $totalTimeSpent) : ' - ';?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? secondsToHours($totalTimeSpent) : ' - ';?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
@@ -320,7 +327,7 @@ $style = array(
 								$totalTimeSpent += $duration;
 							}
 						}
-						echo $duration ? gmdate('H:i:s', $duration) : ' - ';?></b></td>
+						echo $duration ? secondsToHours($duration) : ' - ';?></b></td>
 				</tr><?php
 						if ($criteria_evaluation){?>
 				<tr>
@@ -351,7 +358,7 @@ $style = array(
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
 						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses && $nbAttendances) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
 					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
-						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i:s', $totalTimeSpent);?></td>
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo secondsToHours($totalTimeSpent);?></td>
 				</tr>
 				<tr>
 					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>

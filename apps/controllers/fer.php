@@ -12,7 +12,7 @@ class Fer extends Controller{
 	 * @var array
 	 */
 	protected $allowedHosts = array(
-			'127.0.0.1', 'localhost', '::1', 'ip6-localhost', 'fragbis', '192.168.2.95',
+			'127.0.0.1', 'localhost', '::1', 'ip6-localhost', //'fragtale.dev', '192.168.2.95',
 			'54.86.250.179', 'afoschi-etime-git.docebo.info',	//AFOSCHI LMS Sandbox
 			'54.85.129.207',	//Seemed to be the e-time API server that calling the FER for the Sandbox
 			'80.215.234.41', '89.225.245.6',	//Yes'n'You IP address
@@ -26,7 +26,7 @@ class Fer extends Controller{
 	 * @var array
 	 */
 	protected $mapHost2Instance = array(
-			'127.0.0.1'		=>'default',
+			'127.0.0.1'		=>'yny',//'default',
 			'localhost'		=>'yny',
 			'54.86.250.179'	=>'default',
 			'afoschi-etime-git.docebo.info'	=> 'default',
@@ -88,8 +88,11 @@ class Fer extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		if (defined('DEVEL') || (defined('ENV') && ENV==='devel'))
+		if (defined('DEVEL') || (defined('ENV') && ENV==='devel')){
+			header('Access-Control-Allow-Origin: *');
+			header("Content-type: application/json; charset=UTF-8");
 			return true;
+		}
 		if (in_array($_SERVER['REMOTE_ADDR'], $this->allowedHosts))
 			return true;
 		if (in_array(gethostbyaddr($_SERVER['REMOTE_ADDR']), $this->allowedHosts))
