@@ -14,6 +14,12 @@ class Curl{
 			'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
 			'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
 		),
+		//Sandbox acipman
+		'default'	=> array(
+			'url'		=> 'http://acipman-etime-git.docebo.info/api/',
+			'api_key'	=> 't_!XDUubB_PlQdqvs55OQGwL',
+			'api_secret'=> 'rgPBl*Lhv0tX4sqk-n2xCxw*r_CDnJU0CY-V'
+		),
 		'provalliance'=>array(
 			'url'		=> 'https://www.provalliancelearning.com/api/',
 			'api_key'	=> 'F8!uTj!YlIN!*XXYvr_%tNrH',

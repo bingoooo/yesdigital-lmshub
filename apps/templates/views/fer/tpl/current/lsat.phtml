@@ -3,7 +3,7 @@ $view->getMetaView()->_tpl_version = '1.0';//Defining this template version
 
 $isRO = (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');//Is it on read only mode?
 
-$LvlScale = $acquiredLevels = $recommendedLevels = $ReportContent = array();//Declare some useful array
+$LvlScale = $selfLevels = $acquiredLevels = $recommendedLevels = $ReportContent = array();//Declare some useful array
 
 $LP = !empty($view->RpData) ? $view->RpData : null;//Set full data
 
@@ -101,6 +101,8 @@ $ITLvls = array(
 	13 => 'C1.4',
 	14 => 'C2',
 );
+$selfLevels = array('A1'=>'A1', 'A2'=>'A2', 'B1'=>'B1', 'B2'=>'B2', 'C1'=>'C1', 'C2'=>'C2');
+
 $refererBaseUrl = 'https://www.yesnyoulearning.com';
 if (!empty($_SERVER['HTTP_REFERER'])){
 	if (stripos('/lms/', $_SERVER['HTTP_REFERER'])!==false){
@@ -439,7 +441,8 @@ function secondsToHours($seconds){
 				) as $key=>$text){
 					$thisLvlSelector = $levelSelectors;
 					if ($key === 'acquired_level')			$thisLvlSelector = $acquiredLevels;
-					elseif ($key === 'recommended_level')	$thisLvlSelector = $recommendedLevels;?>
+					elseif ($key === 'recommended_level')	$thisLvlSelector = $recommendedLevels;
+					elseif ($key === 'learner_self_level')	$thisLvlSelector = $selfLevels;?>
 				<tr class="level-spacing" style="<?php echo $style['.level-spacing']?>">
 					<td style="<?php echo $style['.level-spacing'].$style['.level-label'];?>">
 						<label for="<?php echo $key?>" class="level-label"><?php echo strtoupper($text);?></label>
