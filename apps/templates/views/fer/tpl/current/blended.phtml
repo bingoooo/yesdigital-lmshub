@@ -224,12 +224,21 @@ function secondsToHours($seconds){
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
 				if (!empty($LP['learning_plan_courses'])){
-					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+					#First, sort by course_code
+					$ELs = array();
+					foreach ($LP['learning_plan_courses'] as $LPC){
 						if (empty($LPC['course_info']['course_name'])||
-							strtolower($LPC['course_info']['course_type'])!=='elearning' ||
-							strtolower($LPC['course_info']['course_category_name'])==='microlearning') continue;
-						$nbCourses++;
-						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
+								strtolower($LPC['course_info']['course_type'])!=='elearning' ||
+								strtolower($LPC['course_info']['course_category_name'])==='microlearning') continue;
+						$ELs[$LPC['course_info']['code']] = $LPC;
+					}
+					if (!empty($ELs)){
+						# Then, sort it
+						ksort($ELs);
+						# Display result
+						foreach ($ELs as $LPC){
+							$nbCourses++;
+							if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php echo $LPC['course_info']['course_name'];?></b><?php
 						echo !empty($LPC['course_user_details']['date_completed']) ? ' - '.date('d.m.Y H:i', strtotime($LPC['course_user_details']['date_completed'])) : ''; ?></td>
@@ -249,6 +258,7 @@ function secondsToHours($seconds){
 						else echo ' - ';
 						?></td>
 				</tr><?php
+						}
 					}
 				}?>
 				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
@@ -283,24 +293,31 @@ function secondsToHours($seconds){
 				<?php
 				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
 				if (!empty($LP['learning_plan_courses'])){
-					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+					# Sorting
+					$SKS = array();
+					foreach ($LP['learning_plan_courses'] as $LPC){
 						if (empty($LPC['course_info']['course_name']) ||
 							!in_array(strtolower($LPC['course_info']['course_type']), array('videoconference', 'classroom', 'webinar', 'telephone')))
 						{
 							continue;
 						}
-						$nbCourses++;
-						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;
-						$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
-						$criteria_evaluation = null;
-						if (!empty($session['user_session_details']['criteria_evalution'])){
-							foreach ($session['user_session_details']['criteria_evalution'] as $crit){
-								if (!isset($crit['name'])) continue;
-								if (!isset($criteria_evaluation[$crit['name']])){
-									$criteria_evaluation[$crit['name']] = $crit;
+						$SKS[$LPC['course_info']['code']] = $LPC;
+					}
+					if (!empty($SKS)){
+						ksort($SKS);
+						foreach ($SKS as $LPC){
+							$nbCourses++;
+							if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;
+							$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
+							$criteria_evaluation = null;
+							if (!empty($session['user_session_details']['criteria_evalution'])){
+								foreach ($session['user_session_details']['criteria_evalution'] as $crit){
+									if (!isset($crit['name'])) continue;
+									if (!isset($criteria_evaluation[$crit['name']])){
+										$criteria_evaluation[$crit['name']] = $crit;
+									}
 								}
-							}
-						}?>
+							}?>
 				<tr>
 					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php
 						echo '<b>'.$LPC['course_info']['course_name'].'</b>'.($session ? ' - '.date('d.m.Y H:i', strtotime($session['session_info']['date_begin'])) : '');
@@ -349,6 +366,7 @@ function secondsToHours($seconds){
 						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"></td>
 				</tr>			
 							<?php
+								}
 							}
 						}
 					}

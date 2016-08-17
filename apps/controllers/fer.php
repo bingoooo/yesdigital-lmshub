@@ -26,8 +26,8 @@ class Fer extends Controller{
 	 * @var array
 	 */
 	protected $mapHost2Instance = array(
-			'127.0.0.1'		=>'yny',//'default',
-			'localhost'		=>'yny',
+			/*'127.0.0.1'		=>'yny',//'default',
+			'localhost'		=>'yny',*/
 			//'54.86.250.179'	=>'default',
 			'afoschi-etime-git.docebo.info'	=> 'default',
 			'acipman-etime-git.docebo.info'	=> 'acipman',
@@ -90,8 +90,10 @@ class Fer extends Controller{
 	
 	function checkRestrictedHosts(){
 		if (defined('DEVEL') || (defined('ENV') && ENV==='devel')){
-			header('Access-Control-Allow-Origin: *');
-			header("Content-type: application/json; charset=UTF-8");
+			if (!empty($_SERVER['HTTP_ORIGIN'])){
+				header('Access-Control-Allow-Origin: *');
+				header("Content-type: application/json; charset=UTF-8");
+			}
 			return true;
 		}
 		if (in_array($_SERVER['REMOTE_ADDR'], $this->allowedHosts))
