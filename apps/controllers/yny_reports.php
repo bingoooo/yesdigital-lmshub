@@ -36,14 +36,14 @@ class Yny_Reports extends Controller{
 	);
 	
 	function initialize(){
-		if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
+		//if ($this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			if (!empty($_SERVER['HTTP_ORIGIN']))
 				header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 			/*elseif (!defined('ENV') || ENV!=='devel')
 				$this->exitOnError(403, 'No HTTP ORIGIN sent by client');*/
-		}
+		/*}
 		else
-			$this->exitOnError(403, 'Restricted Area');
+			$this->exitOnError(403, 'Restricted Area');*/
 	}
 	
 	function doPostBack(){
