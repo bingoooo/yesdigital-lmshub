@@ -37,8 +37,8 @@ class Generic extends Xlsx{
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, $User['account'])// TODO : Account
 						->setCellValue('B'.$line, strtoupper($User['branch_name']))// TODO : Contract
-						->setCellValue('C'.$line, strtoupper($User['firstname']))
-						->setCellValue('D'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
+						->setCellValue('C'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
+						->setCellValue('D'.$line, strtoupper($User['firstname']))
 						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
 						->setCellValue('F'.$line, $User['acquired_level'])//Current level
 						->setCellValue('G'.$line, $LP['path_name'])//Booked program
@@ -65,11 +65,11 @@ class Generic extends Xlsx{
 							if(strpos($Course['course_code'], 'ESP')!==false){
 								$esp[$course_id] = $Course;
 							}
-							if(strpos($Course['course_code'], 'SKS')!==false){
-								$sessions[$course_id] = $Course;
-							}
 							if (strpos($Course['course_code'], 'CATCH')!==false){
 								$catch_up[$course_id] = $Course;
+							}
+							if(strpos($Course['course_code'], 'SKS')!==false){
+								$sessions[$course_id] = $Course;
 							}
 							if (strpos($Course['course_code'], 'BK')!==false || stripos($Course['course_label'], 'business keys')!==false){
 								$business_keys[$course_id] = $Course;
@@ -210,8 +210,9 @@ class Generic extends Xlsx{
 			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
 			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
-			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC;';
-
+			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC';
+		if($_REQUEST['debug']==true) $query .= ' LIMIT 2000';
+		$query .= ';';
 		// var_dump($this->_view->branchUsers);
 		return $this->getDb($this->dbinstancename)->getTable($query);
 	}
