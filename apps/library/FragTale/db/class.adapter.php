@@ -144,6 +144,7 @@ class Adapter{
 			$this->dbDriver = 'oci';
 		$this->connectionString = $this->dbDriver.':';
 		$this->connectionString.= 'host='.$this->dbHost.';';
+		$this->connectionString.= 'port='.$this->dbPort.';';
 		$this->connectionString.= 'dbname='.$this->dbName.';';
 		$this->rowsAffected		= 0;
 	}
