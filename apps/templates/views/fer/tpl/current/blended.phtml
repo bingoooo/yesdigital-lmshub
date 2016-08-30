@@ -301,11 +301,14 @@ function secondsToHours($seconds){
 						{
 							continue;
 						}
+						if (stripos($LPC['course_info']['code'], 'catch')!==false && empty($LPC['course_user_details']['status'])){//Catchups
+							continue;
+						}
 						$SKS[$LPC['course_info']['code']] = $LPC;
 					}
 					if (!empty($SKS)){
 						ksort($SKS);
-						foreach ($SKS as $LPC){
+						foreach ($SKS as $courseCode=>$LPC){
 							$nbCourses++;
 							if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;
 							$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
