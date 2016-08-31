@@ -15,6 +15,7 @@ class Generic extends Xlsx{
 		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
 		$this->buildDataTree($this->retrieveGeneric($PMCode));
 		$BITable = $this->_view->branch;
+		$BTTable = $this->_view->translations;
 		// echo 'retrieved : '.count($this->tree).'<br>';
 		
 		//Building Excel file
@@ -24,7 +25,9 @@ class Generic extends Xlsx{
 			$line = 2;
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
-				$User['account'] = $this->getBranchPath($User['branch_id'], $BITable);
+				//$User['account'] = $this->getBranchPath($User['branch_id'], $BITable);
+				$User['account'] = $this->getParentName($User['branch_id'], $BITable, $BTTable);
+				$User['contract'] = $this->getBranchTranslation($User['branch_id'], $BTTable);
 				// echo $User['account'].'<br>';
 				/*if($User['branch_id'] == 190){
 					echo $User['branch_name'].'<br>';
@@ -36,7 +39,7 @@ class Generic extends Xlsx{
 					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, $User['account'])// TODO : Account
-						->setCellValue('B'.$line, strtoupper($User['branch_name']))// TODO : Contract
+						->setCellValue('B'.$line, strtoupper($User['contract']))// TODO : Contract
 						->setCellValue('C'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('D'.$line, strtoupper($User['firstname']))
 						->setCellValue('E'.$line, $User['recommended_level'])//Starting level
@@ -194,6 +197,8 @@ class Generic extends Xlsx{
 		// TODO : Generic retrieve of DB entries
 		$branches = 'SELECT * FROM BranchInfo;';
 		$this->_view->branch = $this->getDb($this->dbinstancename)->getTable($branches);
+		$branchesTranslations = 'SELECT * FROM BranchTranslations WHERE language="french"';
+		$this->_view->translations = $this->getDb($this->dbinstancename)->getTable($branchesTranslations);
 		$BITable = $this->_view->branch;
 		$this->getTreeFromPM($code, $BITable);
 		$query =
@@ -211,7 +216,7 @@ class Generic extends Xlsx{
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
 			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC';
-		if($_REQUEST['debug']==true) $query .= ' LIMIT 2000';
+		//if($_REQUEST['debug']==true) $query .= ' LIMIT 2000';
 		$query .= ';';
 		// var_dump($this->_view->branchUsers);
 		return $this->getDb($this->dbinstancename)->getTable($query);
@@ -230,6 +235,30 @@ class Generic extends Xlsx{
 					}
 				}
 			}
+	}
+	
+	function getParentName($branchId, $branches, $translations){
+		$result = 'In dev';
+		$parentId = null;
+		foreach ($branches as $branch){
+			if ($branch['branch_id'] == $branchId){
+				$parentId = $branch['parent_id'];
+				break;
+			}
+		}
+		$result = $this->getBranchTranslation($parentId, $translations);
+		return $result;
+	}
+	
+	function getBranchTranslation($id, $translations){
+		$translate = 'Translation Not Found';
+		foreach($translations as $translation){
+			if($translation['branch_id'] == $id){
+				$translate = $translation['branch_name'];
+				break;
+			}
+		}
+		return $translate;
 	}
 	
 	function getBranchPath($branchId, $table, $path = ""){
