@@ -91,7 +91,7 @@ class Xlsx extends Export{
 					}
 					if (!empty($row['course_id'])){
 						$course_id = (int)$row['course_id'];
-						if (!isset($this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id])){
+						//if (!isset($this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id])){
 							foreach (array(
 									'course_code',
 									'course_name',
@@ -117,9 +117,14 @@ class Xlsx extends Export{
 									'user_course_waiting',
 									'user_course_score',
 									'user_course_timespent',
-							) as $field)
-								$this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id][$field] = isset($row[$field]) ? $row[$field] : null;
-						}
+									'session_id',
+									'session_date_begin',
+									'session_date_end'
+							) as $field){
+								if (empty($this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id][$field]))
+									$this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id][$field] = isset($row[$field]) ? $row[$field] : null;
+							}
+						//}
 					}
 				}
 			}

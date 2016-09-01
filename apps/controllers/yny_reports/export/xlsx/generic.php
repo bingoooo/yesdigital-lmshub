@@ -54,7 +54,7 @@ class Generic extends Xlsx{
 					
 					$elearnings = $microlearnings = $sessions = $catch_up = $esp = $business_keys = array();
 					$globalTime = $iCol = $nbElearnings = $nbElCompleted = $nbSessionPassed = 0;
-					$comments = 'TODO'; // Add a commentary column
+					$comments = '';//'TODO'; // Add a commentary column
 					
 					$lastAccess = null;
 					$courseColumns = array('O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
@@ -65,16 +65,16 @@ class Generic extends Xlsx{
 								$lastAccess = $Course['user_course_date_last_access'];
 							}
 								
-							if(strpos($Course['course_code'], 'ESP')!==false){
+							if(stripos($Course['course_code'], 'ESP')!==false){
 								$esp[$course_id] = $Course;
 							}
-							if (strpos($Course['course_code'], 'CATCH')!==false){
+							if (stripos($Course['course_code'], 'CATCH')!==false){
 								$catch_up[$course_id] = $Course;
 							}
-							if(strpos($Course['course_code'], 'SKS')!==false){
+							if(stripos($Course['course_code'], 'SKS')!==false){
 								$sessions[$course_id] = $Course;
 							}
-							if (strpos($Course['course_code'], 'BK')!==false || stripos($Course['course_label'], 'business keys')!==false){
+							if (stripos($Course['course_code'], 'BK')!==false || stripos($Course['course_label'], 'business keys')!==false){
 								$business_keys[$course_id] = $Course;
 							}
 							
@@ -92,92 +92,108 @@ class Generic extends Xlsx{
 						}
 					}
 					
+					$total_time = 0;
+					
 					// Insert entries into the xlsx file
 					if (!empty($elearnings)){
 						$el_done = 0;
 						$el_count = count($elearnings);
-						$el_time = null;
+						$el_time = 0;
 						foreach ($elearnings as $course_id => $Course){
 							$el_time += $Course['user_course_timespent'];
-							if($Course['user_course_score'] !== '0.00')
+							if($Course['user_course_status'] == 2)
 								$el_done += 1;
 						}
 						$this->XlActiveSheet
 							->setCellValue('J'.$line, $el_done.'/'.$el_count)
-							->setCellValue('K'.$line, $el_time)
+							->setCellValue('K'.$line, $el_time/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $el_time;
 					}
 					if (!empty($sessions)){
 						$sessions_done = 0;
 						$sessions_count = count($sessions);
-						$sessions_time = null;
+						$sessions_time = 0;
 						foreach ($sessions as $course_id => $Course){
-							$sessions_time += $Course['user_course_timespent'];
-							if($Course['user_course_score'] !== '0.00') $sessions_done += 1;
+							if($Course['user_course_status'] == 2){
+								$sessions_done += 1;
+								if (!empty($Course['session_date_end'])){
+									$session_time = strtotime($Course['session_date_end']) - strtotime($Course['session_date_begin']);
+									$sessions_time += $session_time;
+								}
+							}
 						}
 						$this->XlActiveSheet
 							->setCellValue('L'.$line, $sessions_done.'/'.$sessions_count)
-							->setCellValue('M'.$line, $sessions_time)
+							->setCellValue('M'.$line, $sessions_time/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $sessions_time;
 					}
 					
 					if (!empty($catch_up)){
 						$cu_done = 0;
 						$cu_count = count($catch_up);
-						$cu_time = null;
+						$cu_time = 0;
 						foreach ($catch_up as $course_id => $Course){
 							$cu_time += $Course['user_course_timespent'];
-							if($Course['user_course_score'] !== '0.00') $cu_done += 1;
+							if($Course['user_course_status'] == 2) $cu_done += 1;
 						}
 						$this->XlActiveSheet
 							->setCellValue('N'.$line, $cu_done.'/'.$cu_count)
-							->setCellValue('O'.$line, $cu_time)
+							->setCellValue('O'.$line, $cu_time/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $cu_time;
 					}
 					
 					if (!empty($microlearnings)){
-						$ml_time = null;
+						$ml_time = 0;
 						foreach ($microlearnings as $course_id => $Course){
 							$ml_time += $Course['user_course_timespent'];
 						}
 						$this->XlActiveSheet
-							->setCellValue('P'.$line, $ml_time)
+							->setCellValue('P'.$line, ($ml_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $ml_time;
 					}
 					
 					if(!empty($esp)){
 						$esp_done = 0;
 						$esp_count = count($esp);
-						$esp_time = null;
+						$esp_time = 0;
 						foreach ($esp as $course_id => $Course){
 							$esp_time += $Course['user_course_timespent'];
-							if($Course['user_course_score'] !== '0.00') $esp_done += 1;
+							if($Course['user_course_status'] == 2) $esp_done += 1;
 						}
 						$this->XlActiveSheet
 							->setCellValue('Q'.$line, $esp_done.'/'.$esp_count)
-							->setCellValue('R'.$line, $esp_time)
+							->setCellValue('R'.$line, ($esp_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $esp_time;
 					}
 					
 					if(!empty($business_keys)){
 						$business_keys_done = 0;
 						$business_keys_count = count($business_keys);
-						$business_keys_time = null;
+						$business_keys_time = 0;
 						foreach ($business_keys as $course_id => $Course){
 							$business_keys_time += $Course['user_course_timespent'];
-							if($Course['user_course_score'] !== '0.00') $business_keys_done += 1;
+							if($Course['user_course_status'] == 2) $business_keys_done += 1;
 						}
 						$this->XlActiveSheet
 							->setCellValue('S'.$line, $business_keys_done.'/'.$business_keys_count)
-							->setCellValue('T'.$line, $business_keys_time)
+							->setCellValue('T'.$line, ($business_keys_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 						;
+						$total_time += $business_keys_time;
 					}
 					
+					//Total time
+					$this->XlActiveSheet->setCellValue('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);
+								
 					//$completion
 					$lastAccess = (stripos($lastAccess, '0000-00-00')!==false || empty($lastAccess)) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($lastAccess)); 
 					$this->XlActiveSheet
 						->setCellValue('U'.$line, $comments)//Comments
-						->setCellValue('V'.$line, $lastAccess)
+						->setCellValue('W'.$line, $lastAccess)
 					;
 				}
 			}
@@ -210,10 +226,15 @@ class Generic extends Xlsx{
 			'V2.date_begin_validity AS user_lp_date_begin_validity, '.
 			'V2.date_end_validity AS user_lp_date_end_validity, '.
 			'V2.catchup_user_limit AS user_lp_catchup_limit, '.
-			'V2.timespent AS user_lp_timespent '.
+			'V2.timespent AS user_lp_timespent, '.
+			'ILT.session_id, '.
+			'ILT.date_begin AS session_date_begin, '.
+			'ILT.date_end AS session_date_end '.
 			'FROM V_USER_COURSES AS V1 '.
 			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
+			'LEFT JOIN UserIltSessions AS UIS ON UIS.user_id = V1.user_id '.
+			'LEFT JOIN IltSessionInfo AS ILT ON ILT.session_id = UIS.session_id AND ILT.course_id = V1.course_id '.
 			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC';
 		//if($_REQUEST['debug']==true) $query .= ' LIMIT 2000';
@@ -285,10 +306,17 @@ class Generic extends Xlsx{
 			->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		}
 		//Set date format
-		foreach (array('H', 'I', 'V') as $aCol){
+		foreach (array('H', 'I', 'W') as $aCol){
 			$this->XlActiveSheet->getStyle($aCol.'2:'.$aCol.$finalrowindex)
 			->getNumberFormat()
 			->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+		}
+		//Set time formats
+		foreach (array('K', 'M', 'O', 'P', 'R', 'T', 'V') as $aCol){
+			$this->XlActiveSheet
+				->getStyle($aCol.'2:'.$aCol.$finalrowindex)
+				->getNumberFormat()->setFormatCode('[HH]:MM:SS')
+			;
 		}
 	}
 	
