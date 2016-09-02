@@ -306,7 +306,7 @@ class Generic extends Xlsx{
 	
 	function setExcelFinalFormat($finalrowindex){
 		//Set center alignment for columns
-		foreach (array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V') AS $aCol){
+		foreach (array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W') AS $aCol){
 			$this->XlActiveSheet->getStyle($aCol.'2:'.$aCol.$finalrowindex)
 			->getAlignment()
 			->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
