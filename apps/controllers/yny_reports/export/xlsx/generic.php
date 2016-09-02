@@ -18,13 +18,13 @@ class Generic extends Xlsx{
 		
 		# Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
-			// Sorting on "account name" and "user names"
+			// Sorting on "account name", "contract number" and "user names"
 			$accounts = array();
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
 				$User['account']	= $this->getParentName($User['branch_id'], $BITable, $BTTable);
 				$User['contract']	= $this->getBranchTranslation($User['branch_id'], $BTTable);
-				$accounts[$User['account']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
+				$accounts[$User['account'].' - '.$User['contract']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
 			}
 			ksort($accounts);
 			
@@ -35,7 +35,23 @@ class Generic extends Xlsx{
 				foreach ($Users as $User){
 					if (empty($User['learning_plans'])) continue;
 					foreach ($User['learning_plans'] as $path_id=>$LP){
-						if ($path_id==='UNKNOWN') continue;
+						$isESP = false;
+						$elearnings = $microlearnings = $sessions = $catch_up = $business_keys = $esp = array();
+						$globalTime = $iCol = $nbElearnings = $nbElCompleted = $nbSessionPassed = 0;
+						$comments = '';//'TODO'; // Add a commentary column
+						if ($path_id==='UNKNOWN'){
+							# Specific for ESP
+							if (empty($LP['courses'])) continue;
+							foreach ($LP['courses'] as $course_id=>$Course){
+								//The ESP need to be displayed only once in the first LP found
+								if(stripos($Course['course_code'], 'ESP')!==false){
+									$esp[$course_id] = $Course;
+									continue;
+								}
+							}
+							if (empty($esp)) continue;
+							$isESP = true;
+						}
 						$line++;
 						$this->XlActiveSheet
 							->setCellValue('A'.$line, $User['account'])				// Account
@@ -44,15 +60,11 @@ class Generic extends Xlsx{
 							->setCellValue('D'.$line, strtoupper($User['firstname']))
 							->setCellValue('E'.$line, $User['recommended_level'])	//Starting level
 							->setCellValue('F'.$line, $User['acquired_level'])		//Current level
-							->setCellValue('G'.$line, $LP['path_name'])				//Booked program
-							->setCellValue('H'.$line, $this->toExcelDateFormat($LP['user_lp_date_begin_validity']))	// Start date
+							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])				//Booked program
+							->setCellValue('H'.$line, $this->toExcelDateFormat(!empty($LP['user_lp_date_begin_validity']))?$LP['user_lp_date_begin_validity']:$LP['user_lp_date_assign'])	// Start date
 							->setCellValue('I'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))	// End date
 							// ->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch																					
 							;
-						
-						$elearnings = $microlearnings = $sessions = $catch_up = $esp = $business_keys = array();
-						$globalTime = $iCol = $nbElearnings = $nbElCompleted = $nbSessionPassed = 0;
-						$comments = '';//'TODO'; // Add a commentary column
 						
 						$lastAccess = null;
 						$courseColumns = array('O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
@@ -80,13 +92,9 @@ class Generic extends Xlsx{
 								}
 							}
 							
-							/** Specific cases on CATCHUPS & ESP because it not depends on a Learning Plan: Must search into "UNKNOWN" Learning Plan Courses array **/
+							/** Specific case on CATCHUPS because it not depends on a Learning Plan: Must search into "UNKNOWN" Learning Plan Courses array **/
 							if (!empty($User['learning_plans']['UNKNOWN']['courses'])){
 								foreach ($User['learning_plans']['UNKNOWN']['courses'] as $course_id=>$Course){
-									if(stripos($Course['course_code'], 'ESP')!==false){
-										$esp[$course_id] = $Course;
-										continue;
-									}
 									$catchpos = stripos($Course['course_code'], 'CATCH');
 									if (!empty($sessions) && $catchpos!==false){
 										// We have to match if this catchup match a corresponding SKS in this Learning plan
@@ -147,7 +155,7 @@ class Generic extends Xlsx{
 								if($Course['user_course_status'] == 2) $cu_done += 1;
 							}
 							$this->XlActiveSheet
-								->setCellValue('N'.$line, $cu_done.'/'.$cu_count)
+								->setCellValue('N'.$line, $cu_done/*.'/'.$cu_count*/)//Do not display the catchup possible count, because it is limited to 3 (and possible count are often 6)
 								->setCellValue('O'.$line, $cu_time/86400, \PHPExcel_Cell_DataType::TYPE_NUMERIC)
 							;
 							$total_time += $cu_time;
