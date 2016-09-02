@@ -59,7 +59,7 @@ class Generic extends Xlsx{
 						//Get courses					
 						if (!empty($LP['courses'])){
 							foreach ($LP['courses'] as $course_id=>$Course){
-								if($Course['user_course_date_last_access'] !== '0000-00-00 00:00:00'){
+								if($Course['user_course_date_last_access'] !== '0000-00-00 00:00:00' && $Course['user_course_date_last_access'] > $lastAccess){
 									$lastAccess = $Course['user_course_date_last_access'];
 								}
 								
@@ -73,23 +73,28 @@ class Generic extends Xlsx{
 									if (stripos($Course['course_name'], 'micro') !== false)
 										$microlearnings[$course_id] = $Course;
 									else{
-										$Course['module_status'] = (!empty($Course['user_course_date_completed']) && stripos($Course['user_course_date_completed'], '0000-00-00')===false) ? 'Completed' :
-										(empty($Course['user_course_date_first_access']) || stripos($Course['user_course_date_first_access'], '0000-00-00')!==false ? 'Not started' : 'In progress');
-										if ($Course['module_status']==='Completed')
+										if ($Course['user_course_status']==2)
 											$nbElCompleted++;
 										$elearnings[$course_id] = $Course;
 									}
 								}
 							}
-							/* Specific cases on CATCHUPS & ESP because it not depends on a Learning Plan: Must search into "UNKNOWN" Learning Plan Courses array*/
+							
+							/** Specific cases on CATCHUPS & ESP because it not depends on a Learning Plan: Must search into "UNKNOWN" Learning Plan Courses array **/
 							if (!empty($User['learning_plans']['UNKNOWN']['courses'])){
-								$catch_up = $esp = array();
 								foreach ($User['learning_plans']['UNKNOWN']['courses'] as $course_id=>$Course){
 									if(stripos($Course['course_code'], 'ESP')!==false){
 										$esp[$course_id] = $Course;
+										continue;
 									}
-									elseif (stripos($Course['course_code'], 'CATCH')!==false){
-										$catch_up[$course_id] = $Course;
+									$catchpos = stripos($Course['course_code'], 'CATCH');
+									if (!empty($sessions) && $catchpos!==false){
+										// We have to match if this catchup match a corresponding SKS in this Learning plan
+										$exp2match = trim(substr($Course['course_code'], 0, $catchpos), '_');
+										foreach ($sessions as $session){
+											if (stripos($session['course_code'], $exp2match)!==false)
+												$catch_up[$course_id] = $Course;
+										}
 									}
 								}
 							}
@@ -193,10 +198,9 @@ class Generic extends Xlsx{
 						$this->XlActiveSheet->setCellValue('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);
 									
 						//$completion
-						$lastAccess = (stripos($lastAccess, '0000-00-00')!==false || empty($lastAccess)) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($lastAccess)); 
-						$this->XlActiveSheet
+						$lastAccess = (stripos($lastAccess, '0000-00-00')!==false || empty($lastAccess)) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($lastAccess)); 						$this->XlActiveSheet
 							->setCellValue('U'.$line, $comments)//Comments
-							->setCellValue('W'.$line, $lastAccess)
+							->setCellValue('W'.$line, $this->toExcelDateFormat($lastAccess))
 						;
 					}
 				}
