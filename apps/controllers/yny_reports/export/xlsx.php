@@ -63,8 +63,8 @@ class Xlsx extends Export{
 					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_name', 'branch_id') as $field)
 						$this->_view->data[$uid][$field] = isset($row[$field]) ? $row[$field] : null;
 				}
-				if (!empty($row['path_id'])){
-					$path_id = (int)$row['path_id'];
+				//if (!empty($row['path_id'])){
+					$path_id = !empty($row['path_id']) ? $row['path_id'] : 'UNKNOWN';
 					if (!isset($this->_view->data[$uid]['learning_plans'][$path_id])){
 						foreach (array(
 								'path_code',
@@ -126,7 +126,7 @@ class Xlsx extends Export{
 							}
 						//}
 					}
-				}
+				//}
 			}
 		}
 	}
@@ -169,5 +169,13 @@ class Xlsx extends Export{
 			}
 		}
 		return array_merge($branchids, $subbranchids);
+	}
+	
+	/**
+	 * @param string $strDate	"yyyy-mm-dd HH:ii:ss"
+	 * @return mixed Excel date/time value or boolean FALSE on failure, null if date "0000-00-00"
+	 */
+	function toExcelDateFormat($strDate){
+		return (stripos($strDate, '0000-00-00')!==false || empty($strDate)) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($strDate));
 	}
 }
