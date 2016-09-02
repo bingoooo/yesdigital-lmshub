@@ -198,7 +198,7 @@ class Generic extends Xlsx{
 						$this->XlActiveSheet->setCellValue('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);
 									
 						//$completion
-						$lastAccess = (stripos($lastAccess, '0000-00-00')!==false || empty($lastAccess)) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($lastAccess)); 						$this->XlActiveSheet
+						$this->XlActiveSheet
 							->setCellValue('U'.$line, $comments)//Comments
 							->setCellValue('W'.$line, $this->toExcelDateFormat($lastAccess))
 						;
