@@ -225,6 +225,84 @@ class Generic extends Xlsx{
 		}
 	}
 	
+	function buildDataTree($dbdata){
+		if (!empty($dbdata)){
+			foreach ($dbdata as $i=>$row){
+				if (empty($row['user_id'])) continue;
+				$uid = $row['user_id'];
+				if (!isset($this->_view->data[$uid])){
+					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_name', 'branch_id', 'parent_branch_name') as $field)
+						$this->_view->data[$uid][$field] = isset($row[$field]) ? $row[$field] : null;
+				}
+				//if (!empty($row['path_id'])){
+				$path_id = !empty($row['path_id']) ? $row['path_id'] : 'UNKNOWN';
+				if (!isset($this->_view->data[$uid]['learning_plans'][$path_id])){
+					foreach (array(
+							'path_code',
+							'path_name',
+							'path_txt',
+							'create_date',
+							'img_url',
+							'days_valid',
+							'catch_up_enabled',
+							'catch_up_limit',
+							'enable_final_evaluation',
+							'template_id',
+							'template_name',
+							'certificate_enabled',
+							'certificate_name',
+							'user_lp_completed',
+							'user_lp_date_assign',
+							'user_lp_date_begin_validity',
+							'user_lp_date_end_validity',
+							'user_lp_catchup_limit',
+							'user_lp_timespent'
+					) as $field)
+						$this->_view->data[$uid]['learning_plans'][$path_id][$field] = isset($row[$field]) ? $row[$field] : null;
+				}
+				if (!empty($row['course_id'])){
+					$course_id = (int)$row['course_id'];
+					//if (!isset($this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id])){
+					foreach (array(
+							'course_code',
+							'course_name',
+							'course_txt',
+							'course_image',
+							'course_language',
+							'course_status',
+							'course_type',
+							'course_sub_start_date',
+							'course_sub_end_date',
+							'course_date_begin',
+							'course_date_end',
+							'course_link',
+							'course_category_name',
+							'course_label',
+							'course_certificate_enable',
+							'course_certificate_name',
+							'user_course_date_inscripted',
+							'user_course_date_first_access',
+							'user_course_date_last_access',
+							'user_course_date_completed',
+							'user_course_status',
+							'user_course_waiting',
+							'user_course_score',
+							'user_course_timespent',
+							'session_id',
+							'session_date_begin',
+							'session_date_end'
+					) as $field){
+						if (empty($this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id][$field]))
+							$this->_view->data[$uid]['learning_plans'][$path_id]['courses'][$course_id][$field] = isset($row[$field]) ? $row[$field] : null;
+					}
+					//}
+				}
+				//}
+			}
+		}
+	}
+	
+	
 	function retrieveGeneric($code){
 		// TODO : Generic retrieve of DB entries
 		$branches = 'SELECT * FROM BranchInfo;';
