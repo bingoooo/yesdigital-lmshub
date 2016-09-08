@@ -58,8 +58,8 @@ class Generic extends Xlsx{
 							->setCellValue('B'.$line, strtoupper($User['contract']))// Contract
 							->setCellValue('C'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 							->setCellValue('D'.$line, strtoupper($User['firstname']))
-							->setCellValue('E'.$line, $User['recommended_level'])	//Starting level
-							->setCellValue('F'.$line, $User['acquired_level'])		//Current level
+							->setCellValue('E'.$line, $User['acquired_level'])
+							->setCellValue('F'.$line, $User['recommended_level'])
 							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])				//Booked program
 							->setCellValue('H'.$line, $this->toExcelDateFormat(!empty($LP['user_lp_date_begin_validity']))?$LP['user_lp_date_begin_validity']:$LP['user_lp_date_assign'])	// Start date
 							->setCellValue('I'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))	// End date
