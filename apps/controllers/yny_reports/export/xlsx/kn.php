@@ -19,9 +19,8 @@ class Kn extends Xlsx{
 			foreach ($this->_view->data as $uid=>$User){
 				if (empty($User['learning_plans'])) continue;
 				foreach ($User['learning_plans'] as $path_id=>$LP){
+					if ($path_id === 'UNKNOWN') continue;
 					$line++;
-					$lpstartdate= (stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_begin_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_begin_validity'])); 
-					$lpenddate	= (stripos($LP['user_lp_date_end_validity'], '0000-00-00')!==false || empty($LP['user_lp_date_end_validity'])) ? null : \PHPExcel_Shared_Date::PHPToExcel(strtotime($LP['user_lp_date_end_validity'])); 
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, strtoupper($User['firstname']))
 						->setCellValue('B'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
@@ -32,8 +31,8 @@ class Kn extends Xlsx{
 						->setCellValue('G'.$line, $User['recommended_level'])//Starting level
 						->setCellValue('H'.$line, $User['acquired_level'])//Current level
 						->setCellValue('I'.$line, $LP['path_name'])//Booked program
-						->setCellValue('J'.$line, $lpstartdate)
-						->setCellValue('K'.$line, $lpenddate)
+						->setCellValue('J'.$line, $this->toExcelDateFormat($LP['user_lp_date_begin_validity']))
+						->setCellValue('K'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))
 						->setCellValue('N'.$line, '')//On track ??
 					;
 					

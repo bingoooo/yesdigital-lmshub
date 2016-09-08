@@ -33,9 +33,9 @@ class Bnp extends Xlsx{
 									$Courses['EL'][$course_id] = $Course;
 						}
 						elseif (stripos($Course['course_code'], 'BK_')!==false)
-						$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
+							$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
 						elseif (stripos($Course['course_code'], 'ESP_')!==false)
-						$Courses['ESP'][$course_id] = $Course;//Webcoaching
+							$Courses['ESP'][$course_id] = $Course;//Webcoaching
 						else
 							$Courses['SKS'][$course_id] = $Course;
 					}
