@@ -142,8 +142,9 @@ class Kn extends Xlsx{
 						$globalTime += $cu_time;
 					}
 					//$completion
-					$this->XlActiveSheet->setCellValue('AG'.$line, ($globalTime/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);//Total time en heures
-					$this->XlActiveSheet->setCellValue('AH'.$line, $this->toExcelDateFormat($lastAccess));
+					$this->XlActiveSheet
+						->setCellValueExplicit('AG'.$line, ($globalTime/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC) //Total time en heures
+						->setCellValue('AH'.$line, $this->toExcelDateFormat($lastAccess));
 				}
 			}
 			$this->setExcelFinalFormat($line);
@@ -164,7 +165,7 @@ class Kn extends Xlsx{
 			->getNumberFormat()
 			->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 		}
-			//Set time formats
+		//Set time formats
 		foreach (array('AG') as $aCol){
 			$this->XlActiveSheet
 				->getStyle($aCol.'2:'.$aCol.$finalrowindex)

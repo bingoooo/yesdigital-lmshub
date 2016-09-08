@@ -186,6 +186,112 @@ class Bnp extends Xlsx{
 				}
 			}
 			$this->setExcelFinalFormat($line);
+
+			## Building the Averages
+			$line += 2;
+			
+			$commonBorderStyle	= array('style'=>\PHPExcel_Style_Border::BORDER_MEDIUM);
+			$commonBorders		= array(
+				'bottom'=> $commonBorderStyle,
+				'left'	=> $commonBorderStyle,
+				'right' => $commonBorderStyle,
+				'top'	=> $commonBorderStyle
+			);
+			$commonGrayFIll = array(
+				'type'=>\PHPExcel_Style_Fill::FILL_SOLID,
+				'color'=>array('rgb' => '808080')
+			);
+			$commonFont		= array(
+				'color'	=> array('rgb'=>'FFFFFF'),
+				'bold'	=> true,
+			);
+			$commonALignment = array('horizontal'=>\PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'indent'=>0);
+			$commonLabelStyle = array(
+				'borders'	=> $commonBorders,
+				'fill'		=> $commonGrayFIll,
+				'alignment'	=> $commonALignment,
+				'font'		=> $commonFont
+			);
+			
+			$this->XlActiveSheet->setCellValue('H'.$line, 'MOYENNES :');
+			$avgLabel = $this->XlActiveSheet->getStyle('H'.$line);
+			$avgLabel->getFont()->setBold(true)->setUnderline(true)->setSize(12);
+			$avgLabel->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT)->setIndent(0);
+			
+			// Big frame
+			$this->XlActiveSheet->getStyle('I'.$line.':AB'.($line+3))
+				->applyFromArray(array('borders' => $commonBorders))
+			;
+			
+			foreach (array(
+				'PACK PROGRESSION'	=>'I'.$line.':S'.$line,
+				'PRE-LEARNING'		=>'I'.($line+1).':L'.($line+1),
+				'COURS FORMATEUR'	=>'M'.($line+1).':O'.($line+1),
+				'MICROLEARNING'		=>'P'.($line+1).':S'.($line+1),
+				'COURS WEBCOACHING'	=>'T'.$line.':V'.($line+1),
+				'Ateliers Thématiques'=>'W'.$line.':Z'.($line+1),
+				'AVANCÉE GLOBALE DU PARCOURS'=>'AA'.$line.':AB'.($line+1),
+			) as $label=>$coord){
+				$subcoord = substr($coord, 0, strpos($coord, ':'));
+				$this->XlActiveSheet->setCellValue($subcoord, $label);
+				$this->XlActiveSheet->mergeCells($coord);
+				$this->XlActiveSheet->getStyle($coord)->applyFromArray($commonLabelStyle);
+			}
+			
+			foreach (array(
+				'I'.($line+2)=>'Objectif (en heures)',
+				'J'.($line+2)=>'Modules réalisés',
+				'K'.($line+2)=>'Temps passé (en heures)',
+				'L'.($line+2)=>'Avancée du pré-learning',
+				'M'.($line+2)=>'Objectif (en heures)',
+				'N'.($line+2)=>'Cours réalisés (en heures)',
+				'O'.($line+2)=>'Avancée des cours formateur',
+				'P'.($line+2)=>'Objectif (en heures)',
+				'Q'.($line+2)=>'ML réalisés',
+				'R'.($line+2)=>'Temps passé (en heures)',
+				'S'.($line+2)=>'Avancée du ML',
+				'T'.($line+2)=>'Objectif (en heures)',
+				'U'.($line+2)=>'Cours réalisés (en heures)',
+				'V'.($line+2)=>'Avancée des cours formateur',
+				'W'.($line+2)=>'Objectif (en heures)',
+				'X'.($line+2)=>'Modules réalisés',
+				'Y'.($line+2)=>'Cours réalisés (en heures)',
+				'Z'.($line+2)=>'Avancée des cours formateur',
+				'AA'.($line+2)=>'Temps de formation réalisé (en heures)',
+				'AB'.($line+2)=>'État d\'avancement du parcours',
+			) as $coord=>$label){
+				$this->XlActiveSheet->setCellValue($coord, $label);
+				$this->XlActiveSheet->getStyle($coord)->applyFromArray($commonLabelStyle)
+					->getAlignment()->setWrapText(true);
+			}
+			
+			foreach (array('I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AA', 'AB') as $aCol){
+				$coord		= $aCol.($line+3);
+				$avgcoord	= $aCol.'3:'.$aCol.($line-2);
+				//Skip "objectifs" as I don't know how to handle this
+				if (!in_array($aCol, array('I', 'M', 'P', 'T', 'W'))){
+					$this->XlActiveSheet->setCellValue($coord, '=AVERAGE('.$avgcoord.')');
+					$this->XlActiveSheet->getStyle($coord)
+						->applyFromArray(array(
+							'borders'	=>$commonBorders,
+							'alignment'	=>$commonALignment
+						))
+					;
+				}
+				// Time format
+				if (in_array($aCol, array('I', 'K', 'M', 'N', 'P', 'R', 'T', 'U', 'W', 'Y', 'AA'))){
+					$this->XlActiveSheet->getStyle($coord)->getNumberFormat()->setFormatCode('HH:MM');
+				}
+				// Percent format
+				elseif (in_array($aCol, array('L', 'O', 'S', 'V', 'Z', 'AB'))){
+					$this->XlActiveSheet->getStyle($coord)->getNumberFormat()->setFormatCode('0%');
+				}
+				// float(2) by default
+				else $this->XlActiveSheet->getStyle($coord)->getNumberFormat()->setFormatCode('# ##0.00');
+			}
+			$this->XlActiveSheet->getRowDimension($line+2)->setRowHeight(36);
+			$this->XlActiveSheet->getRowDimension($line+3)->setRowHeight(18);
+			
 			$this->sendXlsx('BNP');
 		}
 	}

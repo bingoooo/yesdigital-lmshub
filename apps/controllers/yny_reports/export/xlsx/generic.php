@@ -202,12 +202,10 @@ class Generic extends Xlsx{
 							$total_time += $business_keys_time;
 						}
 						
-						//Total time
-						$this->XlActiveSheet->setCellValue('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);
-									
-						//$completion
+						// completion
 						$this->XlActiveSheet
-							->setCellValue('U'.$line, $comments)//Comments
+							->setCellValue('U'.$line, $comments) //Comments
+							->setCellValueExplicit('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC) //Total time
 							->setCellValue('W'.$line, $this->toExcelDateFormat($lastAccess))
 						;
 					}
