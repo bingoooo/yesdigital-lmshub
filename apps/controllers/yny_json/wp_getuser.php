@@ -28,7 +28,7 @@ class Wp_Getuser extends Yny_Json{
 		$uid = (int)$requestData['user'];
 		$user= $this->getDb($this->dbinstance)->getRow('SELECT lastname AS name, firstname AS surname, email FROM UserInfo WHERE user_id = '.$uid);
 		if (!empty($user['email']))
-			$this->_view->json[$requestData['user']] = $user;
+			$this->_view->json[$uid] = $user;
 	}
 	
 }
