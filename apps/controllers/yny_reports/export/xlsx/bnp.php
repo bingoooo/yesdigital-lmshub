@@ -63,15 +63,14 @@ class Bnp extends Xlsx{
 					$line++;
 					$iUser++;
 					
-					$startDate = (!empty($LP['user_lp_date_begin_validity']) || stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false) ? $LP['user_lp_date_begin_validity'] : $LP['user_lp_date_assign'];
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, $iUser)
 						->setCellValue('B'.$line, !empty($User['firstname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 						->setCellValue('C'.$line, strtoupper($User['firstname']))
 						->setCellValue('D'.$line, ''/*$uid*/)
 						->setCellValue('E'.$line, $pathTypeName)
-						->setCellValue('F'.$line, $User['recommended_level'])//Date de début de parcours
-						->setCellValue('G'.$line, $startDate)//Date de début de parcours
+						->setCellValue('F'.$line, $User['recommended_level'])
+						->setCellValue('G'.$line, $this->toExcelDateFormat($User['start_date']))//Date de début de parcours
 					;
 					
 					#PRE-LEARNING
@@ -295,14 +294,26 @@ class Bnp extends Xlsx{
 				if (empty($row['user_id'])) continue;
 				$uid = $row['user_id'];
 				if (!isset($this->_view->data[$uid])){
-					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'user_lp_date_begin_validity') as $field)
+					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level') as $field)
 						$this->_view->data[$uid][$field] = isset($row[$field]) ? $row[$field] : null;
 				}
-				if (!empty($row['user_lp_date_begin_validity'])){
-					if (empty($this->_view->data[$uid]['user_lp_date_begin_validity']) || $row['user_lp_date_begin_validity']<$this->_view->data[$uid]['user_lp_date_begin_validity']){
-						$this->_view->data[$uid]['user_lp_date_begin_validity'] = $row['user_lp_date_begin_validity'];
+				if (!isset($this->_view->data[$uid]['start_date']))
+					$this->_view->data[$uid]['start_date'] = null;
+				if (
+					(!empty($row['user_lp_date_begin_validity']) && !stripos($row['user_lp_date_begin_validity'], '0000:00:00')) ||
+					(!empty($row['user_lp_date_assign']) && !stripos($row['user_lp_date_assign'], '0000:00:00'))
+					){
+					if (empty($row['user_lp_date_begin_validity']) && !empty($row['user_lp_date_assign']))
+						$start_date = $row['user_lp_date_assign'];
+					elseif (!empty($row['user_lp_date_begin_validity']) && empty($row['user_lp_date_assign']))
+						$start_date = $row['user_lp_date_begin_validity'];
+					else
+						$start_date = ($row['user_lp_date_assign']<$row['user_lp_date_begin_validity']) ? $row['user_lp_date_assign'] : $row['user_lp_date_begin_validity'];
+					if (empty($this->_view->data[$uid]['start_date']) || stripos($this->_view->data[$uid]['start_date'], '0000:00:00')!==false || $start_date < $this->_view->data[$uid]['start_date']){
+						$this->_view->data[$uid]['start_date'] = $start_date;
 					}
 				}
+				
 				if (!empty($row['course_id'])){
 					$course_id = (int)$row['course_id'];
 					if (!isset($this->_view->data[$uid]['courses'][$course_id])){
