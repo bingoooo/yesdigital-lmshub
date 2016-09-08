@@ -63,14 +63,7 @@ class Bnp extends Xlsx{
 					$line++;
 					$iUser++;
 					
-					if (!empty($User['user_lp_date_begin_validity']) && strpos($User['user_lp_date_begin_validity'], '0000')===false){
-						//$t_year   = substr($User['user_lp_date_begin_validity'],0,4);
-						//$t_month  = substr($User['user_lp_date_begin_validity'],5,2);// Fixed problems with offsets
-						//$t_day    = substr($User['user_lp_date_begin_validity'],7,2);
-						//$t_date   = \PHPExcel_Shared_Date::FormattedPHPToExcel($t_year, $t_month, $t_day);
-						$t_date   = date('d/m/Y', strtotime($User['user_lp_date_begin_validity']));
-					}
-					else $t_date = null;
+					$startDate = (!empty($LP['user_lp_date_begin_validity']) || stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false) ? $LP['user_lp_date_begin_validity'] : $LP['user_lp_date_assign'];
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, $iUser)
 						->setCellValue('B'.$line, !empty($User['firstname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
@@ -78,7 +71,7 @@ class Bnp extends Xlsx{
 						->setCellValue('D'.$line, ''/*$uid*/)
 						->setCellValue('E'.$line, $pathTypeName)
 						->setCellValue('F'.$line, $User['recommended_level'])//Date de début de parcours
-						->setCellValue('G'.$line, $t_date)//Date de début de parcours
+						->setCellValue('G'.$line, $startDate)//Date de début de parcours
 					;
 					
 					#PRE-LEARNING
@@ -369,7 +362,7 @@ class Bnp extends Xlsx{
 		//Set date format
 		$this->XlActiveSheet
 			->getStyle('G'.$line)
-			->getNumberFormat()->setFormatCode('DD/MM/YYYY')
+			->getNumberFormat()->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY)
 		;
 		//Set time formats
 		foreach (array('H') as $alphacol){

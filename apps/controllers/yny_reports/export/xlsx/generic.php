@@ -53,6 +53,7 @@ class Generic extends Xlsx{
 							$isESP = true;
 						}
 						$line++;
+						$startDate = (!empty($LP['user_lp_date_begin_validity']) || stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false) ? $LP['user_lp_date_begin_validity'] : $LP['user_lp_date_assign'];
 						$this->XlActiveSheet
 							->setCellValue('A'.$line, $User['account'])				// Account
 							->setCellValue('B'.$line, strtoupper($User['contract']))// Contract
@@ -60,8 +61,8 @@ class Generic extends Xlsx{
 							->setCellValue('D'.$line, strtoupper($User['firstname']))
 							->setCellValue('E'.$line, $User['acquired_level'])
 							->setCellValue('F'.$line, $User['recommended_level'])
-							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])				//Booked program
-							->setCellValue('H'.$line, $this->toExcelDateFormat(!empty($LP['user_lp_date_begin_validity']))?$LP['user_lp_date_begin_validity']:$LP['user_lp_date_assign'])	// Start date
+							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])//Booked program
+							->setCellValue('H'.$line, $this->toExcelDateFormat($startDate))	// Start date
 							->setCellValue('I'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))	// End date
 							// ->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch																					
 							;

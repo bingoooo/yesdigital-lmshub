@@ -21,6 +21,7 @@ class Kn extends Xlsx{
 				foreach ($User['learning_plans'] as $path_id=>$LP){
 					if ($path_id === 'UNKNOWN') continue;
 					$line++;
+					$startDate = (!empty($LP['user_lp_date_begin_validity']) || stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false) ? $LP['user_lp_date_begin_validity'] : $LP['user_lp_date_assign'];
 					$this->XlActiveSheet
 						->setCellValue('A'.$line, strtoupper($User['firstname']))
 						->setCellValue('B'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
@@ -31,7 +32,7 @@ class Kn extends Xlsx{
 						->setCellValue('G'.$line, $User['recommended_level'])//Starting level
 						->setCellValue('H'.$line, $User['acquired_level'])//Current level
 						->setCellValue('I'.$line, $LP['path_name'])//Booked program
-						->setCellValue('J'.$line, $this->toExcelDateFormat($LP['user_lp_date_begin_validity']))
+						->setCellValue('J'.$line, $this->toExcelDateFormat($startDate))
 						->setCellValue('K'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))
 						->setCellValue('N'.$line, '')//On track ??
 					;
