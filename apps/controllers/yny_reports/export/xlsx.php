@@ -37,7 +37,7 @@ class Xlsx extends Export{
 	}
 	
 	function sendXlsx($branchname){
-		// Redirect output to a client’s web browser (Excel2007)
+		# Using headers for Excel2007
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$branchname.date('-Ymd_H-i').'.xlsx"');
 		header('Cache-Control: max-age=0');
@@ -49,8 +49,11 @@ class Xlsx extends Export{
 		header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
 		header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 		header ('Pragma: public'); // HTTP/1.0
-			
-		$objWriter = \PHPExcel_IOFactory::createWriter($this->PHPXL, 'Excel2007')->save('php://output');
+		
+		# Using explicitly an Excel 2007 PHP writer object
+		(new \PHPExcel_Writer_Excel2007($this->PHPXL))
+			->setPreCalculateFormulas() // This is needed to force the PHP Excel spreadsheet to execute the formulas intending to view the result into the downloaded file
+			->save('php://output');		// Stream the Excel content
 		exit;
 	}
 	

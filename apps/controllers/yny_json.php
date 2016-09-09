@@ -19,6 +19,8 @@ class Yny_Json extends Controller{
 			'https://wp.yesnyou.com',
 	);
 	
+	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6');
+	
 	function initialize(){
 		if ($origin = $this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			$this->_view->headers['Access-Control-Allow-Origin']		= $origin;
@@ -26,10 +28,10 @@ class Yny_Json extends Controller{
 			$this->_view->headers['Access-Control-Allow-Credentials']	= 'true';
 			$this->_view->headers['Access-Control-Allow-Headers']		= 'Content-Type';
 		}
-		//if (!defined('ENV') || ENV!=='devel')
+		if (defined('DEVEL'))
+			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
+		else
 			$this->setLayout('json');	//On production environment, use JSON format
-		//else
-		//	$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
 		//Force set this view script for all inherited classes
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/provalliance_json.phtml');
 		$this->_view->json = array();
@@ -69,10 +71,11 @@ class Yny_Json extends Controller{
 	}
 	
 	function checkRestrictedHosts(){
-		if (defined('DEVEL')) return '*';
+		if (defined('DEVEL') || in_array($_SERVER['REMOTE_ADDR'], $this->forcedAllowedIP) || $this->allowedHosts === '*')
+			return '*';
 		//Only for AJAX request (so, HTTP_ORIGIN is set)
 		if ($origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : false){
-			if (in_array($origin, $this->allowedHosts) || $this->allowedHosts === '*')
+			if (in_array($origin, $this->allowedHosts))
 				return $origin;
 		}
 		$this->exitOnError(403, 'Forbidden');

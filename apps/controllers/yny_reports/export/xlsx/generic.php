@@ -49,15 +49,16 @@ class Generic extends Xlsx{
 							$isESP = true;
 						}
 						$line++;
+						$startDate = (!empty($LP['user_lp_date_begin_validity']) || stripos($LP['user_lp_date_begin_validity'], '0000-00-00')!==false) ? $LP['user_lp_date_begin_validity'] : $LP['user_lp_date_assign'];
 						$this->XlActiveSheet
 							->setCellValue('A'.$line, $User['parent_branch_name'])				// Account
 							->setCellValue('B'.$line, strtoupper($User['branch_name']))// Contract
 							->setCellValue('C'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 							->setCellValue('D'.$line, strtoupper($User['firstname']))
-							->setCellValue('E'.$line, $User['recommended_level'])	//Starting level
-							->setCellValue('F'.$line, $User['acquired_level'])		//Current level
-							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])				//Booked program
-							->setCellValue('H'.$line, $this->toExcelDateFormat(!empty($LP['user_lp_date_begin_validity']))?$LP['user_lp_date_begin_validity']:$LP['user_lp_date_assign'])	// Start date
+							->setCellValue('E'.$line, $User['acquired_level'])
+							->setCellValue('F'.$line, $User['recommended_level'])
+							->setCellValue('G'.$line, $isESP?'ESP':$LP['path_name'])//Booked program
+							->setCellValue('H'.$line, $this->toExcelDateFormat($startDate))	// Start date
 							->setCellValue('I'.$line, $this->toExcelDateFormat($LP['user_lp_date_end_validity']))	// End date
 							// ->setCellValue('J'.$line, strtoupper($User['branch_name']))//Branch																					
 							;
@@ -198,12 +199,10 @@ class Generic extends Xlsx{
 							$total_time += $business_keys_time;
 						}
 						
-						//Total time
-						$this->XlActiveSheet->setCellValue('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC);
-									
-						//$completion
+						// completion
 						$this->XlActiveSheet
-							->setCellValue('U'.$line, $comments)//Comments
+							->setCellValue('U'.$line, $comments) //Comments
+							->setCellValueExplicit('V'.$line, ($total_time/86400), \PHPExcel_Cell_DataType::TYPE_NUMERIC) //Total time
 							->setCellValue('W'.$line, $this->toExcelDateFormat($lastAccess))
 						;
 					}
