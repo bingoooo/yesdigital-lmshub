@@ -13,8 +13,6 @@ class Generic extends Xlsx{
 		//Retrieving and sorting data
 		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
 		$this->buildDataTree($this->retrieveGeneric($PMCode));
-		$BITable = $this->_view->branch;
-		$BTTable = $this->_view->translations;
 		
 		# Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -22,9 +20,7 @@ class Generic extends Xlsx{
 			$accounts = array();
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
-				$User['account']	= $this->getParentName($User['branch_id'], $BITable, $BTTable);
-				$User['contract']	= $this->getBranchTranslation($User['branch_id'], $BTTable);
-				$accounts[$User['account'].' - '.$User['contract']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
+				$accounts[$User['parent_branch_name'].' - '.$User['branch_name']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
 			}
 			ksort($accounts);
 			
@@ -54,8 +50,8 @@ class Generic extends Xlsx{
 						}
 						$line++;
 						$this->XlActiveSheet
-							->setCellValue('A'.$line, $User['account'])				// Account
-							->setCellValue('B'.$line, strtoupper($User['contract']))// Contract
+							->setCellValue('A'.$line, $User['parent_branch_name'])				// Account
+							->setCellValue('B'.$line, strtoupper($User['branch_name']))// Contract
 							->setCellValue('C'.$line, !empty($User['lastname']) ? strtoupper($User['lastname']) : trim($User['login'], '/'))
 							->setCellValue('D'.$line, strtoupper($User['firstname']))
 							->setCellValue('E'.$line, $User['recommended_level'])	//Starting level
@@ -213,13 +209,7 @@ class Generic extends Xlsx{
 					}
 				}
 			}
-			$PM = "";
-			foreach ($this->_view->branch as $key => $values){
-				if($values['branch_id'] == $PMCode){
-					$PM = strtoupper($values['branch_name']);
-					break;
-				}
-			}
+			$PM = isset($this->_view->pm)?$this->_view->pm:'YES';
 			$this->setExcelFinalFormat($line);
 			$this->sendXlsx('Generic-'.$PM);
 		}
@@ -306,32 +296,21 @@ class Generic extends Xlsx{
 	function retrieveGeneric($code){
 		// TODO : Generic retrieve of DB entries
 		$branches = 'SELECT * FROM BranchInfo;';
-		$this->_view->branch = $this->getDb($this->dbinstancename)->getTable($branches);
-		$branchesTranslations = 'SELECT * FROM BranchTranslations WHERE language="french"';
-		$this->_view->translations = $this->getDb($this->dbinstancename)->getTable($branchesTranslations);
-		$BITable = $this->_view->branch;
+		$BITable = $this->getDb($this->dbinstancename)->getTable($branches);
+		foreach ($BITable as $key => $values){
+			if($values['branch_id'] == $code){
+				$this->_view->pm = strtoupper($values['branch_name']);
+				break;
+			}
+		}
 		$this->getTreeFromPM($code, $BITable);
 		$query =
 			'SELECT DISTINCT '.
-			'V1.*, '.
-			'LPI.*, '.
-			'V2.course_completed AS user_lp_completed, '.
-			'V2.date_assign AS user_lp_date_assign, '.
-			'V2.date_begin_validity AS user_lp_date_begin_validity, '.
-			'V2.date_end_validity AS user_lp_date_end_validity, '.
-			'V2.catchup_user_limit AS user_lp_catchup_limit, '.
-			'V2.timespent AS user_lp_timespent, '.
-			'ILT.session_id, '.
-			'ILT.date_begin AS session_date_begin, '.
-			'ILT.date_end AS session_date_end '.
-			'FROM V_USER_COURSES AS V1 '.
-			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
-			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
-			'LEFT JOIN UserIltSessions AS UIS ON UIS.user_id = V1.user_id '.
-			'LEFT JOIN IltSessionInfo AS ILT ON ILT.session_id = UIS.session_id AND ILT.course_id = V1.course_id '.
-			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
-			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC';
-		if(!empty($_REQUEST['debug'])) $query .= ' LIMIT 2000';
+			'VG.* '.
+			'FROM V_GENERIC AS VG '.
+			'WHERE VG.branch_id IN ('.implode(',', $this->tree).') ';
+			//'ORDER BY VG.lastname ASC , VG.firstname ASC , VG.course_id ASC';
+		if(!empty($_REQUEST['debug'])) $query .= ' LIMIT 100';
 		return $this->getDb($this->dbinstancename)->getTable($query);
 	}
 	
