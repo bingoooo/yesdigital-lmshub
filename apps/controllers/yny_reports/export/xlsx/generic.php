@@ -7,14 +7,22 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Generic extends Xlsx{
 	
-	private $tree = array();
+	protected $branchname = 'Generic';
 	
 	function main(){
-		//Retrieving and sorting data
+		
 		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
+		
+		//Finding PM branch name
+		$branch_name = $this->getDb($this->dbinstancename)->getScalar('SELECT branch_name FROM V_FR_BRANCHES WHERE branch_id = '.$PMCode);
+		if (empty($branch_name)){
+			die('Unknown branch id '.$PMCode);
+		}
+		$branchname = $this->branchname.'-'.$branch_name;
+		$this->checkingCacheUse($branchname);
+		
+		//Retrieving and sorting data
 		$this->buildDataTree($this->retrieveGeneric($PMCode));
-		$BITable = $this->_view->branch;
-		$BTTable = $this->_view->translations;
 		
 		# Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -22,8 +30,8 @@ class Generic extends Xlsx{
 			$accounts = array();
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
-				$User['account']	= $this->getParentName($User['branch_id'], $BITable, $BTTable);
-				$User['contract']	= $this->getBranchTranslation($User['branch_id'], $BTTable);
+				$User['account']	= $User['parent_branch_name'];
+				$User['contract']	= $User['branch_name'];
 				$accounts[$User['account'].' - '.$User['contract']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
 			}
 			ksort($accounts);
@@ -212,29 +220,17 @@ class Generic extends Xlsx{
 					}
 				}
 			}
-			$PM = "";
-			foreach ($this->_view->branch as $key => $values){
-				if($values['branch_id'] == $PMCode){
-					$PM = strtoupper($values['branch_name']);
-					break;
-				}
-			}
 			$this->setExcelFinalFormat($line);
-			$this->sendXlsx('Generic-'.$PM);
+			$this->sendXlsx($branchname);
 		}
 	}
 	
 	function retrieveGeneric($code){
-		// TODO : Generic retrieve of DB entries
-		$branches = 'SELECT * FROM BranchInfo;';
-		$this->_view->branch = $this->getDb($this->dbinstancename)->getTable($branches);
-		$branchesTranslations = 'SELECT * FROM BranchTranslations WHERE language="french"';
-		$this->_view->translations = $this->getDb($this->dbinstancename)->getTable($branchesTranslations);
-		$BITable = $this->_view->branch;
-		$this->getTreeFromPM($code, $BITable);
+		$branchIds = $this->fetchChildBranchids($code);
 		$query =
 			'SELECT DISTINCT '.
 			'V1.*, '.
+			'UAI.recommended_level, UAI.acquired_level, UAI.country,'.
 			'LPI.*, '.
 			'V2.course_completed AS user_lp_completed, '.
 			'V2.date_assign AS user_lp_date_assign, '.
@@ -250,65 +246,12 @@ class Generic extends Xlsx{
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
 			'LEFT JOIN UserIltSessions AS UIS ON UIS.user_id = V1.user_id '.
 			'LEFT JOIN IltSessionInfo AS ILT ON ILT.session_id = UIS.session_id AND ILT.course_id = V1.course_id '.
-			'WHERE V1.branch_id IN ('.implode(',', $this->tree).') '.
+			'INNER JOIN V_USER_ADD_INFOS UAI ON UAI.user_id = V1.user_id '.
+			'WHERE V1.branch_id IN ('.$code.','.implode(',', $branchIds).') '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC';
+		unset($branchIds);
 		if(!empty($_REQUEST['debug'])) $query .= ' LIMIT 2000';
-		return $this->getDb($this->dbinstancename)->getTable($query);
-	}
-	
-	function getTreeFromPM($branchId, $tree, $table = array()){
-		$count = 0;
-		$id = 0;
-			foreach($tree as $index => $datas){
-				if ($datas['parent_id'] == $branchId){
-					$count++;
-					$id = $datas['branch_id'];
-					$this->getTreeFromPM($datas['branch_id'], $tree);
-					if ($count > 0 && !in_array($datas['branch_id'], $this->tree)){
-						array_push($this->tree, $id);
-					}
-				}
-			}
-	}
-	
-	function getParentName($branchId, $branches, $translations){
-		$result = 'In dev';
-		$parentId = null;
-		foreach ($branches as $branch){
-			if ($branch['branch_id'] == $branchId){
-				$parentId = $branch['parent_id'];
-				break;
-			}
-		}
-		$result = $this->getBranchTranslation($parentId, $translations);
-		return $result;
-	}
-	
-	function getBranchTranslation($id, $translations){
-		$translate = 'Translation Not Found';
-		foreach($translations as $translation){
-			if($translation['branch_id'] == $id){
-				$translate = $translation['branch_name'];
-				break;
-			}
-		}
-		return $translate;
-	}
-	
-	function getBranchPath($branchId, $table, $path = ""){
-		$parentId = 0;
-		foreach ($table as $key => $datas){
-			if($datas['branch_id'] == $branchId){
-				$parentId = $datas['parent_id'];
-				$path = $datas['branch_name'].'|'.$path;
-				break;
-			}
-		}
-		if($parentId == 0){
-			return $path;
-		} else {
-			return $this->getBranchPath($parentId, $table, $path);
-		}
+		return $this->getDb($this->dbinstancename)->getTable($query);;
 	}
 	
 	function setExcelFinalFormat($finalrowindex){

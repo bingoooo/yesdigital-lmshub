@@ -7,9 +7,15 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Kn extends Xlsx{
 	
+	protected $branchname = 'kn';
+	protected $branchid = 768;
+	
 	function main(){
+		
+		$this->checkingCacheUse();
+		
 		//Retrieving and sorting data
-		$this->buildDataTree($this->retrieveData('kn'));
+		$this->buildDataTree($this->retrieveData($this->branchid));
 		
 		//Building Excel file
 		if (!empty($this->_view->data) && empty($_REQUEST['debug'])){
@@ -149,7 +155,7 @@ class Kn extends Xlsx{
 				}
 			}
 			$this->setExcelFinalFormat($line);
-			$this->sendXlsx('K&N');
+			$this->sendXlsx();
 		}
 	}
 	
