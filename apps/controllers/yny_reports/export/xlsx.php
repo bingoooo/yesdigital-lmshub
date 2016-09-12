@@ -210,24 +210,6 @@ class Xlsx extends Export{
 		return array_merge($branchids, $subbranchids);
 	}
 	
-	/*function subjoinUserAdditionalInfos($data){
-		$user_ids = array();
-		foreach ($data as $row){
-			$user_ids[$row['user_id']] = null;
-		}
-		$addInfos = $this->getDb($this->dbinstancename)->getTable(
-			'SELECT DISTINCT user_id, recommended_level, acquired_level, country FROM V_USER_ADD_INFOS WHERE user_id IN ('.implode(',',array_keys($user_ids)).')'
-		);
-		foreach ($addInfos as $row)
-			$user_ids[$row['user_id']] = $row;
-		foreach ($data as $i=>$row){
-			foreach (array('recommended_level', 'acquired_level', 'country') as $key)
-				$data[$i][$key] = isset($user_ids[$row['user_id']][$key]) ? $user_ids[$row['user_id']][$key] : null;
-		}
-		unset($user_ids, $addInfos);
-		return $data;
-	}*/
-	
 	/**
 	 * @param string $strDate	"yyyy-mm-dd HH:ii:ss"
 	 * @return mixed Excel date/time value or boolean FALSE on failure, null if date "0000-00-00"
