@@ -7,11 +7,21 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Generic extends Xlsx{
 	
-	private $tree = array();
+	protected $branchname = 'Generic';
 	
 	function main(){
-		//Retrieving and sorting data
+		
 		$PMCode = isset($_REQUEST['pm'])?$_REQUEST['pm']:439;
+		
+		//Finding PM branch name
+		$branch_name = $this->getDb($this->dbinstancename)->getScalar('SELECT branch_name FROM V_FR_BRANCHES WHERE branch_id = '.$PMCode);
+		if (empty($branch_name)){
+			die('Unknown branch id '.$PMCode);
+		}
+		$branchname = $this->branchname.'-'.$branch_name;
+		$this->checkingCacheUse($branchname);
+		
+		//Retrieving and sorting data
 		$this->buildDataTree($this->retrieveGeneric($PMCode));
 		
 		# Building Excel file
@@ -21,6 +31,7 @@ class Generic extends Xlsx{
 			foreach ($this->_view->data as $uid=>$User){
 				// WIP : retrieve branch infos
 				$accounts[$User['parent_branch_name'].' - '.$User['branch_name']][$User['lastname'].' - '.$User['firstname'].' - '.$uid] = $User;
+
 			}
 			ksort($accounts);
 			
@@ -210,7 +221,7 @@ class Generic extends Xlsx{
 			}
 			$PM = isset($this->_view->pm)?$this->_view->pm:'YES';
 			$this->setExcelFinalFormat($line);
-			$this->sendXlsx('Generic-'.$PM);
+			$this->sendXlsx($branchname);
 		}
 	}
 	

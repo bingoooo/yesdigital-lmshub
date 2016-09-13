@@ -7,15 +7,21 @@ use FragTale\Controller\Yny_Reports\Export\Xlsx;
  */
 class Bnp extends Xlsx{
 	
+	protected $branchname = 'bnp';
+	protected $branchid = 647;
+	
 	function main(){
+		//Using cached file if it is prod env
+		$this->checkingCacheUse();
+		
 		//Retrieving and sorting data
-		$this->buildDataTree($this->retrieveData('bnp'));
+		$this->buildDataTree($this->retrieveData($this->branchid));
 		
 		$finalData = array(
-				'DÉCOUVRIR'			=>array(),
-				'PERFECTIONNER'		=>array(),
-				'PROFESSIONNALISER'	=>array(),
-				'MAINTENIR'			=>array(),
+			'DÉCOUVRIR'			=>array(),
+			'PERFECTIONNER'		=>array(),
+			'PROFESSIONNALISER'	=>array(),
+			'MAINTENIR'			=>array(),
 		);
 		if (!empty($this->_view->data)){
 			//Final Sorting: by path type
@@ -29,8 +35,8 @@ class Bnp extends Xlsx{
 						if ($Course['course_type']==='elearning'){
 							if (stripos($Course['course_name'], 'microlearning')!==false)
 								$Courses['ML'][$course_id] = $Course;
-								else
-									$Courses['EL'][$course_id] = $Course;
+							else
+								$Courses['EL'][$course_id] = $Course;
 						}
 						elseif (stripos($Course['course_code'], 'BK_')!==false)
 							$Courses['BK'][$course_id] = $Course;//Business keys, goes to "Atelier..."
@@ -284,7 +290,7 @@ class Bnp extends Xlsx{
 			$this->XlActiveSheet->getRowDimension($line+2)->setRowHeight(36);
 			$this->XlActiveSheet->getRowDimension($line+3)->setRowHeight(18);
 			
-			$this->sendXlsx('BNP');
+			$this->sendXlsx();
 		}
 	}
 	
@@ -367,6 +373,7 @@ class Bnp extends Xlsx{
 				}
 			}
 		}
+		unset($dbdata);
 	}
 	
 	function setExcelRowFormat($line){

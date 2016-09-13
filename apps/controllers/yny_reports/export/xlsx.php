@@ -19,6 +19,8 @@ class Xlsx extends Export{
 	 */
 	protected $XlActiveSheet;
 	
+	protected $branchname;
+	
 	function initialize(){
 		require_once LIB_ROOT.'/PHPExcel.php';
 		$this->PHPXL = new \PHPExcel();
@@ -36,10 +38,37 @@ class Xlsx extends Export{
 		
 	}
 	
-	function sendXlsx($branchname){
+	function getCurrentExcelFileName($branchname=null){
+		if (empty($branchname)) $branchname = strtoupper($this->branchname);
+		//The file is cached for 1 day
+		$storageFolder = DOC_ROOT.'/storage';
+		if (!file_exists($storageFolder))
+			mkdir($storageFolder, 0775, true);
+		$excelFolder = $storageFolder.'/excel';
+		if (!file_exists($excelFolder))
+			mkdir($excelFolder, 0775, true);
+		$excelFileName = $excelFolder.'/'.$branchname.date('-Y-m-d').'.xlsx';
+		return $excelFileName;
+	}
+	
+	function cacheXlsx($branchname=null){
+		$excelFileName = $this->getCurrentExcelFileName($branchname);
+		if (!file_exists($excelFileName) || !empty($_REQUEST['refresh'])){
+			# Using explicitly an Excel 2007 PHP writer object
+			(new \PHPExcel_Writer_Excel2007($this->PHPXL))
+				->setPreCalculateFormulas() // This is needed to force the PHP Excel spreadsheet to execute the formulas intending to view the result into the downloaded file
+				->save($excelFileName);
+		}
+		return $excelFileName;
+	}
+	
+	function sendXlsx($branchname=null){
+		if (empty($branchname)) $branchname = strtoupper($this->branchname);
+		$excelFileName	= $this->cacheXlsx($branchname);
+		$excelContent	= file_get_contents($excelFileName);
 		# Using headers for Excel2007
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$branchname.date('-Ymd_H-i').'.xlsx"');
+		header('Content-Disposition: attachment;filename="'.basename($excelFileName).'"');
 		header('Cache-Control: max-age=0');
 		// If you're serving to IE 9, then the following may be needed
 		//header('Cache-Control: max-age=1');
@@ -50,11 +79,18 @@ class Xlsx extends Export{
 		header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
 		header ('Pragma: public'); // HTTP/1.0
 		
-		# Using explicitly an Excel 2007 PHP writer object
-		(new \PHPExcel_Writer_Excel2007($this->PHPXL))
-			->setPreCalculateFormulas() // This is needed to force the PHP Excel spreadsheet to execute the formulas intending to view the result into the downloaded file
-			->save('php://output');		// Stream the Excel content
+		echo $excelContent;
 		exit;
+	}
+	
+	/**
+	 * Using cached file if it is prod env
+	 */
+	function checkingCacheUse($branchname=null){
+		if (empty($this->branchname)) return false;
+		if (empty($branchname)) $branchname = strtoupper($this->branchname);
+		if (empty($_REQUEST['debug']) && empty($_REQUEST['refresh']) && file_exists($this->getCurrentExcelFileName($branchname)))
+			$this->sendXlsx($branchname);
 	}
 	
 	function buildDataTree($dbdata){
@@ -63,7 +99,7 @@ class Xlsx extends Export{
 				if (empty($row['user_id'])) continue;
 				$uid = $row['user_id'];
 				if (!isset($this->_view->data[$uid])){
-					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_name', 'branch_id') as $field)
+					foreach (array('login', 'firstname', 'lastname', 'email', 'recommended_level', 'acquired_level', 'country', 'branch_id', 'branch_name', 'parent_branch_id', 'parent_branch_name') as $field)
 						$this->_view->data[$uid][$field] = isset($row[$field]) ? $row[$field] : null;
 				}
 				//if (!empty($row['path_id'])){
@@ -132,18 +168,16 @@ class Xlsx extends Export{
 				//}
 			}
 		}
+		unset($dbdata);
 	}
 	
-	function retrieveData($branchname='bnp'){
-		$topBranchIds = array('bnp'=>647, 'kn'=>768);
-		$branchIds = array();
-		if (!empty($topBranchIds[$branchname])){
-			$branchIds = $this->fetchChildBranchids($topBranchIds[$branchname]);
-			$branchIds[] = $topBranchIds[$branchname];
-		}
+	function retrieveData($branchid){
+		$branchIds = $this->fetchChildBranchids($branchid);
+		$branchIds[] = $branchid;
 		$query =
 			'SELECT DISTINCT '.
 				'V1.*, '.
+				'UAI.recommended_level, UAI.acquired_level, UAI.country,'.
 				'LPI.*, '.
 				'V2.course_completed AS user_lp_completed, '.
 				'V2.date_assign AS user_lp_date_assign, '.
@@ -154,9 +188,11 @@ class Xlsx extends Export{
 			'FROM V_USER_COURSES AS V1 '.
 			'LEFT JOIN V_USER_LEARNINGPLAN_COURSES AS V2 ON V2.user_id = V1.user_id AND V2.course_id = V1.course_id '.
 			'LEFT JOIN LearningPlanInfo LPI ON LPI.path_id = V2.path_id '.
+			'INNER JOIN V_USER_ADD_INFOS UAI ON UAI.user_id = V1.user_id '.
  			'WHERE V1.branch_id IN ('.implode(',', $branchIds).') '.
  				'OR V1.parent_branch_id IN ('.implode(',', $branchIds).') '.
 			'ORDER BY V1.lastname ASC , V1.firstname ASC , V1.course_id ASC;';
+		unset($branchIds);
 		return $this->getDb($this->dbinstancename)->getTable($query);
 	}
 	
