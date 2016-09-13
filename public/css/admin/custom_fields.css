@@ -1,0 +1,127 @@
+@CHARSET "UTF-8";
+
+#custom_fieldset{
+	position: relative;
+	border: 1px solid rgba(230, 230, 230,.5);
+	border-radius: 3px;
+	box-shadow: 1px 1px 3px rgba(240, 240, 240,.3);
+	margin-top: 4em;
+	background: rgb(249,249,249);
+	padding: 0;
+}
+.custom_fieldset{
+	position: relative;
+	border: 1px solid rgba(80, 90, 110,.2);
+	box-shadow: 1px 1px 2px rgba(240, 240, 240,.3);
+	border-radius: 2px;
+	margin-top: 2em;
+	background: white;
+}
+.custom_field_description{
+	color: rgb(50,50,110);
+	font-style: italic;
+	margin: 1.5em;
+	font-size: .95em;
+}
+#custom_fieldset .title1{
+	color: rgb(50,50,110);
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+#custom_fieldset .title2{
+	color: rgb(50,50,110);
+	font-weight: bold;
+	font-size: 1em;
+	font-style: italic;
+}
+
+button.moveup,button.movedown,button.remove{
+	width: 18px;
+	height: 18px;
+	border: none;
+	box-shadow: none;
+	background: none;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin-right: .3em;
+	border-radius: 3px;
+	cursor: pointer;
+}
+button.moveup {
+	background-image: url(../../img/up.png);
+}
+button.movedown {
+	background-image: url(../../img/down.png);
+}
+button.remove {
+	width: 22px;
+	height: 22px;
+	background-image: url(../../img/trash.png);
+	margin-left: 1.5em;
+	margin-right: 0;
+}
+button.blur{
+	opacity: .3;
+	cursor: default;
+}
+
+.cust_field_triggers {
+	text-align: right;
+}
+
+#save_custom_fields{
+	float: right;
+}
+
+#custom_fieldset td{
+	vertical-align: top;
+	padding-right: 1em;
+}
+.form-elt{
+	display: table;
+	width: 100%;
+}
+.midcol{
+	display: table-cell;
+	width: 49%;
+	vertical-align: top;
+	margin: auto;
+}
+.field_position{
+	border: none;
+	font-weight: bold;
+	padding:0;
+	margin-0;
+	line-height:0;
+	width: 3em;
+}
+/* Picture selector */
+.custom_field_picture_selector{
+	position: fixed;
+	max-width: 75%;
+	width: 60em;
+	top: 8em;
+	right: 3em;
+	border: 1px solid rgb(218,219,221);
+	box-shadow: 1px 2px 4px rgba(220,221,223,.6);
+	border-radius: 3px;
+	padding: 0;
+	background: rgb(238,239,241);
+	display: none;
+}
+.custom_field_picture_selector .close{
+	opacity: 1;
+}
+.custom_field_picture_selector .margin{
+	margin: 1.1em;
+}
+.custom_field_picture_selector .image_library{
+	background: white;
+	padding: .5em;
+	min-height: 26em;
+	border-radius: 2px;
+}
+.image_library_cont{
+	cursor: pointer;
+}

@@ -1,0 +1,32 @@
+<?php
+if (defined('ENV') && ENV=='devel')
+	$view->addJS(WEB_ROOT.'/js/inputs.js');
+else
+	$view->addJS(WEB_ROOT.'/js/inputs.min.js');
+$type		= !empty($view->type)		? $view->type	: 'text';
+$id			= !empty($view->id)			? $view->id		: rand(0, 1000).'_'.md5(rand(0,100));
+$required	= !empty($view->required)	? 'required'	: '';
+$readonly	= !empty($view->readonly)	? 'readonly'	: '';
+$disabled	= !empty($view->disabled)	? 'disabled'	: '';
+$value		= !empty($view->value)		? $view->value	: '';
+$name		= !empty($view->name)		? 'name="'.$view->name.'"'	: '';
+$title		= !empty($view->title)		? 'title="'.$view->title.'"': '';
+$class		= !empty($view->class)		? 'class="'.$view->class.'"': '';
+$style		= !empty($view->style)		? 'style="'.$view->style.'"': '';
+$maxlength	= !empty($view->maxlength)	? 'maxlength="'.$view->maxlength.'"' : '';
+$placeholder= !empty($view->placeholder)? 'placeholder="'.$view->placeholder.'"': '';?>
+<input type="<?php echo $type;?>" id="<?php echo $id?>"<?php
+	if ($name)			echo ' '.$name;
+	if ($class)			echo ' '.$class;
+	if ($style)			echo ' '.$style;
+	if ($required)		echo ' '.$required;
+	if ($readonly)		echo ' '.$readonly;
+	if ($disabled)		echo ' '.$disabled;
+	if ($title)			echo ' '.$title;
+	if ($placeholder)	echo ' '.$placeholder;
+	if ($maxlength)		echo ' '.$maxlength;
+	if (!empty($view->addedprops) && is_array($view->addedprops)){
+		foreach ($view->addedprops as $k=>$v)
+			echo ' '.$k.'="'.$v.'"';
+	}
+?> value="<?php echo $value?>">

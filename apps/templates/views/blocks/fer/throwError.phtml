@@ -1,0 +1,10 @@
+<?php $Data = isset($view->Data) ? $view->Data : null;?>
+<div style="color:red;background:white;padding:20px;font-size:14px;text-align:center;font-weight:bold;">
+	<?php if (empty($Data['success']) && !empty($Data['message'])){?>
+	Error while retrieving Learning Plan data with following message:
+	<div style="font-style:italic"><?php
+		if (!empty($Data['error'])) echo 'Error Code '.$Data['error'].': ';
+		echo $Data['message'];
+	?></div>
+	<?php }?>
+</div>

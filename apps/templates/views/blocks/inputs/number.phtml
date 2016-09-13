@@ -1,0 +1,10 @@
+<?php
+$props['type'] = 'number';
+foreach (array('id', 'required', 'readonly', 'disabled', 'value', 'name', 'title', 'class', 'style', 'placeholder', 'maxlength', 'addedprops') as $key)
+	if (isset($view->$key)) $props[$key] = $view->$key;
+if (isset($view->min))	$props['addedprops']['min'] = (int)$view->min;
+if (isset($view->max))	$props['addedprops']['max'] = (int)$view->max;
+if (!empty($view->step))$props['addedprops']['step']= $view->step;
+else
+	$props['addedprops']['step'] = 'any';
+echo $view->getBlock('blocks/inputs/input', $props);

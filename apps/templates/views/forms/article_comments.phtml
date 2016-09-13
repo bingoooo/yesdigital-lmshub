@@ -1,0 +1,56 @@
+<?php
+$view->addJS(WEB_ROOT.'/js/ckeditor/ckeditor.js');
+$view->addJS(WEB_ROOT.'/js/article_comments.js');?>
+<div class="posts">
+	<script type="text/javascript">
+		var DEL_COM_CONFIRM='<?php echo _('Are you sure you want to delete this comment? This action is not recoverable.')?>';
+	</script>
+	<h1><?php echo _('Comments')?></h1>
+	<?php if (!empty($view->article_comments)){
+		$top = count($view->article_comments)-1;
+		foreach ($view->article_comments as $i=>$comments){
+			$itsYourLast = $i==$top && $view->getUser()->uid==$comments['uid'];?>
+		<div class="comment <?php if ($itsYourLast) echo 'your_last'?>">
+			<?php //If its the last comment and its yours: you can delete it
+			if ($itsYourLast){?>
+			<button type="button" class="validate edit_comment" id="upd_button"
+				title="<?php echo _('You can still update your comment since it is the last one')?>"
+				value="<?php echo $comments['acid']?>"><img src="<?php echo WEB_ROOT?>/img/edit.png"></button>
+			<form method="post">
+				<span>&nbsp;</span>
+				<button type="submit" name="delete_comment" class="validate delete delete_comment"
+					title="<?php echo _('You can still delete your comment since it is the last one')?>"
+					value="<?php echo $comments['acid']?>">X</button>
+			</form>
+			<?php }?>
+			<div class="comment_content" id="comment_<?php echo $comments['acid']?>"><?php echo $comments['message'];?></div>
+			<div class="comment_author">
+				<span class="comment_user"><?php echo $comments['user_login']?></span> - <span class="comment_date"><?php echo date('d/m/Y H:i:s', strtotime($comments['edit_date']))?></span>
+			</div>
+			<?php if ($itsYourLast){//Can update text?>
+			<div id="upd_comments" style="display: none;">
+				<form method="post" class="post_comments">
+					<textarea id="upd_comment" name="article_comments" class="ckeditor"><?php echo $comments['message'];?></textarea>
+					<div class="btn_comments_container">
+						<button type="submit" name="upd_comment" class="validate"
+							value="<?php echo $comments['acid']?>"><?php echo _('Save')?></button>
+					</div>
+				</form>
+			</div>
+			<?php }?>
+		</div>
+	<?php }}elseif ($view->userIsLogged()){?>
+	<div class="be_first">
+		<?php echo _('Be the first to post a comment.')?>
+	</div>
+	<?php }if ($view->userIsLogged()){?>
+	<div id="add_comments" class="add_comments">
+		<form method="post" class="post_comments">
+			<textarea id="article_comment" name="article_comments" class="ckeditor"></textarea>
+			<div class="btn_comments_container">
+				<button type="submit" name="post_comment" class="validate"><?php echo _('Post comment')?></button>
+			</div>
+		</form>
+	</div>
+	<?php }else echo _('You must be logged in to post a comment.');?>
+</div>

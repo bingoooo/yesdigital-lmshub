@@ -1,0 +1,73 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: FragTale CMS - V1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-02 18:44+0100\n"
+"PO-Revision-Date: 2016-03-07 16:58+0100\n"
+"Last-Translator: FragBis <fabricedant@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: ../../../apps\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: controllers\n"
+"X-Poedit-SearchPath-1: templates\n"
+"X-Poedit-SearchPath-2: library\n"
+"X-Poedit-SearchPath-3: models\n"
+
+#: library/FragTale/class.controller.php:354
+msgid ""
+"You are trying to send an email, but your admin have set no email sending "
+"allowed."
+msgstr ""
+
+#: library/FragTale/class.controller.php:466
+msgid "Empty content"
+msgstr "Contenu vide"
+
+#: library/FragTale/class.controller.php:472
+#: library/FragTale/class.controller.php:475
+msgid "Error while sending the email."
+msgstr "Une erreur est survenue lors de l'envoi du courrier."
+
+#: library/FragTale/class.controller.php:487
+msgid "System error:"
+msgstr "Erreur système :"
+
+#: library/FragTale/class.view.php:383
+msgid "Attempt to store the following message in an unknown type"
+msgstr ""
+"Tentative d'enregistrement du message suivant dans un type ou une catégorie "
+"inconnus"
+
+#: models/FragTale/cms/class.files.php:100
+msgid "Unable to upload "
+msgstr "Le système n'a pu télécharger le fichier"
+
+#: models/FragTale/cms/class.files.php:107
+msgid "You must allow Apache to have recursive permissions to write upon "
+msgstr ""
+"Vous devez autoriser Apache à avoir les permissions récursives d'écrire sur"
+
+#: models/FragTale/cms/class.files.php:124
+msgid ""
+": a file with same name already exists. Item associated with the existing "
+"file."
+msgstr ""
+": un fichier du même nom existe déjà. L'élément a été associé au fichier "
+"déjà existant."
+
+#: models/FragTale/cms/class.files.php:131
+msgid ""
+": error occured while transferring this file into the uploads directory."
+msgstr ": Une erreur est survenue lors du transfert de fichier."
+
+#: models/FragTale/cms/class.files.php:138
+msgid ""
+": file successfully transferred in server file system and its informations "
+"stored into the database."
+msgstr ": fichier transféré et archivé par le système."

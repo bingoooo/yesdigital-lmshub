@@ -1,0 +1,466 @@
+<?php
+$view->getMetaView()->_tpl_version = '1.0';//Defining this template version
+
+$isRO = (!empty($_REQUEST['report_mode']) && strtolower($_REQUEST['report_mode'])==='r');//Is it on read only mode?
+
+$LvlScale = $ReportContent = array();//Declare some useful array
+
+$LP = !empty($view->RpData)	? $view->RpData	: null;//Set full data
+
+if (empty($LP['success']))
+	echo $view->getBlock('blocks/fer/throwError', array('Data'=>$LP));//Display error block
+elseif (isset($LP['learning_plan_final_evaluation']) && is_array($LP['learning_plan_final_evaluation'])){
+	foreach ($LP['learning_plan_final_evaluation'] as $reportField){
+		if (!empty($reportField['id']))
+			$ReportContent[$reportField['id']] = $reportField;//Fill in the array that contains the custom fields for the report
+	}
+}
+$User = !empty($LP['user_profile']) ? $LP['user_profile'] : null;
+if (!empty($LP['level_scale'])){
+	foreach ($LP['level_scale'] as $i=>$lvl)
+		$LvlScale[$lvl['id']] = $lvl['name'];
+}
+# Temporary : set all acquired and recommended levels in hard code taken from the LMS due to data missing from ETime
+$acquiredLevels = array(
+	1117 => 'A1.1',
+	1118 => 'A1.2',
+	1119 => 'A1.3',
+	1120 => 'A1.4',
+	1121 => 'A2.1',
+	1122 => 'A2.2',
+	1123 => 'A2.3',
+	1124 => 'A2.4',
+	1125 => 'A2.5',
+	1126 => 'A2.6',
+	1127 => 'B1.1',
+	1128 => 'B1.2',
+	1129 => 'B1.3',
+	1130 => 'B1.4',
+	1131 => 'B1.5',
+	1132 => 'B1.6',
+	1133 => 'B2.1',
+	1134 => 'B2.2',
+	1135 => 'B2.3',
+	1136 => 'B2.4',
+	1137 => 'B2.5',
+	1138 => 'B2.6',
+	1139 => 'C1.1',
+	1140 => 'C1.2',
+	1141 => 'C1.3',
+	1142 => 'C1.4',
+	1143 => 'C2',
+);
+$recommendedLevels = array(
+	1322 => 'A1.1',
+	1323 => 'A1.2',
+	1324 => 'A1.3',
+	1325 => 'A1.4',
+	1326 => 'A2.1',
+	1327 => 'A2.2',
+	1328 => 'A2.3',
+	1329 => 'A2.4',
+	1330 => 'A2.5',
+	1331 => 'A2.6',
+	1332 => 'B1.1',
+	1333 => 'B1.2',
+	1334 => 'B1.3',
+	1335 => 'B1.4',
+	1336 => 'B1.5',
+	1337 => 'B1.6',
+	1338 => 'B2.1',
+	1339 => 'B2.2',
+	1340 => 'B2.3',
+	1341 => 'B2.4',
+	1342 => 'B2.5',
+	1343 => 'B2.6',
+	1344 => 'C1.1',
+	1345 => 'C1.2',
+	1346 => 'C1.3',
+	1347 => 'C1.4',
+	1348 => 'C2',
+);
+if (empty($LvlScale)) $LvlScale = $recommendedLevels;
+$levelSelectors = $LvlScale;
+if (count($levelSelectors)<count($recommendedLevels))
+	$levelSelectors = $recommendedLevels;
+
+/**
+ * Unfortunately, we need to set all the CSS inline. Using a PHP hack
+ */
+$style = array(
+	'#report_container'		=>'background: white; text-align: left; padding: 20px 0; font-family: Arial; font-size: 13px;',
+	'#report_subcontainer'	=>'margin: auto; width: 98%; font-family: Arial;',
+	'#evaluator_comments'	=>'width: 100%; min-width: 100%; max-width: 100%; height: 120px; border: 1px solid rgb(225,225,225); background: white; padding: 10px; font-family: Arial;',
+	'.paragraph-title'		=>'text-transform: uppercase; margin: 15px 0; font-weight: normal; font-size: 16px; font-family: Arial;',
+	'.paragraph-subtitle'	=>'font-size: 14px; text-transform: uppercase; margin: 10px 0; font-weight: normal; font-family: Arial;',
+	'.profile-block'		=>'padding: 2.5%; width: 95%; margin: auto; font-family: Arial;',
+	'table'					=>'border-collapse: collapse; width: 100%; font-family: Arial;',
+	'td'					=>'padding: 10px 5px; font-size: 13px; font-family: Arial;',
+	'.profile-block td'		=>'padding: 15px 0;',
+	'.top-bar'				=>'border-top: 1px solid rgb(118,118,118);',
+	'.top-bar-lightgrey'	=>'border-top: 1px solid lightgrey;',
+	'.left-bar'				=>'border-left: 1px solid rgb(118,118,118);',
+	'.left-bar-lightgrey'	=>'border-left: 1px solid lightgrey;',
+	'.profile-block .left-bar'=>'font-family: Arial;text-align: center;',
+	'.profile-label'		=>'text-transform: uppercase; font-size: 13px;',
+	'.profile-value'		=>'font-weight: bold; font-family: Arial; font-size: 12px;',
+	'.bg-grey'				=>'background: rgb(233,233,233); font-family: Arial;',
+	'.table-total-label'	=>'text-align: right; text-transform: uppercase; padding-right: 25px; font-family: Arial;',
+	'.level-scale-container'=>'width: 95%; margin: auto; font-family: Arial;',
+	'.level-spacing'		=>'margin: 15px;',
+	'.level-label'			=>'display: inline-block; width: 29%; font-size: 13px; text-transform: uppercase; font-family: Arial;',
+	'.level-scale'			=>'display: inline-block; width: 70%; height: 30px; background: white; border: none; padding-left: 20px; font-family: Arial;',
+	'.radio-label'			=>'font-size: 13px; cursor: pointer; font-family: Arial;',
+	'.lpadding-20'			=>'padding-left:20px;',
+	'.lpadding-40'			=>'padding-left:40px;',
+);?>
+<div id="report_container" style="<?php echo $style['#report_container']?>">
+	<div id="report_subcontainer" style="<?php echo $style['#report_subcontainer']?>">
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
+			PROFILE
+		</h1>
+		<div style="<?php echo $style['.profile-block']?>">
+			<table style="<?php echo $style['table']?>">
+				<tr>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">LEARNER:</td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>">
+						<?php echo !empty($User['firstname']) ? $User['firstname'].'&nbsp;' : '';?>
+						<?php echo !empty($User['lastname']) ? $User['lastname'] : '';?>
+					</td>
+					<td colspan="4">
+						<span class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Title:</span>
+						&nbsp;&nbsp;&nbsp;
+						<span class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						if (!empty($LP['learning_plan']['path_name']))
+							echo _('Final Report for').' '.$LP['learning_plan']['path_name'];?></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Company:</td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+					if (!empty($User['fields']) && is_array($User['fields'])){
+						foreach ($User['fields'] as $i=>$field){
+							if (!empty($field['name']) && !empty($field['value']) && strtolower($field['name'])==='company name'){
+								echo $field['value'];
+								break;
+							}
+						}
+					}?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Start date:</td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						$date_begin = !empty($LP['learning_plan_user_details']['date_assign']) ? $LP['learning_plan_user_details']['date_assign'] :
+							(!empty($LP['learning_plan_user_details']['date_begin_validity']) ? $LP['learning_plan_user_details']['date_begin_validity'] : null);
+						echo $date_begin ? date('d.m.Y', strtotime($date_begin)) : '&nbsp;';?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>"><?php echo _('End date:')?></td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						$date_end = !empty($LP['learning_plan_user_details']['course_completed']) ? $LP['learning_plan_user_details']['course_completed'] :
+							(!empty($LP['learning_plan_user_details']['date_end_validity']) ? $LP['learning_plan_user_details']['date_end_validity'] : null);
+						echo $date_end ? date('d.m.Y', strtotime($date_end)) : '&nbsp;';?></td>
+				</tr>
+				<tr>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Date:</td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php echo date('d.m.Y')?></td>
+					<td class="profile-label" style="<?php echo $style['td'].$style['.profile-label']?>">Total time:</td>
+					<td class="profile-value" style="<?php echo $style['td'].$style['.profile-value']?>"><?php
+						//Should be in seconds
+						#First, totaltime is only elearning
+						$totaltime = !empty($LP['learning_plan_user_details']['time_spent']) ? (int)$LP['learning_plan_user_details']['time_spent'] : 0;
+						#calculate session time
+						if (!empty($LP['learning_plan_courses'])){
+							foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+								if (empty($LPC['course_info']['course_name']) ||
+									!in_array(strtolower($LPC['course_info']['course_type']), array('videoconference', 'classroom', 'webinar', 'telephone')))
+								{
+									continue;
+								}
+								$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
+								if (!$session)
+									continue;
+								$duration = 0;
+								if (!empty($session['user_session_details']['evaluation_score'])){
+									if (!empty($session['user_session_details']['attendance_hours'])){
+										$duration = (float)$session['user_session_details']['attendance_hours']*3600;
+									}
+									elseif (!empty($session['session_info']['date_end'])){
+										$t_begin	= strtotime($session['session_info']['date_begin']);
+										$t_end		= strtotime($session['session_info']['date_end']);
+										$duration	= $t_end - $t_begin;
+									}
+								}
+								$totaltime+=$duration;
+							}
+						}
+						if ($totaltime){
+							echo gmdate('H:i', $totaltime);
+						}?></td>
+				</tr>
+			</table>
+		</div>
+		
+		<br><br><br><br>
+		
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
+			All courses in the learning plan
+		</h1>
+		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
+			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">E-learning results:</h2>
+			<table style="<?php echo $style['table']?>">
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
+				</tr>
+				<?php
+				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+				if (!empty($LP['learning_plan_courses'])){
+					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+						if (empty($LPC['course_info']['course_name'])||
+							strtolower($LPC['course_info']['course_type'])!=='elearning') continue;
+						$nbCourses++;
+						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;?>
+				<tr>
+					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><b><?php echo $LPC['course_info']['course_name'];?></b><?php
+						echo !empty($LPC['course_user_details']['date_completed']) ? ' - '.date('d.m.Y H:i', strtotime($LPC['course_user_details']['date_completed'])) : ''; ?></td>
+					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
+						$score = !empty($LPC['course_user_details']['score_given']) ? (float)$LPC['course_user_details']['score_given'] : 0;
+						$totalPercentage += $score;
+						echo $score ? number_format($score, 2, ',', '.').'%' : ' - ';
+					?></td>
+					<td class="left-bar top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.top-bar'].$style['.profile-block .left-bar']?>"><?php
+						//Time spent
+						if (!empty($LPC['course_user_details']['time_spent'])){
+							$timespent = (float)$LPC['course_user_details']['time_spent'];
+							$totalTimeSpent += $timespent;
+							echo gmdate('H:i', $timespent);
+						}
+						else echo ' - ';
+						?></td>
+				</tr><?php
+					}
+				}?>
+				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
+					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total e-learning average')?></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo $totalTimeSpent ? gmdate('H:i', $totalTimeSpent) : ' - ';?></td>
+				</tr>
+				<tr>
+					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
+					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+				</tr>
+			</table>
+			
+			<br><br><br><br>
+			<pagebreak />
+			
+			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">Session results:</h2>
+			<table style="<?php echo $style['table']?>">
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td']?>width:64%;"></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Assessment</td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.profile-value'].
+						$style['.left-bar'].$style['.profile-block .left-bar']?>width:18%;">Time</td>
+				</tr>
+				<?php
+				$totalPercentage = $totalTimeSpent = $nbCourses = $nbAttendances = 0;
+				if (!empty($LP['learning_plan_courses'])){
+					foreach ($LP['learning_plan_courses'] as $ix=>$LPC){
+						if (empty($LPC['course_info']['course_name']) ||
+							!in_array(strtolower($LPC['course_info']['course_type']), array('videoconference', 'classroom', 'webinar', 'telephone')))
+						{
+							continue;
+						}
+						$nbCourses++;
+						if (isset($LPC['course_user_details']['status']) && $LPC['course_user_details']['status']==2) $nbAttendances++;
+						$session = !empty($LPC['course_sessions'][0]['session_info']) ? $LPC['course_sessions'][0] : null;
+						$criteria_evaluation = null;
+						if (!empty($session['user_session_details']['criteria_evalution'])){
+							foreach ($session['user_session_details']['criteria_evalution'] as $crit){
+								if (!isset($crit['name'])) continue;
+								if (!isset($criteria_evaluation[$crit['name']])){
+									$criteria_evaluation[$crit['name']] = $crit;
+								}
+							}
+						}?>
+				<tr>
+					<td class="top-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar']?>"><?php
+						echo '<b>'.$LPC['course_info']['course_name'].'</b>'.($session ? ' - '.date('d.m.Y H:i', strtotime($session['session_info']['date_begin'])) : '');
+					?></td>
+					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
+						$score = !empty($session['user_session_details']['evaluation_score']) ? (float)$session['user_session_details']['evaluation_score'] : 0;
+						$totalPercentage += $score;
+						echo $score ? number_format($score, 2, ',', '.').'%' : '-';
+					?></b></td>
+					<td class="top-bar left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.top-bar'].
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><b><?php
+						//Time spent
+						$duration = 0;
+						if ($score){
+							if (!empty($session['user_session_details']['attendance_hours'])){
+								$duration = (float)$session['user_session_details']['attendance_hours']*3600;
+								$totalTimeSpent += $duration;
+							}
+							elseif (!empty($session['session_info']['date_end'])){
+								$t_begin	= strtotime($session['session_info']['date_begin']);
+								$t_end		= strtotime($session['session_info']['date_end']);
+								$duration	= $t_end - $t_begin;
+								$totalTimeSpent += $duration;
+							}
+						}
+						echo $duration ? gmdate('H:i', $duration) : ' - ';?></b></td>
+				</tr><?php
+						if ($criteria_evaluation){?>
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].$style['.lpadding-20'].
+						$style['.top-bar-lightgrey']?>"><i>Objectives</i></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.left-bar-lightgrey'].$style['.top-bar-lightgrey']?>"></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.left-bar-lightgrey'].$style['.top-bar-lightgrey']?>"></td>
+				</tr><?php
+							foreach ($criteria_evaluation as $crit){?>
+				<tr>
+					<td style="<?php echo $style['td'].$style['.profile-block td'].
+						$style['.lpadding-40']//.$style['.top-bar-lightgrey']?>"><?php echo $crit['name']?></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td']./*$style['.top-bar-lightgrey'].*/
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"><?php echo ' - ';//echo $crit['value'] ? number_format($crit['value'], 2, ',', '.').'%' : ' - ';?></td>
+					<td style="<?php echo $style['td'].$style['.profile-block td']./*$style['.top-bar-lightgrey'].*/
+						$style['.left-bar-lightgrey'].$style['.profile-block .left-bar']?>"></td>
+				</tr>			
+							<?php
+							}
+						}
+					}
+				}?>
+				<tr class="bg-grey" style="<?php echo $style['.bg-grey']?>">
+					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Total skill sessions average')?></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php if ($nbCourses) echo number_format(($totalPercentage/$nbAttendances), 2, ',', '.').'%';?></td>
+					<td class="profile-value left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].
+						$style['.profile-value'].$style['.profile-block .left-bar']?>"><?php echo gmdate('H:i', $totalTimeSpent);?></td>
+				</tr>
+				<tr>
+					<td class="table-total-label" style="<?php echo $style['td'].$style['.profile-block td'].$style['.table-total-label']?>"><?php echo _('Attendance')?></td>
+					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"><?php echo $nbAttendances.'/'.$nbCourses?></td>
+					<td class="left-bar" style="<?php echo $style['td'].$style['.profile-block td'].$style['.left-bar'].$style['.profile-block .left-bar']?>"></td>
+				</tr>
+			</table>
+		</div>
+		
+		<br><br>
+		
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">
+			Evaluator comments
+		</h1>
+		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
+			<h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">SKILLS:</h2>
+			<?php if (!$isRO){?>
+			<textarea name="evaluator_comments" id="evaluator_comments" style="<?php echo $style['#evaluator_comments']?>"><?php
+			if (!empty($ReportContent['evaluator_comments']['value']))
+				echo $ReportContent['evaluator_comments']['value'];
+			?></textarea>
+			<?php }elseif (!empty($ReportContent['evaluator_comments']['value'])){?>
+			<div style="font-size:12px;">
+				<?php echo nl2br($ReportContent['evaluator_comments']['value']);?>
+			</div>
+			<?php }?>
+		</div>
+		
+		<br><br><br>
+		<!-- <pagebreak /> -->
+		
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">SKILL’S LEVEL</h1>
+		<div class="profile-block" style="<?php echo $style['.profile-block']?>">
+			<!-- <h2 class="paragraph-subtitle" style="<?php echo $style['.paragraph-subtitle']?>">SKILLS:</h2> -->
+			<br>
+			<div>Learner's current level for each of the skills below:</div>
+			<br>
+			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
+				<?php foreach (array(
+					'listening_current_level'	=>'Listening:',
+					'speaking_current_level'	=>'Speaking:',
+					'reading_current_level'		=>'Reading:',
+					'spoken_production_current_level'	=>'Spoken production:',
+					'spoken_interaction_current_level'	=>'Spoken interaction:',
+				) as $key=>$text){?>
+				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
+					<label for="<?php echo $key?>" class="level-label" style="<?php echo $style['.level-label']?>"><?php echo $text?></label>
+					<?php if (!$isRO){?>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale bg-grey"
+						style="<?php echo $style['.level-scale'].$style['.bg-grey']?>">
+						<option></option>
+						<?php foreach ($levelSelectors as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
+						<?php }?>
+					</select>
+					<?php }elseif (!empty($levelSelectors[$ReportContent[$key]['value']])){?>
+					&nbsp;
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
+						echo $levelSelectors[$ReportContent[$key]['value']];?></span>
+					<?php }?>
+				</div>
+				<?php }?>
+			</div>
+		</div>
+		
+		<br><br>
+		
+		<h1 class="paragraph-title" style="<?php echo $style['.paragraph-title']?>">LEARNER’S LEVEL</h1>
+		<div class="profile-block bg-grey" style="<?php echo $style['.profile-block'].$style['.bg-grey']?>">
+			<div>Learner's overall current and recommended levels:</div>
+			<div class="level-scale-container" style="<?php echo $style['.level-scale-container']?>">
+				<?php foreach (array(
+					'acquired_level'	=>'Current level:',
+					'recommended_level'	=>'Recommended level:',
+				) as $key=>$text){
+					$thisLvlSelector = ($key === 'acquired_level') ? $acquiredLevels : $recommendedLevels;?>
+				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
+					<label for="<?php echo $key?>" class="level-label" style="<?php echo $style['.level-label']?>"><?php echo $text?></label>
+					<?php if (!$isRO){?>
+					<select id="<?php echo $key?>" name="<?php echo $key?>" class="level-scale" style="<?php echo $style['.level-scale']?>">
+						<option></option>
+						<?php foreach ($thisLvlSelector as $lK=>$lT){?>
+						<option value="<?php echo $lK?>"<?php
+							if (!empty($ReportContent[$key]['value']) && $ReportContent[$key]['value']==$lK)
+								echo ' selected';
+						?>><?php echo $lT?></option>
+						<?php }?>
+					</select>
+					<?php }elseif (!empty($thisLvlSelector[$ReportContent[$key]['value']])){?>
+					&nbsp;
+					<span class="profile-value" style="<?php echo $style['.profile-value']?>"><?php
+						echo $thisLvlSelector[$ReportContent[$key]['value']];?></span>
+					<?php }?>
+				</div>
+				<?php }?>
+				<div class="level-spacing" style="<?php echo $style['.level-spacing']?>">
+					<span class="level-label" style="<?php echo $style['.level-label']?>">PROGRESS:</span>
+					&nbsp;
+					<label for="progress_satisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
+						<input type="radio" value="1" id="progress_satisfactory" name="progress_satisfactory"<?php
+						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===1) echo ' selected';?> />
+						&nbsp;
+						Satisfactory
+					</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label for="progress_unsatisfactory" class="radio-label" style="<?php echo $style['.radio-label']?>">
+						<input type="radio" value="0" id="progress_unsatisfactory" name="progress_satisfactory"<?php
+						if (!empty($ReportContent['progress_satisfactory']) && (int)$ReportContent['progress_satisfactory']===0) echo ' selected';?> />
+						&nbsp;
+						Unsatisfactory
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

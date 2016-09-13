@@ -1,0 +1,38 @@
+<?php
+$textprops	= array();
+$hiddenprops= array();
+
+$textprops['class'] = '';
+foreach (array('required', 'readonly', 'disabled', 'title', 'class', 'placeholder', 'style', 'addedprops') as $key)
+	if (isset($view->$key)) $textprops[$key] = $view->$key;
+$textprops['class'] = trim($textprops['class'].' custom_fr_date');
+$textprops['maxlength'] = 10;
+if (empty($view->id)){
+	$textprops['id'] = rand(0, 1000).'_'.md5(rand(0,100));
+}
+else $textprops['id'] = $view->id;
+if (empty($textprops['placeholder'])){
+	$textprops['placeholder'] = 'JJ/MM/AAAA';
+}
+
+$hiddenprops['id']	= $textprops['id'].'_hidden';
+$hiddenprops['name']= !empty($view->name) ? $view->name	: '';
+
+//Check the date value
+$value = null;
+if (!empty($view->value)){
+	$datevalue = substr($view->value, 0, 10);
+	//Date must be 'Y-m-d'
+	$expDate= explode('-', $datevalue);
+	$year	= isset($expDate[0]) ? $expDate[0] : null;
+	$month	= isset($expDate[1]) ? $expDate[1] : null;
+	$day	= isset($expDate[2]) ? $expDate[2] : null;
+	if (checkdate($month, $day, $year)){
+		$value = $datevalue;
+		//Display french date
+		$textprops['value'] = $day.'/'.$month.'/'.$year;
+	}
+}
+$hiddenprops['value'] = $value;
+
+echo $view->getBlock('blocks/inputs/text', $textprops).$view->getBlock('blocks/inputs/hidden', $hiddenprops);

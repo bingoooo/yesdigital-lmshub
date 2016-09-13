@@ -1,0 +1,7 @@
+<?php
+if (defined('ENV') && ENV=='devel'){
+	echo '<pre>'.print_r($view->json, true).'</pre>';
+}
+else{
+	echo json_encode($view->json);
+}

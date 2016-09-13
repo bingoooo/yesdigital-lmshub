@@ -1,0 +1,8 @@
+<?php
+foreach ($view as $k=>$v){
+	if (!is_object($v) && !is_array($v) &&
+			$k!=='_render' &&
+			!property_exists('\\FragTale\\View', $k)
+		)
+		echo '<span id="data-'.$k.'">'.$v.'</span>';
+}

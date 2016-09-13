@@ -1,0 +1,24 @@
+<?php if (!empty($view->iCalEvents) && is_array($view->iCalEvents)){?>BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:m.learnapp.fr
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+<?php foreach ($view->iCalEvents as $event){
+	$dtstart= is_numeric($event['DTSTART']) ? date('Ymd\THis\Z', $event['DTSTART']) : $event['DTSTART'];
+	$dtend	= is_numeric($event['DTEND']) ? date('Ymd\THis\Z', $event['DTEND']) : $event['DTEND'];
+?>BEGIN:VEVENT
+UID:<?php echo sha1(uniqid())?>@yesnyou.com
+CLASS:PUBLIC
+SEQUENCE:0
+TRANSP:OPAQUE
+DTSTART:<?php echo $dtstart."\r\n";?>
+DTEND:<?php echo $dtend."\r\n";?>
+DTSTAMP:<?php echo date('Ymd\THis\Z')."\r\n";?>
+CREATED:<?php echo date('Ymd\THis\Z')."\r\n";?>
+LAST-MODIFIED:<?php echo date('Ymd\THis\Z')."\r\n";?>
+DESCRIPTION:<?php echo (!empty($event['DESCRIPTION']) ? $event['DESCRIPTION'] : '')."\r\n";?>
+SUMMARY:<?php echo (!empty($event['SUMMARY']) ? $event['SUMMARY'] : '')."\r\n";?>
+LOCATION:<?php echo (!empty($event['LOCATION']) ? $event['LOCATION'] : '')."\r\n";?>
+END:VEVENT
+<?php }
+?>END:VCALENDAR<?php }

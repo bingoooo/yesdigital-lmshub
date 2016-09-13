@@ -1,0 +1,149 @@
+<?php
+$view->addCSS(WEB_ROOT.'/css/home.css');
+$article = $view->getArticle();
+$custom_fields = !empty($view->custom_fields) ? $view->custom_fields : $article->getCustomFields();?>
+<div class="banner">
+	<?php $imgSrc = !empty($custom_fields['banner_bg']['field_value']['src']) ?
+		$custom_fields['banner_bg']['field_value']['src'] : WEB_ROOT.'/img/home-banner.jpg';?>
+	<img src="<?php echo $imgSrc?>" width="100%" height="100%" <?php if (!empty($custom_fields['banner_bg']['field_value']['alt'])) echo 'alt="'.$custom_fields['banner_bg']['field_value']['alt'].'"'?>>
+	
+	<!-- Contact -->
+	<div id="home-contact">
+	
+		<?php if (!empty($view->nbVotes)){?>
+		<!-- Rating -->
+		<div id="home-rating-positioner" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+			<meta itemprop="worstRating" content="1">
+			<meta itemprop="bestRating" content="5">
+			<meta itemprop="ratingValue" content="<?php echo round($view->rate, 2)?>">
+			<a href="<?php echo WEB_ROOT.'/appreciation'?>">
+				<div class="appreciation-rate">
+					<span class="star-banner">
+					<?php for ($i=0; $i<5; $i++){
+						$starclass = ((int)$view->rate>$i) ? 'plain' : (($view->rate >= ($i+.5)) ? 'half' : '');?>
+						<span class="rate-star <?php echo $starclass;?>"></span>
+					<?php }?>
+					</span>
+					<span class="nb-votes">(<span itemprop="reviewCount"><?php echo $view->nbVotes?></span>)</span>
+				</div>
+			</a>
+		</div>
+		<?php }?>
+		
+		<h1><?php echo _('Contact us:')?></h1>
+		<?php if (!empty($custom_fields['phone_number']['field_value']) && !empty($custom_fields['phone_number']['field_name'])){?>
+		<a href="tel:<?php echo $custom_fields['phone_number']['field_value']?>"><?php echo $custom_fields['phone_number']['field_name']?></a>
+		<?php }else{?>
+		<a href="tel:0951211561">09.51.21.15.61</a>
+		<?php }?>
+		<div class="home-contact-detail"><?php
+			if (!empty($custom_fields['contact_detail']['field_value']))
+				echo $custom_fields['contact_detail']['field_value'];
+			else
+				echo 'Du lundi au vendredi de 10h à 19h';?>
+		</div>
+		<br><br>
+		<div>
+			<?php echo $view->getBlock('blocks/search')?>
+		</div>
+	</div>
+</div>
+
+<div class="text-carousel">
+	<?php foreach ($custom_fields as $key=>$custField){
+		if (stripos($key, 'link_carousel')!==false && $custField['input_type']=='link'){?>
+	<div class="text-carousel-elt">
+		<a href="<?php echo $custField['field_value']['href']?>">
+			<span><?php echo $custField['field_value']['text']?>&nbsp;</span>
+			<?php for ($n=0; $n<2; $n++){?>
+			<span class="white-arrow">
+				<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="height:100%;width:115%;">
+					<polygon points="0,68 0,32 100,50"></polygon>
+				</svg>
+			</span>
+			<?php }?>
+		</a>
+	</div>
+	<?php }}?>
+</div>
+<br>
+
+<?php if ($view->userIsAdmin()){?>
+<div class="alignright description">
+	<a href="<?php echo ADMIN_WEB_ROOT.'/article/edit?aid='.$article->aid?>" class="add_new"><?php echo _('Edit this page')?></a>
+</div>
+<?php }?>
+
+<div class="block-left">
+	<div class="home-content">
+		<?php echo $article->body?>
+		
+		<div class="price-top-container">
+			<?php for ($i=1;$i<=2;$i++){
+				$key = 'case_package_'.$i;
+				if (isset($custom_fields[$key])){?>
+			<div class="price-container">
+				<div class="price-name"><?php echo $custom_fields[$key]['field_name']?></div>
+				<div class="price-text"><?php echo $custom_fields[$key]['field_value']['text']?></div>
+				<a class="price-link" href="<?php echo WEB_ROOT.'/'.$custom_fields[$key]['field_value']['href']?>">
+					<?php echo _('Sign Up')?>
+				</a>
+			</div><?php
+				}
+			}?>
+		</div>
+	</div>
+</div>
+
+<div class="block-right">
+	<div>
+		<?php if (!$view->userIsLogged()) echo $view->getBlock('blocks/login')?>
+	</div>
+	
+	<?php if (!empty($custom_fields['home_vid']['field_value']['type']) && !empty($custom_fields['home_vid']['field_value']['src'])){?>
+	<div class="video-container">
+		<?php if ($custom_fields['home_vid']['field_value']['type']=='video'){
+			$view->addJS(WEB_ROOT.'/js/video.js');
+			$src	= $custom_fields['home_vid']['field_value']['src'];
+			$vidext = strtolower(substr($src, strrpos($src, '.')+1));
+			$webmsrc= substr($src, 0, strrpos($src, '.')+1).'webm';?>
+		<video width="100%" id="home_vid">
+			<source src="<?php echo $src?>" type="video/<?php echo $vidext?>">
+			<source src="<?php echo $webmsrc?>" type="video/webm">
+			<?php echo _('Your browser does not support either the MP4 or the WEBM files.')?>
+		</video>
+		<div class="play"></div>
+		<?php }elseif ($custom_fields['home_vid']['field_value']['type']=='iframe'){?>
+		<iframe id="home_vid" width="100%" height="180px" src="<?php echo $custField['field_value']['src']?>" frameborder="0" allowfullscreen></iframe>
+		<?php }else{?>
+		<object id="home_vid" data="<?php echo $src?>" width="100%" height="180px"></object>
+		<?php }?>
+	</div>
+	<?php }?>
+	
+	<?php if (!empty($custom_fields['a_word']['field_value']['href'])){?>
+	<div class="a_word">
+		<img class="enveloppe" src="<?php echo WEB_ROOT?>/img/enveloppe.png" alt="<?php echo $custom_fields['a_word']['field_value']['text']?>">
+		<a class="a_word" href="<?php echo $custom_fields['a_word']['field_value']['href']?>">
+			<?php echo $custom_fields['a_word']['field_value']['text']?>
+		</a>
+	</div>
+	<?php }?>
+	
+	<div class="block-press"><?php echo $view->getBlock('blocks/press_review');?></div>
+	
+	<div class="social-links">
+		<?php $Param = new \FragTale\CMS\Parameters();
+		foreach (array(
+				'FACEBOOK_URL'=>array('title'=>'Facebook',		'img'=>'fb-icon.png'),
+				'GOOGLE+_PAGE_URL'=>array('title'=>'Google+',	'img'=>'google-plus-icon.png'),
+				'TWITTER_URL'=>array('title'=>'Twitter',		'img'=>'twitter-icon.png'),
+		) as $k=>$p){
+		if ($purl = $Param->selectValue("param_key='$k'", 'param_value')){?>
+		<a href="<?php echo $purl?>" title="Divorce Pour Tous est sur <?php echo $p['title']?>" target="_blank">
+			<img src="<?php echo WEB_ROOT?>/img/<?php echo $p['img']?>" alt="Divorce Pour Tous est sur <?php echo $p['title']?>">
+		</a>
+		<?php }
+		}?>
+	</div>
+</div>

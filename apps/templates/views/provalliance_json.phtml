@@ -1,0 +1,13 @@
+<?php
+if (!empty($view->json)){
+	if (!defined('DEVEL')){
+		if (!empty($view->headers) && is_array($view->headers)){
+			foreach ($view->headers as $key=>$value)
+				header($key.':'.$value);
+		}
+	}
+	echo is_array($view->json) ? json_encode($view->json) : $view->json;
+	if (!defined('DEVEL'))
+		exit;
+}
+else echo '{"success":false,"message":"Empty Set"}';

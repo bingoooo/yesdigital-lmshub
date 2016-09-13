@@ -1,0 +1,7 @@
+<?php
+$props['type'] = 'date';
+foreach (array('id', 'required', 'readonly', 'disabled', 'value', 'name', 'title', 'class', 'placeholder', 'style', 'maxlength', 'addedprops') as $key)
+	if (isset($view->$key)) $props[$key] = $view->$key;
+if (isset($view->min)) $props['addedprops']['min'] = $view->min;
+if (isset($view->max)) $props['addedprops']['max'] = $view->max;
+echo $view->getBlock('blocks/inputs/input', $props);

@@ -1,0 +1,9 @@
+.directory
+*~
+.settings
+.project
+.buildpath
+*.log
+/sessions/
+/logs/
+/storage/
