@@ -41,6 +41,6 @@ class Sf_Getlevel extends Yny_Json {
 			$this->_view->json[$uid] = $users;
 		}*/
 
-		$this->_view->json = 'hello';
+		$this->_view->json = {user: 200};
 	}
 }
