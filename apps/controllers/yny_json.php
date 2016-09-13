@@ -29,7 +29,7 @@ class Yny_Json extends Controller{
 			$this->_view->headers['Access-Control-Allow-Headers']		= 'Content-Type';
 		}
 		if (defined('DEVEL'))
-			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
+			$this->setLayout('json');	//On development environment, use HTML format to print or dump the result
 		else
 			$this->setLayout('json');	//On production environment, use JSON format
 		//Force set this view script for all inherited classes
