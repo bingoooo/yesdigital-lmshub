@@ -19,7 +19,7 @@ class Sf_Getlevel extends Yny_Json {
 
 	function main(){
 		//return phpinfo();
-		$requestData = $this->getRequestData(true, true, true);
+		/*$requestData = $this->getRequestData(true, true, true);
 		$uid = 'users';
 		$query = 'SELECT '.
 				'UI.user_id,UI.lastname,UI.firstname,UI.email, '.
@@ -40,6 +40,8 @@ class Sf_Getlevel extends Yny_Json {
 		} else {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
-		}
+		}*/
+		$json = '{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}'; 
+		return $json;
 	}
 }
