@@ -16,7 +16,7 @@ class Yny_Json extends Controller{
 	 */
 	protected $allowedHosts = array(
 			'https://www.yesnyoulearning.com', 'https://yesnyoulearning.com',
-			'https://wp.yesnyou.com',
+			'https://wp.yesnyou.com', 'https://eu6.salesforce.com',
 	);
 	
 	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6');
@@ -29,7 +29,7 @@ class Yny_Json extends Controller{
 			$this->_view->headers['Access-Control-Allow-Headers']		= 'Content-Type';
 		}
 		if (defined('DEVEL'))
-			$this->setLayout('json');	//On development environment, use HTML format to print or dump the result
+			$this->setLayout('clean');	//On development environment, use HTML format to print or dump the result
 		else
 			$this->setLayout('json');	//On production environment, use JSON format
 		//Force set this view script for all inherited classes
