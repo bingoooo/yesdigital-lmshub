@@ -19,9 +19,9 @@ class Sf_Getlevel extends Yny_Json {
 	
 	function main(){
 		$requestData = $this->getRequestData(true, true, true);
-		$uid = 'generic';
+		$uid = 'users';
 		$query = 'SELECT '.
-				'UI.user_id, '.
+				'UI.user_id,UI.lastname,UI.firstname,UI.email, '.
 				'BU.branch_id, '.
 				'BI.branch_name, '.
 				'AL.value AS acquired_level, '.
@@ -33,12 +33,12 @@ class Sf_Getlevel extends Yny_Json {
 				'LEFT JOIN YNY_NEWLMS.UserAdditionalInfo AS RL ON RL.user_id = UI.user_id AND RL.attribute LIKE "%recommended level%" ';
 		if (!empty($requestData['user'])){
 			$uid = $requestData['user'];
-			$query .= 'WHERE branch_name = "'.$uid.'"';
-			$user = $this->getDb($this->dbinstance)->getRow($query);
+			$query .= 'WHERE email LIKE "%'.$uid.'%"';
+			$user = $this->getDb($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $user;
 		} else {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
-			$this->_view->json = $users;
+			$this->_view->json[$uid] = $users;
 		}
 	}
 }
