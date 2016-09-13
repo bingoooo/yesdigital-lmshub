@@ -5,14 +5,14 @@ namespace FragTale;
  * @copyright	2014 Fabrice Dant
  * @license		http://www.cecill.info/licences/Licence_CeCILL_V2.1-fr.txt CeCILL Licence 2.1 (French version)
  * @license		http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.txt CeCILL Licence 2.1 (English version)
- * 
+ *
  * @desc Getting the application params
  */
 class Application{
-	
+
 	static protected $_ini;
 	static protected $_errors;
-	
+
 	static function loadIniParams(){
 		$settings_path =  DOC_ROOT.'/settings';
 		$settings_paths['app']		= $settings_path.'/application';
@@ -21,7 +21,7 @@ class Application{
 			'backend' => $settings_paths['app'].'/default/backend.ini',
 			'frontend'=> $settings_paths['app'].'/default/frontend.ini',
 		);
-		
+
 		### Begin to load the default application ini files and then, define if its backend or frontend
 		## Ini filenames to load match the requested URL
 		$final_uri = str_replace('www.', '', trim($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], '/'));
@@ -32,7 +32,7 @@ class Application{
 		}
 		elseif (file_exists($settings_paths['defaults']['frontend']))
 			self::setIniParams(parse_ini_file($settings_paths['defaults']['frontend']));
-		
+
 		### We will check in locales ini files if we have some parameters to override from default
 		$ini2check = explode('/', $final_uri);
 		$path = '';
@@ -47,13 +47,13 @@ class Application{
 			if (file_exists($fullpathname))
 				self::setIniParams(parse_ini_file($fullpathname));
 		}
-		
+
 		### Set the parameters into constants
 		foreach (self::$_ini as $key=>$value){
 			if (!is_array($value))
 				define(strtoupper($key), $value);
 		}
-		
+
 		## In case of forcing redirection to specified URL
 		if (defined('BASE_URL') && WEB_ROOT!=BASE_URL){
 			$redirect = trim(BASE_URL, '/');
@@ -63,7 +63,7 @@ class Application{
 			header('Location:'.$redirect);
 			exit;
 		}
-		
+
 		## In case of forcing redirection to HTTPS
 		if (defined('FORCE_HTTPS') && (int)FORCE_HTTPS===1 && HTTP_PROTOCOLE=='http'){
 			$redirect = str_replace('http://', 'https://', WEB_ROOT);
@@ -72,20 +72,20 @@ class Application{
 			header('Location:'.$redirect);
 			exit;
 		}
-		
+
 		### Defining development environment
 		if (defined('DEVEL') && DEVEL==1){
 			define('ENV', 'devel');
 			ini_set('display_errors', 1);
 			error_reporting(E_ALL);
 		}
-		
+
 		### Any declared php.ini values to override
 		if (!empty(self::$_ini['php.ini'])){
 			foreach (self::$_ini['php.ini'] as $key=>$value)
 				ini_set($key, $value);
 		}
-		
+
 		### Define default database connector instance name
 		if (defined('DEFAULT_DATABASE_CONNECTOR_NAME') && !defined('DEFAULT_CMS_DATABASE_CONNECTOR_NAME'))
 			define('DEFAULT_CMS_DATABASE_CONNECTOR_NAME', DEFAULT_DATABASE_CONNECTOR_NAME);
@@ -95,11 +95,11 @@ class Application{
 			else
 				define('DEFAULT_DATABASE_CONNECTOR_NAME', 'default');
 		}
-		
+
 		### Define default landing page
 		if (!defined('LANDING_PAGE'))
 			define('LANDING_PAGE', 'home');
-		
+
 		### Set locale (it can be set into ini files, but don't set this constant into ini files if you want to use cookies for language settings)
 		if (!defined('LOCALE')){
 			//As default, we set the language of the native country of this framework
@@ -113,9 +113,9 @@ class Application{
 			$locale = $_SESSION['LOCALE'].'.utf8';
 		putenv("LC_ALL=$locale");
 		setlocale(LC_ALL, $locale);
-		bindtextdomain('messages', DOC_ROOT.'/locale');
-		textdomain('messages');
-		
+		//bindtextdomain('messages', DOC_ROOT.'/locale');
+		//textdomain('messages');
+
 		# Include system library
 		self::requireFolder(LIB_ROOT.'/FragTale');
 		if (!empty(self::$_ini['library'])){
@@ -127,7 +127,7 @@ class Application{
 				self::requireFolder(APP_ROOT.'/models/'.$model);
 		}
 	}
-	
+
 	/**
 	 * Set the application ini params
 	 */
@@ -136,14 +136,14 @@ class Application{
 			self::$_ini[$key] = $value;
 		}
 	}
-	
+
 	/**
 	 * Get the application ini params
 	 */
 	static function getIniParams(){
 		return self::$_ini;
 	}
-	
+
 	/**
 	 * Manage
 	 * @param string	$msg
@@ -157,14 +157,14 @@ class Application{
 		self::$_errors[] = $completeMsg;
 		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
 	}
-	
+
 	/**
 	 * @return array
 	 */
 	static function getErrors(){
 		return self::$_errors;
 	}
-	
+
 	/**
 	 * Scan a folder (and subs if in recursive mode) and include once all defined required PHP files.
 	 * @param string	$folder
@@ -192,12 +192,12 @@ class Application{
 			}
 		}
 		closedir($handle);
-		
+
 		if ($recursively)
 		foreach ($dirs as $dir)
 			self::requireFolder($dir);
 	}
-	
+
 	/**
 	 * Include the controller called by its view and all its possible parent controllers
 	 * @param string $viewName
