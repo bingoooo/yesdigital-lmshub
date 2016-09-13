@@ -43,6 +43,6 @@ class Sf_Getlevel extends Yny_Json {
 		}*/
 		$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}'; 
 		//$this->_view->json = $json;
-		return $json;
+		echo $json;
 	}
 }
