@@ -1,11 +1,11 @@
 <?php
 return array(
-	'driver'	=>'mysql',
-	'host'		=>'149.202.200.62',
-	'port'		=>'3306',
-	'db_name'	=>'YNY_NEWLMS',
-	'user'		=>'guest',
-	'pwd'		=>'test',
+	'driver'	=>'postgres',
+	'host'		=>'ec2-54-75-232-50.eu-west-1.compute.amazonaws.com',
+	'port'		=>'5432',
+	'db_name'	=>'dbmhifu3vqjf41',
+	'user'		=>'yaenxbrkkfkiez',
+	'pwd'		=>'2v_ZsFr8gvzuMWEqxd-FVGpV55',
 	'charset'	=>'utf8',
 	'prefix'	=>null
 );
