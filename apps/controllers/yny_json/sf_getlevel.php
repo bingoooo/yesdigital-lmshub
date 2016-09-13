@@ -18,7 +18,8 @@ class Sf_Getlevel extends Yny_Json {
 	}
 
 	function main(){
-		/*$requestData = $this->getRequestData(true, true, true);
+		//return phpinfo();
+		$requestData = $this->getRequestData(true, true, true);
 		$uid = 'users';
 		$query = 'SELECT '.
 				'UI.user_id,UI.lastname,UI.firstname,UI.email, '.
@@ -39,8 +40,6 @@ class Sf_Getlevel extends Yny_Json {
 		} else {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
-		}*/
-		return phpinfo();
-		//$this->_view->json = {"buffer":[{"user_id":"17632","lastname":"BUFFERNE","firstname":"Sophie","email":"s.bufferne@sempariseine.fr","branch_id":"1116","branch_name":"80020000008rwAQAAY","acquired_level":"B2.4","recommended_level":"B2.5"}]};
+		}
 	}
 }
