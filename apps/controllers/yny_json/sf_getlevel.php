@@ -40,7 +40,7 @@ class Sf_Getlevel extends Yny_Json {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
 		}*/
-
-		$this->_view->json = {"buffer":[{"user_id":"17632","lastname":"BUFFERNE","firstname":"Sophie","email":"s.bufferne@sempariseine.fr","branch_id":"1116","branch_name":"80020000008rwAQAAY","acquired_level":"B2.4","recommended_level":"B2.5"}]};
+		return phpinfo();
+		//$this->_view->json = {"buffer":[{"user_id":"17632","lastname":"BUFFERNE","firstname":"Sophie","email":"s.bufferne@sempariseine.fr","branch_id":"1116","branch_name":"80020000008rwAQAAY","acquired_level":"B2.4","recommended_level":"B2.5"}]};
 	}
 }
