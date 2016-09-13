@@ -4,7 +4,7 @@ use FragTale\Controller\Yny_Json;
 
 class Sf_Getlevel extends Yny_Json {
 	protected $dbinstance;
-	
+
 	function initialize(){
 		parent::initialize();
 		if (!empty($_REQUEST['instance']))
@@ -12,13 +12,13 @@ class Sf_Getlevel extends Yny_Json {
 		else
 			$this->dbinstance = !defined('DEVEL') ? 'ynynewlms' : 'ynytest';
 	}
-	
+
 	function doPostBack(){
 		//Nothing to code. Preventing parent behavior.
 	}
-	
+
 	function main(){
-		$requestData = $this->getRequestData(true, true, true);
+		/*$requestData = $this->getRequestData(true, true, true);
 		$uid = 'users';
 		$query = 'SELECT '.
 				'UI.user_id,UI.lastname,UI.firstname,UI.email, '.
@@ -39,6 +39,8 @@ class Sf_Getlevel extends Yny_Json {
 		} else {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
-		}
+		}*/
+
+		$this->_view->json = phpinfo();
 	}
 }
