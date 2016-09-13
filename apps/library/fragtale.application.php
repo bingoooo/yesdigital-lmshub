@@ -113,8 +113,8 @@ class Application{
 			$locale = $_SESSION['LOCALE'].'.utf8';
 		putenv("LC_ALL=$locale");
 		setlocale(LC_ALL, $locale);
-		//bindtextdomain('messages', DOC_ROOT.'/locale');
-		//textdomain('messages');
+		bindtextdomain('messages', DOC_ROOT.'/locale');
+		textdomain('messages');
 
 		# Include system library
 		self::requireFolder(LIB_ROOT.'/FragTale');
