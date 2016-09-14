@@ -19,7 +19,7 @@ class Yny_Json extends Controller{
 			'https://wp.yesnyou.com', 'https://eu6.salesforce.com',
 	);
 	
-	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6', '85.222.129.41', '85.222.129.169');
+	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6', '85.222.129.41', '85.222.129.169', '85.222.128.41', '85.222.128.169');
 	
 	function initialize(){
 		if ($origin = $this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
