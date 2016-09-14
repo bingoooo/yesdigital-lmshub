@@ -38,7 +38,7 @@ class Sf_Getlevel extends Yny_Json {
 			break;
 		}
 		$test = $this->_view->json;
-		var_dump($test);
+		die($test);
 		/*if(isset($_REQUEST['user'])){
 			if(isset($villes)){
 				echo $villes;
