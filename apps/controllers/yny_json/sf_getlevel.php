@@ -20,8 +20,14 @@ class Sf_Getlevel extends Yny_Json {
 
 	function main(){
 		//return phpinfo();
-		$requestData = $this->getRequestData(true, true, true);
-		$uid = 'users';
+		$dsn = "pgsql:"
+						."host=ec2-54-75-232-50.eu-west-1.compute.amazonaws.com;"
+						."dbname=dbmhifu3vqjf41;"
+						."user=yaenxbrkkfkiez;"
+						."port=5432;"
+						."sslmodule=require;"
+						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
+		$db = new PDO($dsn);
 		$query = 'SELECT * FROM villes LIMIT 1';
 		/*if (!empty($requestData['user'])){
 			$uid = $requestData['user'];
@@ -32,10 +38,10 @@ class Sf_Getlevel extends Yny_Json {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
 		}*/
-		$ville = $this->getDB($this->dbinstance)->getTable($query);
+		$ville = $db->query($query);
 		$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}';
 		$this->_view->json['data'] = $json;
-		echo $ville;
+		echo $query;
 	}
 
 	function checkRestrictedHosts(){
@@ -47,6 +53,6 @@ class Sf_Getlevel extends Yny_Json {
 				return $origin;
 		}
 		$this->exitOnError(403, 'Forbidden');*/
-		return $this->_view->json['data'];
+		return '200';
 	}
 }
