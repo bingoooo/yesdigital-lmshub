@@ -22,19 +22,20 @@ class Sf_Postgres extends Yny_Json {
         $host = getenv('HOST');
         $dbuser = getenv('USER');
         $dbpass = getenv('PASSWORD');
-        $dsn = "pgsql:host='eec2-54-228-247-206.eu-west-1.compute.amazonaws.com';dbname='dfhsc23783mu7c';user='rnerypprnrtsjx';port='5432';password='K4SnQkbdazACuf2dNuY3O_9dwY'";
+        $port = getenv('PORT');
+        $dsn = 'pgsql:dbname='.$dbname.';host='.$host.';port='.$port;
         $dbopts = parse_url(getenv('DATABASE_URL'));
-		//$db = new PDO($dsn);
+		$db = new PDO($dsn, $dbuser, $dbpass);
 		$query = 'SELECT * FROM villes';
         //$towns = $db->query($query);
-		$json2 = '{"test":"test", "message":"message"}';
-		echo $json2.'<br>';
+		$json = '{"test":"test", "message":"message"}';
+		echo $json;
         foreach ($dbopts as $key => $value){
-            echo 'Key : '.$key.' : '.$value.'<br>';
+            echo 'Key : '.$key.' : '.$value;
         }
-        echo $dbname.'<br>';
-        echo $host.'<br>';
-        echo $towns.'<br>';
+        echo $dbname;
+        echo $host;
+        echo $towns;
 	}
 
 	function checkRestrictedHosts(){
