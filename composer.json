@@ -1,7 +1,6 @@
 {
   "require" : {
-    "ext-gettext": "*",
-    "herrera-io/silex-pdo": "^1.2"
+    "ext-gettext": "*"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"

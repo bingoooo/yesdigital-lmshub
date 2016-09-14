@@ -1,10 +1,6 @@
 <?php
 namespace FragTale\Controller\Yny_Json;
 use FragTale\Controller\Yny_Json;
-use \PDO;
-use \PDOException;
-use Herrera\Pdo\PdoServiceProvider;
-use Silex\Application;
 
 class Sf_Postgres extends Yny_Json {
 	protected $dbinstance;
@@ -12,6 +8,10 @@ class Sf_Postgres extends Yny_Json {
 	function initialize(){
 		parent::initialize();
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
+        if (!empty($_REQUEST['instance']))
+			$this->dbinstance = trim($_REQUEST['instance']);
+		else
+			$this->dbinstance = !defined('DEVEL') ? 'ynynewlms' : 'ynytest';
 	}
 
 	function doPostBack(){
@@ -19,14 +19,6 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-        $towns = '{"ville":"San Francisco"}';
-        $dbname = getenv('DATABASE');
-        $host = getenv('HOST');
-        $dbuser = getenv('USER');
-        $dbpass = getenv('PASSWORD');
-        $port = getenv('PORT');
-        $dsn = 'pgsql:dbname='.$dbname.';host='.$host.';port='.$port;
-        $dbopts = parse_url(getenv('DATABASE_URL'));
 		//$db = new PDO($dsn, $dbuser, $dbpass);
 
         /*$app = new Application();
@@ -41,15 +33,10 @@ class Sf_Postgres extends Yny_Json {
         $pdo = $app['pdo'];*/
 
 		$query = 'SELECT * FROM villes';
-        //$towns = $pdo->query($query);
-		//$json = '{"test":"test", "message":"message"}';
-		echo $json;
-        foreach ($dbopts as $key => $value){
-            echo 'Key : '.$key.' : '.$value.' ';
-        }
-        echo $dbname;
-        echo $host;
+        $towns = $this->getDb($this->dbinstance)->getTable($query);
         echo $towns;
+		$json = '{"test":"test", "message":"message"}';
+		echo $json;
 	}
 
 	function checkRestrictedHosts(){
