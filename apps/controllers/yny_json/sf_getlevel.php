@@ -44,9 +44,13 @@ class Sf_Getlevel extends Yny_Json {
 			break;
 		}
 		if(isset($_REQUEST['user'])){
-			if(isset($villes)) echo $villes;
-			else echo $json1;
-		} else echo $json2;
+			if(isset($villes)){
+				echo $villes;
+			} else {
+				echo $json1;
+			}
+		}
+		echo $json2;
 	}
 
 	function checkRestrictedHosts(){
