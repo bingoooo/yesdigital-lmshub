@@ -20,7 +20,7 @@ class Sf_Getlevel extends Yny_Json {
 		//return phpinfo();
 		$dsn = "pgsql:"
 						."host=ec2-54-75-232-50.eu-west-1.compute.amazonaws.com;"
-						."dbname=DATABASE;"
+						."dbname=dbmhifu3vqjf41;"
 						."user=yaenxbrkkfkiez;"
 						."port=5432;"
 						."sslmodule=require;"
