@@ -63,6 +63,6 @@ class Sf_Getlevel extends Yny_Json {
 				return $origin;
 		}
 		$this->exitOnError(403, 'Forbidden');*/
-		return '200';
+		return '*';
 	}
 }
