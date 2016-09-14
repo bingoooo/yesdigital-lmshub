@@ -27,7 +27,7 @@ class Sf_Postgres extends Yny_Json {
         $port = getenv('PORT');
         $dsn = 'pgsql:dbname='.$dbname.';host='.$host.';port='.$port;
         $dbopts = parse_url(getenv('DATABASE_URL'));
-		$db = new PDO($dsn, $dbuser, $dbpass);
+		//$db = new PDO($dsn, $dbuser, $dbpass);
 
         /*$app = new Application();
         $app->register(
@@ -45,7 +45,7 @@ class Sf_Postgres extends Yny_Json {
 		//$json = '{"test":"test", "message":"message"}';
 		echo $json;
         foreach ($dbopts as $key => $value){
-            echo 'Key : '.$key.' : '.$value;
+            echo 'Key : '.$key.' : '.$value.' ';
         }
         echo $dbname;
         echo $host;
