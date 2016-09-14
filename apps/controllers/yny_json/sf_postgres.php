@@ -29,6 +29,9 @@ class Sf_Postgres extends Yny_Json {
         //$towns = $db->query($query);
 		$json2 = '{"test":"test", "message":"message"}';
 		echo $json2;
+        foreach ($dbopts as $key => $value){
+            echo 'Key : '.$key.' : '.$value;
+        }
         echo $dbopts;
         echo $towns;
 	}
