@@ -20,12 +20,12 @@ class Sf_Getlevel extends Yny_Json {
 		//return phpinfo();
 		$dsn = "pgsql:"
 						."host=ec2-54-75-232-50.eu-west-1.compute.amazonaws.com;"
-						."dbname=dbmhifu3vqjf41;"
+						."dbname=DATABASE;"
 						."user=yaenxbrkkfkiez;"
 						."port=5432;"
 						."sslmodule=require;"
 						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
-		$db = new PDO(ENV['DATABASE_URL']);
+		$db = new PDO($dsn);
 		$query = 'SELECT * FROM villes;';
 		/*if (!empty($requestData['user'])){
 			$uid = $requestData['user'];
