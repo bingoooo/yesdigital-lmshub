@@ -18,7 +18,7 @@ class Sf_Postgres extends Yny_Json {
 
 	function main(){
 		$json2 = '{"test":"test", "message":"message"}';
-		else echo $json2;
+		echo $json2;
 	}
 
 	function checkRestrictedHosts(){
