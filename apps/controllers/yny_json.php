@@ -8,7 +8,7 @@ use FragTale\YnY\Curl as YnYCurl;
  * @author fabrice
  */
 class Yny_Json extends Controller{
-	
+
 	/**
 	 * If string, it is only '*'.
 	 * Else, you must set for example: array('https://yesnyou.com', 'https://api.yesnyou.com', ...)
@@ -18,9 +18,9 @@ class Yny_Json extends Controller{
 			'https://www.yesnyoulearning.com', 'https://yesnyoulearning.com',
 			'https://wp.yesnyou.com', 'https://eu6.salesforce.com',
 	);
-	
+
 	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6', '85.222.129.41', '85.222.129.169', '85.222.128.41', '85.222.128.169');
-	
+
 	function initialize(){
 		if ($origin = $this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
 			$this->_view->headers['Access-Control-Allow-Origin']		= $origin;
@@ -36,20 +36,20 @@ class Yny_Json extends Controller{
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/provalliance_json.phtml');
 		$this->_view->json = array();
 	}
-	
+
 	function main(){
 		$this->exitOnError(403, 'Unauthorized request');
 	}
-	
+
 	function logAjaxRequest($addedmsg=''){
 		$msg = $_SERVER['REMOTE_ADDR'].' | '.$_SERVER['REQUEST_METHOD'].' '.$_SERVER['REQUEST_URI'].(!empty($_SERVER['HTTP_USER_AGENT']) ? ' | '.$_SERVER['HTTP_USER_AGENT'] : '**No UA**');
 		$completeMsg = date('Y-m-d H:i:s').' ** '.$msg.(!empty($addedmsg)? ' | '.$addedmsg : '');
 		$logFile = DOC_ROOT.'/logs/log-'.date('Ym').'.log';
 		fputs(fopen($logFile, 'a+'), $completeMsg."\n");
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param int		$errcode			HTTP error code (such as 404, 403, 500 etc.)
 	 * @param string	$errmsg				The main error message
 	 * @param array		$additionalinfos	If you want to send more messages
@@ -62,14 +62,14 @@ class Yny_Json extends Controller{
 		);
 		if (!empty($additionalinfos))
 			$errs['more info'] = $additionalinfos;
-		
+
 		$this->logAjaxRequest($errcode.' '.$errmsg);
-		
+
 		header("Content-type: application/json; charset=UTF-8");
 		header('HTTP/1.0 '.$errcode.' '.$errmsg);
 		die(json_encode($errs));
 	}
-	
+
 	function checkRestrictedHosts(){
 		if (defined('DEVEL') || in_array($_SERVER['REMOTE_ADDR'], $this->forcedAllowedIP) || $this->allowedHosts === '*')
 			return '*';
@@ -80,7 +80,7 @@ class Yny_Json extends Controller{
 		}
 		$this->exitOnError(403, 'Forbidden');
 	}
-	
+
 	/**
 	 * @param string	$method		(required) The original method name given by the Docebo API such as "user/profile"
 	 * @param array		$postParams
@@ -89,7 +89,7 @@ class Yny_Json extends Controller{
 	function retrieve($method, $postParams=array()){
 		return YnYCurl::call($method, $postParams, 'yny');
 	}
-	
+
 	/**
 	 * @param string $message
 	 * @return array
@@ -100,7 +100,7 @@ class Yny_Json extends Controller{
 			'message'	=> $message
 		);
 	}
-	
+
 	/**
 	 * This returns all the parameters posted or getted from the client into an associative array or into an object
 	 * @param bool $assoc	If true, returns an associative array, if not, an object
@@ -109,7 +109,7 @@ class Yny_Json extends Controller{
 	function getPHPInputs($assoc=true){
 		return json_decode(file_get_contents('php://input'), $assoc);
 	}
-	
+
 	/**
 	 * Get all the request data, including the PHP input if $takePHPInput is true
 	 * @param boolean $takePost

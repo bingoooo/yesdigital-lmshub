@@ -7,6 +7,7 @@ class Sf_Getlevel extends Yny_Json {
 
 	function initialize(){
 		parent::initialize();
+		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
 		if (!empty($_REQUEST['instance']))
 			$this->dbinstance = trim($_REQUEST['instance']);
 		else
@@ -41,7 +42,7 @@ class Sf_Getlevel extends Yny_Json {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
 		}*/
-		$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}'; 
+		$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}';
 		$this->_view->json['data'] = $json;
 		//echo $json;
 	}
