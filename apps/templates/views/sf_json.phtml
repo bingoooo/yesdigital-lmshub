@@ -1,2 +1,4 @@
 <?php
-echo '{"success":false,"message":"Empty Set"}';
+if (isset($this->_view->json))
+  echo $this->_view->json;
+else echo '{"success":false,"message":"Empty Set"}';
