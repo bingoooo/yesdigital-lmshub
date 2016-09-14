@@ -18,13 +18,7 @@ class Sf_Getlevel extends Yny_Json {
 
 	function main(){
 		//return phpinfo();
-		$dsn = "pgsql:"
-						."host=ec2-54-75-232-50.eu-west-1.compute.amazonaws.com;"
-						."dbname=dbmhifu3vqjf41;"
-						."user=yaenxbrkkfkiez;"
-						."port=5432;"
-						."sslmodule=require;"
-						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
+		$dsn = "pgsql:host=".ENV['HOST'].";dbname=".ENV['DATABASE'].";user=".ENV['USER'].";port=5432;sslmodule=require;password=".ENV['PASSWORD'];
 		$db = new PDO($dsn);
 		$query = 'SELECT * FROM villes';
 		/*if (!empty($requestData['user'])){
@@ -43,7 +37,8 @@ class Sf_Getlevel extends Yny_Json {
 			$this->_view->json = $ville;
 			break;
 		}
-		var_dump($this->_view->json);
+		$test = $this->_view->json;
+		var_dump($test);
 		/*if(isset($_REQUEST['user'])){
 			if(isset($villes)){
 				echo $villes;
