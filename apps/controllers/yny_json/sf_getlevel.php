@@ -25,7 +25,7 @@ class Sf_Getlevel extends Yny_Json {
 						."port=5432;"
 						."sslmodule=require;"
 						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
-		$db = new PDO(DATABASE_URL);
+		$db = new PDO(ENV['DATABASE_URL']);
 		$query = 'SELECT * FROM villes;';
 		/*if (!empty($requestData['user'])){
 			$uid = $requestData['user'];
