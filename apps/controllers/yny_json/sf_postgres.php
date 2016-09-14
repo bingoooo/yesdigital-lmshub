@@ -29,7 +29,7 @@ class Sf_Postgres extends Yny_Json {
         $dbopts = parse_url(getenv('DATABASE_URL'));
 		//$db = new PDO($dsn, $dbuser, $dbpass);
 
-        $app = new Application();
+        /*$app = new Application();
         $app->register(
             new PdoServiceProvider(),
             array(
@@ -38,10 +38,11 @@ class Sf_Postgres extends Yny_Json {
                 'pdo.password' => $dbpass
             )
         );
-        $pdo = $app['pdo'];
+        $pdo = $app['pdo'];*/
+
 		$query = 'SELECT * FROM villes';
         $towns = $pdo->query($query);
-		$json = '{"test":"test", "message":"message"}';
+		//$json = '{"test":"test", "message":"message"}';
 		echo $json;
         foreach ($dbopts as $key => $value){
             echo 'Key : '.$key.' : '.$value;
