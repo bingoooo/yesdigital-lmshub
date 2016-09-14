@@ -35,8 +35,10 @@ class Sf_Postgres extends Yny_Json {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
 		}*/
+        $towns = $db->query($query);
 		$json2 = '{"test":"test", "message":"message"}';
 		echo $json2;
+        echo $towns;
 	}
 
 	function checkRestrictedHosts(){
