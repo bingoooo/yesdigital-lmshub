@@ -7,7 +7,7 @@ class Sf_Getlevel extends Yny_Json {
 
 	function initialize(){
 		parent::initialize();
-		//$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
+		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
 		if (!empty($_REQUEST['instance']))
 			$this->dbinstance = trim($_REQUEST['instance']);
 		else
