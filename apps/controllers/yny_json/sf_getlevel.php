@@ -10,10 +10,6 @@ class Sf_Getlevel extends Yny_Json {
 	function initialize(){
 		parent::initialize();
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
-		if (!empty($_REQUEST['instance']))
-			$this->dbinstance = trim($_REQUEST['instance']);
-		else
-			$this->dbinstance = !defined('DEVEL') ? 'ynynewlms' : 'ynytest';
 	}
 
 	function doPostBack(){
@@ -30,7 +26,7 @@ class Sf_Getlevel extends Yny_Json {
 						."sslmodule=require;"
 						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
 		$db = new PDO($dsn);
-		$query = 'SELECT * FROM villes LIMIT 1';
+		$query = 'SELECT * FROM villes';
 		/*if (!empty($requestData['user'])){
 			$uid = $requestData['user'];
 			$query .= 'WHERE email LIKE "%'.$uid.'%"';
@@ -40,10 +36,18 @@ class Sf_Getlevel extends Yny_Json {
 			$users = $this->getDB($this->dbinstance)->getTable($query);
 			$this->_view->json[$uid] = $users;
 		}*/
-		$ville = $db->query($query);
-		$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}';
-		$this->_view->json['data'] = $json;
-		echo $query;
+		$villes = $db->query($query);
+		//$ville =  $villes->fetch(PDO::FETCH_ASSOC);
+		//$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}';
+		//$this->_view->json['data'] = $json;
+		while ($ville = $villes->fetch(PDO::FETCH_ASSOC)) {
+		    echo "<tr>";
+		    echo "<td>" . $ville["employee_id"] . "</td>";
+		    echo "<td>" . htmlspecialchars($ville["last_name"]) . "</td>";
+		    echo "<td>" . htmlspecialchars($ville["first_name"]) . "</td>";
+		    echo "<td>" . htmlspecialchars($ville["title"]) . "</td>";
+		    echo "</tr>";
+		}
 	}
 
 	function checkRestrictedHosts(){
