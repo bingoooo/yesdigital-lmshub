@@ -39,15 +39,7 @@ class Sf_Getlevel extends Yny_Json {
 		$villes = $db->query($query);
 		//$ville =  $villes->fetch(PDO::FETCH_ASSOC);
 		//$json = '{"user":{"user_id":"01234", "firstname":"Benjamin", "lastname":"Dant", "acquired_level":"A1.1", "recommended_level":"B1.1"}}';
-		//$this->_view->json['data'] = $json;
-		while ($ville = $villes->fetch(PDO::FETCH_ASSOC)) {
-		    echo "<tr>";
-		    echo "<td>" . $ville["employee_id"] . "</td>";
-		    echo "<td>" . htmlspecialchars($ville["last_name"]) . "</td>";
-		    echo "<td>" . htmlspecialchars($ville["first_name"]) . "</td>";
-		    echo "<td>" . htmlspecialchars($ville["title"]) . "</td>";
-		    echo "</tr>";
-		}
+		$this->_view->json['data'] = $villes;
 	}
 
 	function checkRestrictedHosts(){
