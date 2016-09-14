@@ -18,12 +18,12 @@ class Sf_Postgres extends Yny_Json {
 
 	function main(){
         $dsn = "pgsql:"
-						."host=ec2-54-75-232-50.eu-west-1.compute.amazonaws.com;"
-						."dbname=dbmhifu3vqjf41;"
-						."user=yaenxbrkkfkiez;"
-						."port=5432;"
-						."sslmodule=require;"
-						."password=2v_ZsFr8gvzuMWEqxd-FVGpV55";
+						."host=eec2-54-228-247-206.eu-west-1.compute.amazonaws.com "
+						."dbname=dfhsc23783mu7c "
+						."user=rnerypprnrtsjx "
+						."port=5432 "
+						//."sslmodule=require "
+						."password=K4SnQkbdazACuf2dNuY3O_9dwY ";
 		$db = new PDO($dsn);
 		$query = 'SELECT * FROM villes';
 		/*if (!empty($requestData['user'])){
