@@ -17,7 +17,7 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-        $dsn = "pgsql:"
+        /*$dsn = "pgsql:"
 						."host=eec2-54-228-247-206.eu-west-1.compute.amazonaws.com "
 						."dbname=dfhsc23783mu7c "
 						."user=rnerypprnrtsjx "
