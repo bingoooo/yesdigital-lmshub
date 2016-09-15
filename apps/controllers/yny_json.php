@@ -16,10 +16,11 @@ class Yny_Json extends Controller{
 	 */
 	protected $allowedHosts = array(
 			'https://www.yesnyoulearning.com', 'https://yesnyoulearning.com',
-			'https://wp.yesnyou.com', 'https://eu6.salesforce.com',
+			'https://wp.yesnyou.com', 'https://eu6.salesforce.com','https://yesdigital-lmshub.herokuapp.com',
+			'https://ec2-54-228-247-206.eu-west-1.compute.amazonaws.com',
 	);
 
-	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6', '85.222.129.41', '85.222.129.169', '85.222.128.41', '85.222.128.169');
+	protected $forcedAllowedIP = array('127.0.0.1', '89.225.245.6', '85.222.129.41', '85.222.129.169', '85.222.128.41', '85.222.128.169', '46.137.168.242', '54.228.247.206');
 
 	function initialize(){
 		if ($origin = $this->checkRestrictedHosts()){//First of all, check if the remote host is allowed to connect
