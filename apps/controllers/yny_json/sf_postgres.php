@@ -21,9 +21,7 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-        $database = getenv('DATABASE');
-        $host = getenv('HOST');
-        $dsn = 'pgsql:host='.$host.';dbname='.$database;
+        $dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port='.getenv('PORT');;
         try {
     		$db = new PDO($dsn, getenv('USER'), getenv('PASSWORD'));
         } catch(PDOException $e) {
