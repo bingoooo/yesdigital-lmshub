@@ -34,9 +34,8 @@ class Sf_Postgres extends Yny_Json {
 
 		$query = 'SELECT * FROM villes';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
-        echo $towns;
 		$json = '{"test":"test", "message":"message"}';
-		echo $json;
+        $this->_view->json = $json;
 	}
 
 	function checkRestrictedHosts(){
