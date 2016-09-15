@@ -30,7 +30,7 @@ class Sf_Postgres extends Yny_Json {
             echo 'ERREUR DB: '.$e->getMessage();
         }
         if($db){
-    		$query = $db->prepare("SELECT nom FROM villes;");
+    		$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
             $villes = $query->fetchAll();
 			$this->_view->json = $villes;
