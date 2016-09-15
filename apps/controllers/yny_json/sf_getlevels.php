@@ -4,7 +4,7 @@ use FragTale\Controller\Yny_Json;
 use \PDO;
 use \PDOException;
 
-class Sf_Getlevel extends Yny_Json {
+class Sf_Getlevels extends Yny_Json {
 	protected $dbinstance;
 
 	function initialize(){
