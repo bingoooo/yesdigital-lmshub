@@ -32,9 +32,10 @@ class Sf_Postgres extends Yny_Json {
         if($db){
     		$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
-            $villes = $query->fetchAll();
+            $result = $query->fetchAll();
+			$villes = strval($result);
 			$this->_view->json = $villes;
-			print_r($villes);
+			echo $villes;
         } else {
             echo 'no database connection ?';
         }
