@@ -34,6 +34,7 @@ class Sf_Postgres extends Yny_Json {
             $query->execute();
             $villes = $query->fetchAll();
 			$this->_view->json = $villes;
+			echo $villes;
         } else {
             echo 'no database connection ?';
         }
