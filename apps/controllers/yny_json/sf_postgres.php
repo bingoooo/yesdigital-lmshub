@@ -32,10 +32,15 @@ class Sf_Postgres extends Yny_Json {
         );
         $pdo = $app['pdo'];*/
 
+        //Show config var
+        $database = getenv('DATABASE');
+        $host = getenv('HOST');
 		$query = 'SELECT * FROM villes';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
 		$json = '{"test":"test", "message":"message"}';
         $this->_view->json = $json;
+        echo $database;
+        echo $host;
 	}
 
 	function checkRestrictedHosts(){
