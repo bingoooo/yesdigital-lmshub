@@ -37,8 +37,8 @@ class Sf_Postgres extends Yny_Json {
         $host = getenv('HOST');
 		$query = 'SELECT * FROM villes';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
-		$json = '{"test":"test", "message":"message"}';
-        $this->_view->json = $json;
+		//$json = '{"test":"test", "message":"message"}';
+        $this->_view->json = $towns;
         echo $database;
         echo $host;
 	}
