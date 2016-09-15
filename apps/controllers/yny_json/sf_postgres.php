@@ -21,9 +21,10 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-        $dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port='.getenv('PORT');;
+        //$dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port='.getenv('PORT');
+        $dsn = 'pgsql:dbname=dfhsc23783mu7c;host=ec2-54-228-247-206.eu-west-1.compute.amazonaws.com;port=5432';
         try {
-    		$db = new PDO($dsn, getenv('USER'), getenv('PASSWORD'));
+    		$db = new PDO($dsn, 'rnerypprnrtsjx', 'K4SnQkbdazACuf2dNuY3O_9dwY');
         } catch(PDOException $e) {
             $db = null;
             echo 'ERREUR DB: '.$e->getMessage();
@@ -34,8 +35,7 @@ class Sf_Postgres extends Yny_Json {
             $villes = $query->fetchAll();
             print_r($villes);
         } else {
-            echo $database;
-            echo $host;
+            echo 'no database connection ?';
         }
         //Show config var
 
