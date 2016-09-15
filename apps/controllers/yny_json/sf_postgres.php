@@ -1,6 +1,8 @@
 <?php
 namespace FragTale\Controller\Yny_Json;
 use FragTale\Controller\Yny_Json;
+use \PDO;
+use \PDOException;
 
 class Sf_Postgres extends Yny_Json {
 	protected $dbinstance;
@@ -19,28 +21,29 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-		//$db = new PDO($dsn, $dbuser, $dbpass);
-
-        /*$app = new Application();
-        $app->register(
-            new PdoServiceProvider(),
-            array(
-                'pdo.dsn' => $dsn,
-                'pdo.username' => $dbuser,
-                'pdo.password' => $dbpass
-            )
-        );
-        $pdo = $app['pdo'];*/
-
-        //Show config var
         $database = getenv('DATABASE');
         $host = getenv('HOST');
-		$query = 'SELECT * FROM villes';
-        $towns = $this->getDb($this->dbinstance)->getTable($query);
+        $dsn = 'pgsql:host='.$host.';dbname='.$database;
+        try {
+    		$db = new PDO($dsn, getenv('USER'), getenv('PASSWORD'));
+        } catch(PDOException $e) {
+            $db = null;
+            echo 'ERREUR DB: '.$e->getMessage();
+        }
+        if($db){
+    		$query = $db->prepare("SELECT nom FROM ville;");
+            $query->execute();
+            $villes = $query->fetchAll();
+            print_r($villes);
+        } else {
+            echo $database;
+            echo $host;
+        }
+        //Show config var
+
+        //$towns = $this->getDb($this->dbinstance)->getTable($query);
 		//$json = '{"test":"test", "message":"message"}';
-        $this->_view->json = $towns;
-        echo $database;
-        echo $host;
+        //$this->_view->json = $towns;
 	}
 
 	function checkRestrictedHosts(){
