@@ -1,6 +1,6 @@
 <?php
 return array(
-	'driver'	=>'pdo_psql',
+	'driver'	=>'pgsql',
 	'host'		=>getenv('HOST'),
 	'port'		=>getenv('DBPORT'),
 	'db_name'	=>getenv('DATABASE'),
