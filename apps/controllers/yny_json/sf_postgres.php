@@ -34,8 +34,8 @@ class Sf_Postgres extends Yny_Json {
             $query->execute();
             $result = $query->fetchAll();
 			$villes['towns'] = $result;
-			$villes['user'] = getenv('USER');
-			$villes['port'] = getenv('PORT');
+			$villes['user'] = getenv('USERNAME');
+			$villes['port'] = getenv('DBPORT');
 			$this->_view->json = json_encode($villes);
 			echo $this->_view->json;
         } else {
