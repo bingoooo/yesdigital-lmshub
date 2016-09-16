@@ -35,6 +35,8 @@ class Sf_Postgres extends Yny_Json {
             $result = $query->fetchAll();
 			$villes['towns'] = $result;
 			$this->_view->json = json_encode($villes);
+			echo ' : '.getenv('PASSWORD');
+			echo ' : '.getenv('USER');
 			echo $this->_view->json;
         } else {
             echo 'no database connection ?';
