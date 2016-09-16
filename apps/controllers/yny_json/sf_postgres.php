@@ -22,6 +22,7 @@ class Sf_Postgres extends Yny_Json {
 
 	function main(){
 
+		$json = array();
 		/*
 		* Using basic pdo_psql
 		*/
@@ -36,8 +37,7 @@ class Sf_Postgres extends Yny_Json {
     		$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
             $result = $query->fetchAll();
-			$villes['weather'] = $result;
-			$this->_view->json = json_encode($villes);
+			$json['weather'] = $result;
         } else {
             echo 'no database connection ?';
         }
@@ -47,7 +47,8 @@ class Sf_Postgres extends Yny_Json {
 		*/
 		$query = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
-        $this->_view->json['towns'] = json_encode($towns);
+		$json['towns'] = $result;
+		$this->_view->json = json_encode($json);
 		echo $this->_view->json;
 	}
 
