@@ -2,9 +2,9 @@
 return array(
 	'driver'	=>'pdo_psql',
 	'host'		=>getenv('HOST'),
-	'port'		=>getenv('PORT'),
+	'port'		=>getenv('DBPORT'),
 	'db_name'	=>getenv('DATABASE'),
-	'user'		=>getenv('USER'),
+	'user'		=>getenv('USERNAME'),
 	'pwd'		=>getenv('PASSWORD'),
 	'charset'	=>'utf8',
 	'prefix'	=>null

@@ -21,10 +21,13 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function main(){
-        $dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port=5432';
-        //$dsn = 'pgsql:dbname=dfhsc23783mu7c;host=ec2-54-228-247-206.eu-west-1.compute.amazonaws.com;port=5432';
+
+				/*
+				* Using basic pdo_psql
+				*/
+        $dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port='.getenv('DBPORT');
         try {
-    		$db = new PDO($dsn, 'rnerypprnrtsjx', getenv('PASSWORD'));
+    		$db = new PDO($dsn, getenv('USERNAME'), getenv('PASSWORD'));
         } catch(PDOException $e) {
             $db = null;
             echo 'ERREUR DB: '.$e->getMessage();
@@ -33,19 +36,19 @@ class Sf_Postgres extends Yny_Json {
     		$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
             $result = $query->fetchAll();
-			$villes['towns'] = $result;
-			$villes['user'] = getenv('USERNAME');
-			$villes['port'] = getenv('DBPORT');
-			$this->_view->json = json_encode($villes);
-			echo $this->_view->json;
+				$villes['weather'] = $result;
+				$this->_view->json = json_encode($villes);
+				echo $this->_view->json;
         } else {
             echo 'no database connection ?';
         }
-        //Show config var
 
-        //$towns = $this->getDb($this->dbinstance)->getTable($query);
-		//$json = '{"test":"test", "message":"message"}';
-        //$this->_view->json = $towns;
+				/*
+				* Using
+				*/
+				$query = 'SELECT * FROM villes;';
+        $towns = $this->getDb($this->dbinstance)->getTable($query);
+        $this->_view->json['towns'] = $towns;
 	}
 
 	function checkRestrictedHosts(){
