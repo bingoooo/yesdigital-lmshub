@@ -22,9 +22,9 @@ class Sf_Postgres extends Yny_Json {
 
 	function main(){
 
-				/*
-				* Using basic pdo_psql
-				*/
+		/*
+		* Using basic pdo_psql
+		*/
         $dsn = 'pgsql:dbname='.getenv('DATABASE').';host='.getenv('HOST').';port='.getenv('DBPORT');
         try {
     		$db = new PDO($dsn, getenv('USERNAME'), getenv('PASSWORD'));
@@ -33,22 +33,22 @@ class Sf_Postgres extends Yny_Json {
             echo 'ERREUR DB: '.$e->getMessage();
         }
         if($db){
-    				$query = $db->prepare("SELECT * FROM temps;");
+    		$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
             $result = $query->fetchAll();
-						$villes['weather'] = $result;
-						$this->_view->json = json_encode($villes);
+			$villes['weather'] = $result;
+			$this->_view->json = json_encode($villes);
         } else {
             echo 'no database connection ?';
         }
 
-				/*
-				* Using
-				*/
-				$query = 'SELECT * FROM villes;';
+		/*
+		* Using
+		*/
+		$query = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
-        $this->_view->json['towns'] = $towns;
-				echo $this->_view->json;
+        $this->_view->json['towns'] = json_encode($towns);
+		echo $this->_view->json;
 	}
 
 	function checkRestrictedHosts(){
