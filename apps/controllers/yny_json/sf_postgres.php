@@ -13,7 +13,7 @@ class Sf_Postgres extends Yny_Json {
         if (!empty($_REQUEST['instance']))
 			$this->dbinstance = trim($_REQUEST['instance']);
 		else
-			$this->dbinstance = !defined('DEVEL') ? 'default' : 'ynytest';
+			$this->dbinstance = !defined('DEVEL') ? 'lmshub' : 'ynytest';
 	}
 
 	function doPostBack(){
