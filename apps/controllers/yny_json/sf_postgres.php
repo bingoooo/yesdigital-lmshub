@@ -33,12 +33,11 @@ class Sf_Postgres extends Yny_Json {
             echo 'ERREUR DB: '.$e->getMessage();
         }
         if($db){
-    		$query = $db->prepare("SELECT * FROM temps;");
+    				$query = $db->prepare("SELECT * FROM temps;");
             $query->execute();
             $result = $query->fetchAll();
-				$villes['weather'] = $result;
-				$this->_view->json = json_encode($villes);
-				echo $this->_view->json;
+						$villes['weather'] = $result;
+						$this->_view->json = json_encode($villes);
         } else {
             echo 'no database connection ?';
         }
@@ -49,6 +48,7 @@ class Sf_Postgres extends Yny_Json {
 				$query = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query);
         $this->_view->json['towns'] = $towns;
+				echo $this->_view->json;
 	}
 
 	function checkRestrictedHosts(){
