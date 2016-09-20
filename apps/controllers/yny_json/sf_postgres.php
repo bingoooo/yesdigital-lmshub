@@ -43,7 +43,7 @@ class Sf_Postgres extends Yny_Json {
         }
 
 		/*
-		* Using
+		* Using Built-in class
 		*/
 		$query2 = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query2);
@@ -52,7 +52,7 @@ class Sf_Postgres extends Yny_Json {
 		echo $this->_view->json;
 	}
 
-	function checkRestrictedHosts(){
+	/*function checkRestrictedHosts(){
 		return '*';
-	}
+	}*/
 }
