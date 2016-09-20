@@ -5,6 +5,14 @@ use \PDO;
 use \PDOException;
 
 class Sf_Postgres extends Yny_Json {
+
+	protected $allowedHosts = array(
+			'https://eu6.salesforce.com','https://yesdigital-lmshub.herokuapp.com',
+			'https://ec2-54-228-247-206.eu-west-1.compute.amazonaws.com',
+	);
+
+	protected $forcedAllowedIP = array('127.0.0.1', '10.107.2.180');
+
 	protected $dbinstance;
 
 	function initialize(){
@@ -57,7 +65,7 @@ class Sf_Postgres extends Yny_Json {
 		echo $this->_view->json;
 	}
 
-	function checkRestrictedHosts(){
+	/*function checkRestrictedHosts(){
 		return '*';
-	}
+	}*/
 }
