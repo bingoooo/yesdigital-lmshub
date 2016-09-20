@@ -56,19 +56,10 @@ class Sf_Postgres extends Yny_Json {
 		$query2 = 'SELECT * FROM villes;';
     $towns = $this->getDb($this->dbinstance)->getTable($query2);
 		$query3 = 'SELECT * FROM users;';
-		$learners = $this->getDB($this->this->dbinstance)->getTable($query3);
+		$learners = $this->getDb($this->this->dbinstance)->getTable($query3);
 
 		$json['towns'] = $towns;
 		$json['learners'] = $learners;
-		$json['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'];
-		$json['REMOTE_HOST'] = $_SERVER['REMOTE_HOST'];
-		$json['REMOTE_PORT'] = $_SERVER['REMOTE_PORT'];
-		$json['HTTPS'] = $_SERVER['HTTPS'];
-		$json['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		$json['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
-		$json['REMOTE_USER'] = $_SERVER['REMOTE_USER'];
-		$json['SERVER_SIGNATURE'] = $_SERVER['SERVER_SIGNATURE'];
-		$json['ORIG_PATH_INFO'] = $_SERVER['ORIG_PATH_INFO'];
 		$this->_view->json = json_encode($json);
 		echo $this->_view->json;
 	}
