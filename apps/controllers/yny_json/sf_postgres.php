@@ -13,7 +13,7 @@ class Sf_Postgres extends Yny_Json {
 
 	protected $dbinstance;
 
-	protected $ips = array('85.222.130.8',);
+	protected $ips = array('85.222.130.8', '127.0.0.1');
 
 	function initialize(){
 		parent::initialize();
@@ -70,11 +70,10 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function checkRestrictedHosts(){
-		$ip = $ips;
-		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $ip)){
+		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $this->ips)){
 			return '*';
 		} else {
-			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$ip);
+			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$this->ips);
 		}
 	}
 }
