@@ -60,6 +60,7 @@ class Sf_Postgres extends Yny_Json {
 		$json['REMOTE_HOST'] = $_SERVER['REMOTE_HOST'];
 		$json['REMOTE_PORT'] = $_SERVER['REMOTE_PORT'];
 		$json['HTTPS'] = $_SERVER['HTTPS'];
+		$json['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		$json['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
 		$json['REMOTE_USER'] = $_SERVER['REMOTE_USER'];
 		$json['SERVER_SIGNATURE'] = $_SERVER['SERVER_SIGNATURE'];
