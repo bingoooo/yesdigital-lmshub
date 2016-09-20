@@ -48,14 +48,16 @@ class Sf_Postgres extends Yny_Json {
 		$query2 = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query2);
 		$json['towns'] = $towns;
+		$json['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'];
+		$json['REMOTE_HOST'] = $_SERVER['REMOTE_HOST'];
+		$json['REMOTE_PORT'] = $_SERVER['REMOTE_PORT'];
+		$json['HTTPS'] = $_SERVER['HTTPS'];
+		$json['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
 		$this->_view->json = json_encode($json);
 		echo $this->_view->json;
 	}
 
 	function checkRestrictedHosts(){
-		echo 'Check URL from request : ';
-		$uri = $_SERVER['REQUEST_URI'];
-		echo $uri;
-		// return '*';
+		return '*';
 	}
 }
