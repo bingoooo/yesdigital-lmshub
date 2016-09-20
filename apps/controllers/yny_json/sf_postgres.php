@@ -68,10 +68,11 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function checkRestrictedHosts(){
-		if($_SERVER['HTTP_X_FORWARDED_FOR'] == '85.222.130.8')){
+		$ip = explode(',', getenv('ALLOWED_IP'));
+		if($_SERVER['HTTP_X_FORWARDED_FOR'] == '85.222.130.8'){
 			return '*';
 		} else {
-			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR']);
+			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$ip);
 		}
 	}
 }
