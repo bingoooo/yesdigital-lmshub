@@ -11,8 +11,6 @@ class Sf_Postgres extends Yny_Json {
 			'https://ec2-54-228-247-206.eu-west-1.compute.amazonaws.com',
 	);
 
-	protected $forcedAllowedIP = array('85.222.130.8');
-
 	protected $dbinstance;
 
 	function initialize(){
@@ -70,10 +68,11 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function checkRestrictedHosts(){
-		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $forcedAllowedIP)){
+		$ips = getenv('ALLOWED_IP');
+		if($_SERVER['HTTP_X_FORWARDED_FOR'] == $ips)){
 			return '*';
 		} else {
-			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$forcedAllowedIP[0]);
+			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$ips);
 		}
 	}
 }
