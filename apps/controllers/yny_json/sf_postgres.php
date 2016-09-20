@@ -56,7 +56,7 @@ class Sf_Postgres extends Yny_Json {
 		$query2 = 'SELECT * FROM villes;';
         $towns = $this->getDb($this->dbinstance)->getTable($query2);
 		$json['towns'] = $towns;
-		$json['learners'] = '[{"user_id":1234,"lastname":"DANT","firstname":"Benjamin","acquired_level":"A1.1","recommended_level":"B1.1"}]';
+		$json['learners'] = [["user_id"=>1234,"lastname"=>"DANT","firstname"=>"Benjamin","acquired_level"=>"A1.1","recommended_level"=>"B1.1"]];
 		$json['REMOTE_ADDR'] = $_SERVER['REMOTE_ADDR'];
 		$json['REMOTE_HOST'] = $_SERVER['REMOTE_HOST'];
 		$json['REMOTE_PORT'] = $_SERVER['REMOTE_PORT'];
