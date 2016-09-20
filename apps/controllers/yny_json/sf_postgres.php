@@ -11,7 +11,7 @@ class Sf_Postgres extends Yny_Json {
 			'https://ec2-54-228-247-206.eu-west-1.compute.amazonaws.com',
 	);
 
-	protected $forcedAllowedIP = array('10.107.2.180');
+	protected $forcedAllowedIP = array('10.107.2.180', '10.76.2.157', '10.79.145.42');
 
 	protected $dbinstance;
 
@@ -61,6 +61,9 @@ class Sf_Postgres extends Yny_Json {
 		$json['REMOTE_PORT'] = $_SERVER['REMOTE_PORT'];
 		$json['HTTPS'] = $_SERVER['HTTPS'];
 		$json['HTTP_HOST'] = $_SERVER['HTTP_HOST'];
+		$json['REMOTE_USER'] = $_SERVER['REMOTE_USER'];
+		$json['SERVER_SIGNATURE'] = $_SERVER['SERVER_SIGNATURE'];
+		$json['ORIG_PATH_INFO'] = $_SERVER['ORIG_PATH_INFO'];
 		$this->_view->json = json_encode($json);
 		echo $this->_view->json;
 	}
