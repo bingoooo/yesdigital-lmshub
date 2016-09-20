@@ -11,7 +11,7 @@ class Sf_Postgres extends Yny_Json {
 			'https://ec2-54-228-247-206.eu-west-1.compute.amazonaws.com',
 	);
 
-	protected $forcedAllowedIP = array('10.107.2.180', '10.76.2.157', '10.79.145.42');
+	protected $forcedAllowedIP = array('85.222.130.8');
 
 	protected $dbinstance;
 
@@ -69,7 +69,7 @@ class Sf_Postgres extends Yny_Json {
 		echo $this->_view->json;
 	}
 
-	function checkRestrictedHosts(){
+	/*function checkRestrictedHosts(){
 		return '*';
-	}
+	}*/
 }
