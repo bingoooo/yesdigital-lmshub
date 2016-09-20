@@ -13,6 +13,8 @@ class Sf_Postgres extends Yny_Json {
 
 	protected $dbinstance;
 
+	protected $ips = array('85.222.130.8');
+
 	function initialize(){
 		parent::initialize();
 		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
@@ -68,7 +70,6 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function checkRestrictedHosts(){
-		$ip = explode(',', getenv('ALLOWED_IP'));
 		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $ip)){
 			return '*';
 		} else {
