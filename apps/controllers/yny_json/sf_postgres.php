@@ -13,7 +13,7 @@ class Sf_Postgres extends Yny_Json {
 
 	protected $dbinstance;
 
-	private $ips = array('85.222.130.8');
+	protected $ips = array('85.222.130.8',);
 
 	function initialize(){
 		parent::initialize();
