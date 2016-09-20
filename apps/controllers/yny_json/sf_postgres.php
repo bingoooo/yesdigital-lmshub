@@ -70,10 +70,10 @@ class Sf_Postgres extends Yny_Json {
 	}
 
 	function checkRestrictedHosts(){
-		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $ip)){
+		if(in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $ips)){
 			return '*';
 		} else {
-			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$ip);
+			$this->exitOnError(403, 'Forbidden for '.$_SERVER['HTTP_X_FORWARDED_FOR'].' '.$ips);
 		}
 	}
 }
