@@ -52,7 +52,10 @@ class Sf_Postgres extends Yny_Json {
 		echo $this->_view->json;
 	}
 
-	/*function checkRestrictedHosts(){
-		return '*';
-	}*/
+	function checkRestrictedHosts(){
+		echo 'Check URL from request : ';
+		$uri = $_SERVER['REQUEST_URI'];
+		echo $uri;
+		// return '*';
+	}
 }
