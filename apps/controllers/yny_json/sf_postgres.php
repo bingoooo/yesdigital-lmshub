@@ -65,7 +65,7 @@ class Sf_Postgres extends Yny_Json {
 		echo $this->_view->json;
 	}
 
-	/*function checkRestrictedHosts(){
+	function checkRestrictedHosts(){
 		return '*';
-	}*/
+	}
 }
