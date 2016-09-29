@@ -72,14 +72,15 @@ class Salesforce extends Controller{
 	}
 
 	function checkRestrictedHosts(){
-		if (defined('DEVEL') || in_array($_SERVER['REMOTE_ADDR'], $this->forcedAllowedIP) || $this->allowedHosts === '*')
+		/*if (defined('DEVEL') || in_array($_SERVER['REMOTE_ADDR'], $this->forcedAllowedIP) || $this->allowedHosts === '*')
 			return '*';
 		//Only for AJAX request (so, HTTP_ORIGIN is set)
 		if ($origin = !empty($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : false){
 			if (in_array($origin, $this->allowedHosts))
 				return $origin;
 		}
-		$this->exitOnError(403, 'Forbidden');
+		$this->exitOnError(403, 'Forbidden');*/
+		return '*';
 	}
 
 	/**
