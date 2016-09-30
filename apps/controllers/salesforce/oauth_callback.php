@@ -41,6 +41,6 @@ class Oauth_Callback extends Salesforce {
      $_SESSION['access_token'] = $access_token;
      $_SESSION['instance_url'] = $instance_url;
 
-     header('Location : sync')
+     header('Location : sync');
   }
 }
