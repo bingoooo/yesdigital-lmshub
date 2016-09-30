@@ -37,3 +37,4 @@ $instance_url = $response['instance_url'];
  $_SESSION['instance_url'] = $instance_url;
 
  header('Location : sync.php');
+?>

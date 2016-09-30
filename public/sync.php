@@ -31,3 +31,4 @@ if($status != 204) {
 
 curl_close($curl);
 echo 'Has it been updated ?';
+?>
