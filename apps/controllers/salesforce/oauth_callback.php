@@ -10,8 +10,8 @@ class Oauth_Callback extends Salesforce {
     $token_url = getenv('LOGIN_URI') . "/services/oauth2/token";
     $code = $_GET['code'];
 
-    if(!!isset($code) || $code == ""){
-      die("Error - code parameter missing from request!");
+    if(!isset($code) || $code == ""){
+      die("Error - code parameter missing from request! returned ".$code);
     }
 
     $params = "code=".$code."&grant_type=authorization_code"."&client_id=".getenv('CONSUMER_KEY')."&client_secret=".getenv('CONSUMER_SECRET')."&redirect_uri=".getenv('REDIRECT_URI');
