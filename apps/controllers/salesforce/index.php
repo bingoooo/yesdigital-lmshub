@@ -26,6 +26,7 @@ class Index extends Salesforce {
 		$learners = $this->getDb($this->dbinstance)->getTable($query);
 
 		$this->_view->json['learners'] = $learners;
+		echo $this->_view->json;
 		//App::catchError();
 	}
 

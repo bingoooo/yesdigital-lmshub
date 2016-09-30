@@ -15,7 +15,7 @@ class Sync extends Salesforce {
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: OAuth $access_token", "Content-type: application/json"));
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: OAuth ".$access_token, "Content-type: application/json"));
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
     curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
 
