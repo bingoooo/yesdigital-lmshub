@@ -34,7 +34,7 @@ class Salesforce extends Controller{
 		else
 			$this->setLayout('json');	//On production environment, use JSON format
 		//Force set this view script for all inherited classes
-		$this->_view->setCurrentScript(TPL_ROOT.'/views/provalliance_json.phtml');
+		$this->_view->setCurrentScript(TPL_ROOT.'/views/sf_json.phtml');
 		$this->_view->json = array();
 	}
 

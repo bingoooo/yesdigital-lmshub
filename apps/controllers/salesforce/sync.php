@@ -9,9 +9,17 @@ class Sync extends Salesforce {
     $access_token = $_SESSION['access_token'];
     $instance_url = $_SESSION['instance_url'];
 
-    $content = json_encode(array("LMS_user_id__c" => "some test"));
+    if(!isset($access_token) || $access_token == "") {
+      die('Error - access token missing from session');
+    }
 
-    $url = "$instance_url/services/services/apexrest/getId/12372";
+    if(!isset($instance_url) || $instance_url == ""){
+      die('Error - instance_url missing from session');
+    }
+
+    $content = json_encode(array("id" => "12372","user_id" => "some test"));
+
+    $url = "$instance_url/services/services/apexrest/getId/";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
