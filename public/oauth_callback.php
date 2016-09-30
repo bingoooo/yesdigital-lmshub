@@ -36,5 +36,33 @@ $instance_url = $response['instance_url'];
  $_SESSION['access_token'] = $access_token;
  $_SESSION['instance_url'] = $instance_url;
 
- header('Location : https://yesdigital-lmshub.herokuapp.com/sync.php');
+ if(!isset($access_token) || $access_token == "") {
+   die('Error - access token missing from session');
+ }
+
+ if(!isset($instance_url) || $instance_url == ""){
+   die('Error - instance_url missing from session');
+ }
+
+ $content = json_encode(array("user_id" => "12372","lms_user_id" => "some test"));
+
+ $url = "$instance_url/services/apexrest/getId/";
+
+ $curl = curl_init($url);
+ curl_setopt($curl, CURLOPT_HEADER, false);
+ curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: OAuth ".$access_token, "Content-type: application/json"));
+ curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+ curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+
+ curl_exec($curl);
+
+ $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+ if($status != 204 && $status != 200) {
+   die("Error: call to $url failed with status $status, curl_error ".curl_error($curl)." curl_errno ".curl_errno($curl));
+ }
+
+ curl_close($curl);
+ echo 'Has it been updated ?';
+ //header('Location : https://yesdigital-lmshub.herokuapp.com/sync.php');
 ?>
