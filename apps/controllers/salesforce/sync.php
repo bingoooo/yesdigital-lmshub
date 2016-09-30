@@ -1,4 +1,4 @@
-d<?php
+<?php
 namespace FragTale\Controller\Salesforce;
 use FragTale\Controller\Salesforce;
 use FragTale\Application as App;
