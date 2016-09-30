@@ -11,7 +11,7 @@ if(!isset($instance_url) || $instance_url == ""){
   die('Error - instance_url missing from session');
 }
 
-$content = json_encode(array("id" => "12372","user_id" => "some test"));
+$content = json_encode(array("user_id" => "12372","lms_user_id" => "some test"));
 
 $url = "$instance_url/services/apexrest/getId/";
 
