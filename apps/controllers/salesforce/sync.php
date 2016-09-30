@@ -28,5 +28,6 @@ class Sync extends Salesforce {
     }
 
     curl_close($curl);
+    echo 'Has it been updated ?';
   }
 }
