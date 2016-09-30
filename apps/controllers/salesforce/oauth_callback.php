@@ -9,12 +9,13 @@ class Oauth_Callback extends Salesforce {
 
     $token_url = getenv('LOGIN_URI') . "/services/oauth2/token";
     $code = $_GET['code'];
-
+    echo $code.'-----> ';
     if(!isset($code) || $code == ""){
       die("Error - code parameter missing from request! returned ".$code);
     }
 
-    $params = "code=".$code."&grant_type=authorization_code"."&client_id=".getenv('CONSUMER_KEY')."&client_secret=".getenv('CONSUMER_SECRET')."&redirect_uri=".getenv('REDIRECT_URI');
+    $params = "code=".$code."&grant_type=authorization_code&client_id=".getenv('CONSUMER_KEY')."&client_secret=".getenv('CONSUMER_SECRET')."&redirect_uri=".urlencode(getenv('REDIRECT_URI'));
+    echo $params.'-----> ';
     $curl = curl_init($token_url);
     curl_setopt($curl, CURLOPT_HEADER, false);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -25,7 +26,7 @@ class Oauth_Callback extends Salesforce {
     $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
     if($status != 200){
-      die("Error call to token URL ".$token_url." failed du failed with status ".$status.", response ".$json_response.", curl_error ".curl_error($curl).", curl errno ".curl_errno($surl));
+      die("Error call to token URL ".$token_url." failed with status ".$status.", response ".$json_response.", curl_error ".curl_error($curl).", curl errno ".curl_errno($surl));
     }
     curl_close($curl);
     $response = json_decode($json_response, true);

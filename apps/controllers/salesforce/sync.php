@@ -19,7 +19,7 @@ class Sync extends Salesforce {
 
     $content = json_encode(array("id" => "12372","user_id" => "some test"));
 
-    $url = "$instance_url/services/services/apexrest/getId/";
+    $url = "$instance_url/services/apexrest/getId/";
 
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_HEADER, false);
