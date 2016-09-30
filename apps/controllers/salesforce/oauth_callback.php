@@ -25,7 +25,7 @@ class Oauth_Callback extends Salesforce {
     $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
     if($status != 200){
-      die("Error call to token URL ".$token_url" failed du failed with status ".$status.", response ".$json_response.", curl_error ".curl_error($curl).", curl errno ".curl_errno($surl));
+      die("Error call to token URL ".$token_url." failed du failed with status ".$status.", response ".$json_response.", curl_error ".curl_error($curl).", curl errno ".curl_errno($surl));
     }
     curl_close($curl);
     $response = json_decode($json_response, true);
