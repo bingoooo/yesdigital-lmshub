@@ -25,7 +25,7 @@ curl_exec($curl);
 
 $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-if($status != 204) {
+if($status != 204 || $status != 200) {
   die("Error: call to $url failed with status $status, curl_error ".curl_error($curl)." curl_errno ".curl_errno($curl));
 }
 
