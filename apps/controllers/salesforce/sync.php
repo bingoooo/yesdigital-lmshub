@@ -3,7 +3,7 @@ namespace FragTale\Controller\Salesforce;
 use FragTale\Controller\Salesforce;
 use FragTale\Application as App;
 
-class Oauth extends Salesforce {
+class Sync extends Salesforce {
   function main(){
     session_start();
     $access_token = $_SESSION['access_token'];

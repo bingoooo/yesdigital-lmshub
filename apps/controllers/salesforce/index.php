@@ -22,7 +22,7 @@ class Sf_Sync extends Salesforce {
 
 	function main(){
 		//return phpinfo();
-		$query = 'SELECT * FROM YNY_NEWLMS.V_USER_ADD_INFOS';
+		$query = 'SELECT * FROM Users';
 		$learners = $this->getDb($this->dbinstance)->getTable($query);
 
 		$this->_view->json['learners'] = $learners;
