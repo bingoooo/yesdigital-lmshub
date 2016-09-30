@@ -36,5 +36,5 @@ $instance_url = $response['instance_url'];
  $_SESSION['access_token'] = $access_token;
  $_SESSION['instance_url'] = $instance_url;
 
- header('Location : sync.php');
+ header('Location : https://yesdigital-lmshub.herokuapp.com/sync.php');
 ?>
